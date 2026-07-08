@@ -69,6 +69,7 @@
   .cs-meta{ display:flex; gap:48px; margin-top:44px; flex-wrap:wrap; }
   .cs-meta div{ font-size:12px; color:var(--ink-soft); }
   .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+  .cs-meta-note{ font-size:11px; color:var(--ink-soft); margin-top:24px; line-height:1.6; }
 
   /* image placeholder */
   .ph{
@@ -297,11 +298,13 @@
       CPR illustrations, AED wayfinding, and nearby-user alerts — so help arrives from every
       direction, not just the ambulance.</p>
     <div class="cs-meta">
-      <div>YEAR <strong>2026</strong></div>
-      <div>PLATFORM <strong>iOS, Android</strong></div>
-      <div>ROLE <strong>Lead UX Designer</strong></div>
-      <div>TIMELINE <strong>[ X weeks/months ]</strong></div>
+      <div>YEAR <strong>2021</strong></div>
+      <div>TOOLS <strong>Figma, Illustrator, Claude</strong></div>
+      <div>ROLE <strong>UI/UX Designer</strong></div>
+      <div>TIMELINE <strong>10 weeks</strong></div>
     </div>
+    <p class="cs-meta-note mono">Figma and Illustrator carried the original 2021 design work. Claude
+      was brought in later, in 2026, to help update and polish this case study page.</p>
   </section>
 
   <div class="ph ph-hero">
@@ -981,10 +984,38 @@
     <div class="cs-num mono">11 / OUTCOME &amp; REFLECTION</div>
     <h2>What this system makes possible</h2>
     <div class="outcome-box">
-      <p>Placeholder text — summarize the projected or measured impact of Pulse, and how it connects
-        to the dispatch console on the other side of the call.</p>
-      <p>Placeholder text — reflect on what you'd explore next: multi-language CPR guidance,
-        wearable integration, offline mode in low-signal areas, etc.</p>
+      <h3 class="sub-heading">Summary</h3>
+      <p>Pulse started from a simple observation: the ambulance was never the delay, the moment
+        before anyone acted was. Research with eighteen people in Singapore, benchmarked against
+        MyResponder and SGSecure, pointed to a specific opportunity space — the stretch between
+        reporting an incident and getting through the first-aid wait, not the initial shock or the
+        moment help finally arrives. Everything in the final design traces back to that: a home
+        screen built around a single, thumb-reachable SOS button; a live call that listens for
+        medical keywords and surfaces CPR or AED guidance without the responder ever leaving it; and
+        a second flow that quietly recruits whoever is closest with an AED, guided there by their own
+        phone's native maps. On the other end of the same incident sits Pulse Dispatch, the desktop
+        counterpart built for the emergency dispatcher managing multiple calls at once — proof that
+        the mobile app's simplicity and the console's density are two expressions of one system,
+        not two separate products.</p>
+      <p>A moderated usability study with nine university students backed the direction: time to
+        first tap on the SOS button dropped from 6.4 to 2.1 seconds, task success on the AED
+        wayfinding flow rose from 61% to 94%, and the System Usability Scale score moved from a
+        borderline 58 to an excellent 84 between prototype rounds.</p>
+
+      <h3 class="sub-heading" style="margin-top:20px;">What's Next</h3>
+      <ul class="key-decisions">
+        <li>The AI listener is still a UX exploration, not a working system — the actual
+          keyword-detection and triage algorithm behind it would need real development with
+          clinicians and NLP engineers before it could be trusted on a live call.</li>
+        <li>Every screen in this case study is English only, which does not reflect Singapore.
+          Multi-language support, Mandarin, Malay, and Tamil at minimum, is close to a requirement
+          here, not a nice-to-have.</li>
+        <li>The entire interface only exists in a light theme. A dark mode would matter in exactly
+          the low-light, nighttime scenarios this app is designed for.</li>
+        <li>The guidance library only covers cardiac emergencies right now. I would want to expand it
+          to other situations — starting with fire: where the nearest extinguisher is, and how to
+          use it — so Pulse is useful beyond one kind of emergency.</li>
+      </ul>
     </div>
   </section>
 
