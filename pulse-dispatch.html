@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulse Dispatch — Web Console — Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FDFDFC;
+    --paper-dim:#F3F3F1;
+    --ink:#15171A;
+    --ink-soft:#565A5F;
+    --line:#E2E1DC;
+    --signal:#D2491E;
+    --signal-soft:#F0DCD2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--signal);color:var(--paper);}
+  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(253,253,252,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    padding:18px 6vw;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .back-link{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
+    transition:color .15s;
+  }
+  .back-link:hover{ color:var(--ink); }
+  .logo{ font-weight:600; font-size:15px; }
+  .logo span{ color:var(--signal); }
+
+  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
+
+  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
+  .cs-eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:22px;
+  }
+  .cs-hero h1{
+    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
+    max-width:20ch; margin-bottom:24px;
+  }
+  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
+  .cs-meta{ display:flex; gap:48px; margin-top:44px; flex-wrap:wrap; }
+  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
+  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+
+  .ph{
+    background:
+      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
+      var(--paper-dim);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .ph span{ font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.7; padding:20px; }
+  .ph .corner{ position:absolute; width:14px; height:14px; opacity:0.5; }
+  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
+
+  .ph-hero{ aspect-ratio:16/8; }
+  .ph-square{ aspect-ratio:4/5; }
+  .ph-wide{ aspect-ratio:16/9; }
+
+  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .cs-section:last-of-type{ border-bottom:none; }
+  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
+  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:22ch; }
+  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:62ch; margin-bottom:36px; }
+
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  @media (max-width:800px){ .two-col{ grid-template-columns:1fr; } }
+
+  .empathy-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:10px; }
+  @media (max-width:800px){ .empathy-grid{ grid-template-columns:1fr; } }
+  .empathy-card{ background:var(--paper); padding:28px; }
+  .empathy-card .tag{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:12px; }
+  .empathy-card h3{ font-size:18px; font-weight:600; margin-bottom:14px; }
+  .empathy-card ul{ list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .empathy-card li{ font-size:13px; color:var(--ink-soft); line-height:1.5; padding-left:14px; position:relative; }
+  .empathy-card li::before{ content:'—'; position:absolute; left:0; color:var(--line); }
+
+  .callout{
+    background:var(--signal-soft);
+    border:1px dashed var(--signal);
+    padding:22px 26px;
+    border-radius:3px;
+    margin-top:28px;
+  }
+  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
+
+  .feature-list{ display:flex; flex-direction:column; gap:0; margin-top:10px; }
+  .feature-row{
+    display:grid; grid-template-columns:1fr 2fr; gap:24px;
+    padding:24px 0; border-top:1px solid var(--line);
+  }
+  .feature-list .feature-row:last-child{ border-bottom:1px solid var(--line); }
+  @media (max-width:700px){ .feature-row{ grid-template-columns:1fr; } }
+  .feature-row .f-title{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:16px; }
+  .feature-row .f-desc{ font-size:14px; color:var(--ink-soft); line-height:1.6; }
+
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin-top:10px; }
+  @media (max-width:800px){ .stat-row{ grid-template-columns:1fr 1fr; } }
+  .stat{ border-top:1px solid var(--line); padding-top:16px; }
+  .stat .num{ font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,4vw,3rem); font-weight:600; color:var(--signal); }
+  .stat .lbl{ font-size:12px; color:var(--ink-soft); margin-top:8px; line-height:1.4; }
+
+  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
+  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; }
+
+  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .next-project{ font-size:13px; color:var(--ink-soft); }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project:hover strong{ color:var(--signal); }
+
+  footer.site-footer{
+    border-top:1px solid var(--line);
+    padding:24px 6vw;
+    display:flex; justify-content:space-between;
+    font-size:11px; color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="back-link mono">← Back to work</a>
+    <div class="logo mono">DAVID NG<span>.</span></div>
+  </div>
+</header>
+
+<main>
+
+  <section class="cs-hero">
+    <div class="cs-eyebrow mono"><span>●</span> UI/UX — Web Console Case Study</div>
+    <h1>Pulse Dispatch — Web Console</h1>
+    <p>The other half of the Pulse system: a streamlined web interface for emergency dispatch
+      teams, built for high call volume, live AI-assisted transcripts, and coordinating nearby
+      volunteer responders in real time.</p>
+    <div class="cs-meta">
+      <div>YEAR <strong>2026</strong></div>
+      <div>PLATFORM <strong>Web (Desktop)</strong></div>
+      <div>ROLE <strong>Lead UX Designer</strong></div>
+      <div>COMPANION APP <strong><a href="pulse-app.html" style="border-bottom:1px solid var(--ink-soft);">Pulse Mobile →</a></strong></div>
+    </div>
+  </section>
+
+  <div class="ph ph-hero">
+    <span class="mono">[ PLACEHOLDER — HERO IMAGE / DISPATCH CONSOLE OVERVIEW SCREEN ]</span>
+  </div>
+
+  <!-- 01 OVERVIEW -->
+  <section class="cs-section">
+    <div class="cs-num mono">01 / OVERVIEW</div>
+    <h2>Same incident, dispatcher's point of view</h2>
+    <p class="lede">Placeholder text — while a bystander experiences an emergency through the Pulse
+      app, the same incident lands on a dispatcher's screen as one of many simultaneous calls.
+      This console was designed to give dispatchers clarity and speed under that load.</p>
+    <div class="ph ph-wide">
+      <span class="mono">[ PLACEHOLDER — SYSTEM DIAGRAM: APP ↔ AI ↔ DISPATCH CONSOLE ]</span>
+    </div>
+  </section>
+
+  <!-- 02 RESEARCH -->
+  <section class="cs-section">
+    <div class="cs-num mono">02 / RESEARCH</div>
+    <h2>Shadowing where signal gets lost</h2>
+    <p class="lede">Placeholder text — describe time spent observing or interviewing dispatch teams,
+      what tools they currently use, and where information tends to get delayed or lost during
+      high call volume.</p>
+    <div class="two-col">
+      <div class="ph ph-square">
+        <span class="mono">[ PLACEHOLDER — DISPATCH FLOOR OBSERVATION PHOTO ]</span>
+      </div>
+      <div class="ph ph-square">
+        <span class="mono">[ PLACEHOLDER — CURRENT WORKFLOW / PAIN POINT MAP ]</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 EMPATHY MAP -->
+  <section class="cs-section">
+    <div class="cs-num mono">03 / EMPATHY MAP</div>
+    <h2>Calm under a flood of information</h2>
+    <p class="lede">Placeholder text — summarize the dispatcher's mental state and what the interface
+      needs to protect against.</p>
+    <div class="empathy-grid">
+      <div class="empathy-card">
+        <div class="tag mono">The Dispatcher</div>
+        <h3>Overloaded, not overwhelmed</h3>
+        <ul>
+          <li>Handling multiple live calls at once</li>
+          <li>Needs signal over noise — not more data, the right data</li>
+          <li>Must triage severity in seconds</li>
+          <li>Relies on muscle memory; UI changes must not break it</li>
+        </ul>
+      </div>
+      <div class="empathy-card">
+        <div class="tag mono">The System</div>
+        <h3>What the console must protect</h3>
+        <ul>
+          <li>Never let a critical call get visually buried</li>
+          <li>Surface AI transcript highlights, not raw text walls</li>
+          <li>Make responder coordination one glance, not a search</li>
+          <li>Fail gracefully — never blank-screen during a live call</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 KEY DESIGN DECISIONS -->
+  <section class="cs-section">
+    <div class="cs-num mono">04 / KEY DESIGN DECISIONS</div>
+    <h2>Streamlining call intake</h2>
+    <p class="lede">Placeholder text — walk through the core interface decisions that reduce
+      cognitive load for dispatchers during a live call.</p>
+    <div class="ph ph-wide">
+      <span class="mono">[ PLACEHOLDER — CALL INTAKE SCREEN WITH LIVE AI TRANSCRIPT PANEL ]</span>
+    </div>
+    <div class="feature-list">
+      <div class="feature-row">
+        <div class="f-title mono">01</div>
+        <div>
+          <div class="f-title">Live AI transcript, inline</div>
+          <div class="f-desc">Placeholder — key phrases and suggested actions surfaced directly in
+            the call view instead of a separate notes panel.</div>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="f-title mono">02</div>
+        <div>
+          <div class="f-title">Severity-first call queue</div>
+          <div class="f-desc">Placeholder — describe how incoming calls are visually ranked so the
+            most critical is always the most visible.</div>
+        </div>
+      </div>
+      <div class="feature-row">
+        <div class="f-title mono">03</div>
+        <div>
+          <div class="f-title">One-glance responder status</div>
+          <div class="f-desc">Placeholder — describe how dispatchers see who is en route without
+            switching views.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 COORDINATION VIEW -->
+  <section class="cs-section">
+    <div class="cs-num mono">05 / COORDINATION VIEW</div>
+    <h2>Watching help converge in real time</h2>
+    <p class="lede">Placeholder text — describe the map view that shows the reporter, nearby
+      volunteer responders bringing an AED, and EMS all converging on one location.</p>
+    <div class="ph ph-wide">
+      <span class="mono">[ PLACEHOLDER — LIVE MAP VIEW: REPORTER, AED RUNNER, EMS EN ROUTE ]</span>
+    </div>
+    <div class="callout">
+      <div class="label mono">Design decision</div>
+      <p>Placeholder — note why the map favors clarity of movement (who's arriving, from where,
+        in how long) over dense geographic detail.</p>
+    </div>
+  </section>
+
+  <!-- 06 USABILITY TESTING -->
+  <section class="cs-section">
+    <div class="cs-num mono">06 / USABILITY TESTING</div>
+    <h2>Testing under multi-call load</h2>
+    <p class="lede">Placeholder text — describe simulated multi-call test scenarios used to measure
+      whether the console actually reduced time-to-triage.</p>
+    <div class="stat-row">
+      <div class="stat">
+        <div class="num mono">[ X ]s</div>
+        <div class="lbl">Avg. time-to-triage per incoming call</div>
+      </div>
+      <div class="stat">
+        <div class="num mono">[ X ]%</div>
+        <div class="lbl">Reduction in missed follow-up actions during multi-call tests</div>
+      </div>
+      <div class="stat">
+        <div class="num mono">[ X ]/5</div>
+        <div class="lbl">Dispatcher-reported confidence using the new console</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 OUTCOME -->
+  <section class="cs-section">
+    <div class="cs-num mono">07 / OUTCOME &amp; REFLECTION</div>
+    <h2>Closing the loop between app and console</h2>
+    <div class="outcome-box">
+      <p>Placeholder text — summarize how the mobile app and dispatch console function as one
+        connected system, each designed for the opposite emotional state of the same incident.</p>
+      <p>Placeholder text — reflect on what's next: multi-agency handoff, analytics for response
+        time trends, or training-mode simulations for new dispatchers.</p>
+    </div>
+  </section>
+
+  <div class="cs-footer">
+    <a href="index.html" class="back-link mono">← Back to all work</a>
+    <a href="pulse-app.html" class="next-project mono">
+      COMPANION PROJECT
+      <strong>Pulse — Emergency Response App →</strong>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span class="mono">© 2026 DAVID NG</span>
+  <span class="mono">CASE STUDY — PULSE DISPATCH</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pulse — Emergency Response App — Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FDFDFC;
+    --paper-dim:#F3F3F1;
+    --ink:#15171A;
+    --ink-soft:#565A5F;
+    --line:#E2E1DC;
+    --signal:#D2491E;
+    --signal-soft:#F0DCD2;
+    --c1:#D2491E;
+    --c2:#4B6D8C;
+    --c3:#748C57;
+    --c4:#8C5C74;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--signal);color:var(--paper);}
+  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(253,253,252,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    padding:18px 6vw;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .back-link{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
+    transition:color .15s;
+  }
+  .back-link:hover{ color:var(--ink); }
+  .logo{ font-weight:600; font-size:15px; }
+  .logo span{ color:var(--signal); }
+
+  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
+
+  /* hero */
+  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
+  .cs-eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:22px;
+  }
+  .cs-hero h1{
+    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
+    max-width:18ch; margin-bottom:24px;
+  }
+  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
+  .cs-meta{ display:flex; gap:48px; margin-top:44px; flex-wrap:wrap; }
+  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
+  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+
+  /* image placeholder */
+  .ph{
+    background:
+      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
+      var(--paper-dim);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .ph span{ font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.7; padding:20px; }
+  .ph .corner{ position:absolute; width:14px; height:14px; opacity:0.5; }
+  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
+
+  .ph-hero{ aspect-ratio:16/8; margin-top:0; }
+  .ph-hero img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+  .ph-square{ aspect-ratio:4/5; }
+  .ph-wide{ aspect-ratio:16/9; }
+
+  /* section shell */
+  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .cs-section:last-of-type{ border-bottom:none; }
+  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
+  .persona-tag{ display:inline-block; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); background:var(--signal-soft); padding:5px 10px; border-radius:20px; margin-bottom:16px; }
+  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:20ch; }
+  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:62ch; margin-bottom:36px; }
+
+  /* two column */
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  @media (max-width:800px){ .two-col{ grid-template-columns:1fr; } }
+
+  /* empathy map */
+  .empathy-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:10px; }
+  @media (max-width:800px){ .empathy-grid{ grid-template-columns:1fr; } }
+  .empathy-card{ background:var(--paper); padding:28px; }
+  .empathy-card .tag{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:12px; }
+  .empathy-card h3{ font-size:18px; font-weight:600; margin-bottom:14px; }
+  .empathy-card ul{ list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .empathy-card li{ font-size:13px; color:var(--ink-soft); line-height:1.5; padding-left:14px; position:relative; }
+  .empathy-card li::before{ content:'—'; position:absolute; left:0; color:var(--line); }
+
+  /* journey */
+  .journey{ display:flex; gap:0; overflow-x:auto; margin-top:10px; padding-bottom:12px; }
+  .journey-step{ flex:0 0 220px; padding-right:24px; margin-right:24px; border-right:1px dashed var(--line); }
+  .journey-step:last-child{ border-right:none; }
+  .journey-step .step-idx{ font-size:11px; color:var(--signal); margin-bottom:10px; display:flex; gap:6px; align-items:baseline; }
+  .journey-step .step-emotion{ color:var(--ink-soft); }
+  .journey-step .step-ph{ aspect-ratio:3/4; margin-bottom:14px; }
+  .journey-step .step-ph svg{ width:40%; }
+  .journey-step h4{ font-size:14px; font-weight:600; margin-bottom:8px; }
+  .journey-step p{ font-size:12px; color:var(--ink-soft); line-height:1.5; }
+
+  /* survival rate stat chart */
+  .stat-chart{ margin-top:0; }
+  .stat-chart svg{ width:100%; height:auto; display:block; }
+  .chart-label{ font-size:11px; text-transform:uppercase; letter-spacing:0.06em; color:var(--ink-soft); margin-bottom:14px; }
+  .chart-source{ font-size:11px; color:var(--ink-soft); margin-top:14px; line-height:1.6; }
+  .chart-source a{ color:var(--signal); text-decoration:underline; text-underline-offset:2px; }
+  .chart-source a:hover{ color:var(--ink); }
+
+  /* emotion chart */
+  .emotion-chart{ margin:30px 0 6px; }
+  .emotion-chart svg{ width:100%; height:auto; display:block; }
+  .ec-caption{ display:flex; justify-content:space-between; font-size:10px; color:var(--ink-soft); margin-top:8px; text-transform:uppercase; letter-spacing:0.06em; }
+
+  /* interview guide */
+  .interview-guide{ border:1px solid var(--line); background:var(--paper-dim); padding:26px; counter-reset:q; }
+  .ig-header{ display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px solid var(--ink); padding-bottom:10px; margin-bottom:18px; }
+  .ig-title{ font-size:12px; text-transform:uppercase; letter-spacing:0.08em; font-weight:600; color:var(--ink); }
+  .ig-version{ font-size:10px; color:var(--ink-soft); }
+  .ig-section{ margin-bottom:16px; }
+  .ig-section:last-child{ margin-bottom:0; }
+  .ig-label{ font-size:10px; text-transform:uppercase; letter-spacing:0.07em; color:var(--signal); margin-bottom:8px; }
+  .interview-guide ol{ list-style:none; display:flex; flex-direction:column; gap:8px; }
+  .interview-guide li{ font-size:12.5px; line-height:1.5; color:var(--ink); padding-left:22px; position:relative; counter-increment:q; }
+  .interview-guide li::before{ content:counter(q) "."; position:absolute; left:0; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; font-size:11px; }
+
+  /* research inputs */
+  .research-inputs{ border:1px solid var(--line); padding:26px; display:flex; flex-direction:column; gap:16px; justify-content:center; }
+  .ri-item{ display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--line); padding-bottom:16px; }
+  .ri-item:last-child{ border-bottom:none; padding-bottom:0; }
+  .ri-item strong{ font-family:'Space Grotesk',sans-serif; font-size:22px; color:var(--signal); min-width:48px; flex-shrink:0; }
+  .ri-item span{ font-size:12px; color:var(--ink-soft); line-height:1.4; }
+
+  /* synthesis / affinity map */
+  .synthesis-block{ margin-top:56px; }
+  .synthesis-block h3{ font-size:16px; font-weight:600; margin-bottom:10px; }
+  .synthesis-block > p{ font-size:14px; line-height:1.7; color:var(--ink-soft); max-width:64ch; }
+  .affinity-board{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:26px; margin-top:28px; }
+  .affinity-cluster{ display:flex; flex-direction:column; gap:10px; }
+  .cluster-header{ display:flex; justify-content:space-between; align-items:baseline; font-size:11px; text-transform:uppercase; letter-spacing:0.07em; font-weight:600; padding-bottom:8px; border-bottom:2px solid var(--cluster,var(--signal)); }
+  .cluster-header .count{ font-family:'IBM Plex Mono',monospace; font-weight:400; letter-spacing:0; color:var(--ink-soft); font-size:10px; text-transform:none; }
+  .note{ background:var(--paper-dim); border:1px solid var(--line); border-left:3px solid var(--cluster,var(--signal)); padding:13px 14px; font-size:12.5px; line-height:1.5; color:var(--ink); }
+  .note .note-src{ display:block; margin-top:8px; font-size:10px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:0.04em; }
+
+  /* stakeholder diagram */
+  .stakeholder-diagram{ margin-top:20px; overflow-x:auto; }
+  .stakeholder-diagram svg{ width:100%; min-width:720px; height:auto; display:block; }
+
+  /* system / simplicity-complexity diagram */
+  .sub-heading{ font-size:16px; font-weight:600; margin:0 0 14px; }
+  .system-diagram{ display:grid; grid-template-columns:1fr auto 1fr; border:1px solid var(--line); margin-top:10px; }
+  .system-panel{ padding:30px 28px; }
+  .system-panel .tag{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .system-panel h3{ font-size:19px; font-weight:600; margin-bottom:4px; }
+  .system-panel .sd-sub{ font-size:12px; color:var(--ink-soft); margin-bottom:18px; }
+  .system-panel ul{ list-style:none; display:flex; flex-direction:column; gap:10px; }
+  .system-panel li{ font-size:13px; color:var(--ink-soft); line-height:1.5; padding-left:14px; position:relative; }
+  .system-panel li::before{ content:'—'; position:absolute; left:0; color:var(--line); }
+  .system-panel.simple{ background:var(--paper); }
+  .system-panel.complex{ background:var(--paper-dim); }
+  .system-panel.complex li{ font-family:'IBM Plex Mono',monospace; font-size:11.5px; line-height:1.6; }
+  .system-panel-link{ display:inline-block; margin-top:18px; font-size:12px; color:var(--signal); text-decoration:underline; text-underline-offset:3px; }
+  .system-panel-link:hover{ color:var(--ink); }
+  .system-bridge{ display:flex; flex-direction:column; align-items:center; justify-content:center; gap:12px; padding:20px 14px; border-left:1px dashed var(--line); border-right:1px dashed var(--line); }
+  .system-bridge .sd-arrow{ font-size:22px; color:var(--signal); }
+  .system-bridge .sd-bridge-label{ font-size:10px; color:var(--ink-soft); text-align:center; line-height:1.5; max-width:100px; }
+  @media (max-width:800px){
+    .system-diagram{ grid-template-columns:1fr; }
+    .system-bridge{ border-left:none; border-right:none; border-top:1px dashed var(--line); border-bottom:1px dashed var(--line); flex-direction:row; }
+    .system-bridge .sd-arrow{ transform:rotate(90deg); }
+  }
+
+  /* visual hierarchy callout */
+  .callout{
+    background:var(--signal-soft);
+    border:1px dashed var(--signal);
+    padding:22px 26px;
+    border-radius:3px;
+    margin-top:28px;
+  }
+  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
+
+  /* thumb reach diagram */
+  .hierarchy-diagram-wrap{ display:grid; grid-template-columns:300px 1fr; gap:44px; margin-top:32px; align-items:start; }
+  @media (max-width:800px){ .hierarchy-diagram-wrap{ grid-template-columns:1fr; } }
+  .thumb-diagram{ position:relative; }
+  .thumb-diagram img{ width:100%; display:block; border:1px solid var(--line); border-radius:3px; }
+  .thumb-marker{
+    position:absolute; width:22px; height:22px; transform:translate(-50%,-50%);
+    border-radius:50%; background:var(--paper); border:1.5px solid var(--signal); color:var(--signal);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600;
+    box-shadow:0 1px 4px rgba(21,23,26,0.18);
+  }
+  .thumb-legend{ display:flex; flex-direction:column; gap:20px; padding-top:6px; }
+  .thumb-legend-item{ display:flex; gap:14px; align-items:flex-start; }
+  .thumb-legend-item .num{
+    flex-shrink:0; width:22px; height:22px; border-radius:50%;
+    border:1.5px solid var(--signal); color:var(--signal);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'IBM Plex Mono',monospace; font-size:11px; font-weight:600;
+  }
+  .thumb-legend-item p{ font-size:13px; color:var(--ink-soft); line-height:1.65; }
+  .thumb-legend-item strong{ color:var(--ink); font-weight:600; }
+
+  /* secondary responder demo video */
+  .ph-video{ margin:0; aspect-ratio:9/16; }
+  .ph-video.shot-frame video{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+  .video-steps{ display:flex; flex-direction:column; gap:14px; margin:0; padding-top:6px; }
+  .video-step{ font-size:12.5px; color:var(--ink-soft); display:flex; gap:10px; align-items:baseline; border-bottom:1px solid var(--line); padding-bottom:13px; }
+  .video-step:last-child{ border-bottom:none; padding-bottom:0; }
+  .video-step .vs-num{ color:var(--signal); flex-shrink:0; }
+
+  /* screenshot frame + annotated shots */
+  .shot-frame{ border-radius:14px; box-shadow:0 20px 40px -12px rgba(21,23,26,0.28), 0 4px 14px rgba(21,23,26,0.12); overflow:hidden; }
+  .shot-frame img{ width:100%; height:auto; display:block; }
+  .shot-frame video{ width:100%; height:auto; display:block; }
+  .annotated-shot{ position:relative; }
+  .annotated-shot img{ width:100%; display:block; }
+  .cpr-gallery{ display:flex; flex-wrap:wrap; gap:32px; margin-top:24px; }
+  .cpr-gallery .shot-frame{ width:300px; flex-shrink:0; }
+
+  /* usability test session photos */
+  .test-gallery{ display:flex; flex-wrap:wrap; gap:28px; margin:28px 0 36px; }
+  .test-shot{ flex:1 1 280px; max-width:340px; }
+  .test-shot figcaption{ font-size:12px; color:var(--ink-soft); line-height:1.55; margin-top:12px; }
+  .test-shot-crop img{ transform:scale(1.06); }
+  .key-decisions{ list-style:none; display:flex; flex-direction:column; gap:10px; margin-top:4px; }
+  .key-decisions li{ font-size:13.5px; line-height:1.6; color:var(--ink); padding-left:16px; position:relative; }
+  .key-decisions li::before{ content:'—'; position:absolute; left:0; color:var(--signal); }
+
+  /* stats */
+  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin-top:10px; }
+  @media (max-width:800px){ .stat-row{ grid-template-columns:1fr 1fr; } }
+  .stat{ border-top:1px solid var(--line); padding-top:16px; }
+  .stat .num{ font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,4vw,3rem); font-weight:600; color:var(--signal); }
+  .stat .lbl{ font-size:12px; color:var(--ink-soft); margin-top:8px; line-height:1.4; }
+
+  /* outcome / next */
+  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
+  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; }
+
+  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .next-project{ font-size:13px; color:var(--ink-soft); }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project:hover strong{ color:var(--signal); }
+
+  footer.site-footer{
+    border-top:1px solid var(--line);
+    padding:24px 6vw;
+    display:flex; justify-content:space-between;
+    font-size:11px; color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="back-link mono">← Back to work</a>
+    <div class="logo mono">DAVID NG<span>.</span></div>
+  </div>
+</header>
+
+<main>
+
+  <section class="cs-hero">
+    <div class="cs-eyebrow mono"><span>●</span> UI/UX — Mobile App Case Study</div>
+    <h1>Pulse — Emergency Response App</h1>
+    <p>A bystander-to-responder app: one-tap SOS calling, live AI call assistance, step-by-step
+      CPR illustrations, AED wayfinding, and nearby-user alerts — so help arrives from every
+      direction, not just the ambulance.</p>
+    <div class="cs-meta">
+      <div>YEAR <strong>2026</strong></div>
+      <div>PLATFORM <strong>iOS, Android</strong></div>
+      <div>ROLE <strong>Lead UX Designer</strong></div>
+      <div>TIMELINE <strong>[ X weeks/months ]</strong></div>
+    </div>
+  </section>
+
+  <div class="ph ph-hero">
+    <img src="EmergencyNowApp/hero-image.png" alt="Hands holding a phone showing the Pulse app home screen, with a large red SOS call button, current location, and nearby AED and first aid locations">
+  </div>
+
+  <!-- 01 OVERVIEW -->
+  <section class="cs-section">
+    <div class="cs-num mono">01 / OVERVIEW</div>
+    <h2>Bystanders freeze when it matters most</h2>
+    <p class="lede">In an emergency, the biggest delay isn't the ambulance — it's the moment before anyone
+      acts. People witness someone in danger and don't know who to call, what to do while help is
+      on the way, or where the nearest AED is. Pulse was designed to close that gap by turning any
+      bystander into a capable first responder within seconds.</p>
+    <div class="stat-chart">
+      <div class="chart-label mono">Out-of-hospital cardiac arrest — survival to discharge, by bystander action</div>
+      <svg viewBox="0 0 620 260" role="img" aria-label="Bar chart: survival rate is under 10 percent with no bystander action, over 40 percent with bystander CPR, and up to 70 percent with bystander CPR and AED used together">
+        <line x1="20" y1="210" x2="600" y2="210" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>
+
+        <rect x="40" y="186" width="110" height="24" fill="var(--ink-soft)" opacity="0.5"/>
+        <text x="95" y="174" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="16" fill="var(--ink)">&lt;10%</text>
+        <text x="95" y="230" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">No bystander</text>
+        <text x="95" y="244" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">action</text>
+
+        <rect x="255" y="114" width="110" height="96" fill="var(--c2)" opacity="0.75"/>
+        <text x="310" y="102" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="16" fill="var(--ink)">&gt;40%</text>
+        <text x="310" y="230" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">Bystander</text>
+        <text x="310" y="244" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">CPR</text>
+
+        <rect x="470" y="42" width="110" height="168" fill="var(--signal)"/>
+        <text x="525" y="30" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="16" fill="var(--signal)">up to 70%</text>
+        <text x="525" y="230" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">CPR + AED</text>
+        <text x="525" y="244" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">together</text>
+      </svg>
+      <p class="chart-source mono">Sources:
+        <a href="https://cpr.heart.org/en/resources/cpr-facts-and-stats" target="_blank" rel="noopener">American Heart Association — CPR Facts &amp; Stats</a>,
+        <a href="https://www.heart.org/en/news/2024/11/11/starting-bystander-cpr-within-10-minutes-of-cardiac-arrest-may-improve-survival" target="_blank" rel="noopener">heart.org (2024)</a>,
+        <a href="https://www.myheart.org.sg/health/out-of-hospital-cardiac-arrest-statistics/" target="_blank" rel="noopener">Singapore Heart Foundation — OHCA Statistics</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- 02 RESEARCH -->
+  <section class="cs-section">
+    <div class="cs-num mono">02 / RESEARCH</div>
+    <h2>Understanding the seconds that matter</h2>
+    <p class="lede">Research started with a first-look comparison against MyResponder and SGSecure, the
+      two apps already used for emergencies in Singapore — both landed as visually loud and
+      information-dense on the very first screen. From there, conversations with friends, family, and
+      members of the public (reached partly through social media) surfaced the deeper problem: people
+      didn't know how to start, or what to do once they had.</p>
+    <div class="two-col">
+      <div class="interview-guide">
+        <div class="ig-header">
+          <span class="ig-title mono">Interview Guide</span>
+        </div>
+        <div class="ig-section">
+          <div class="ig-label mono">Screener</div>
+          <ol>
+            <li>Have you ever witnessed or been present during a medical emergency, such as a collapse, cardiac arrest, or serious injury?</li>
+            <li>Have you used MyResponder or SGSecure before this interview? If so, when and why did you use it?</li>
+          </ol>
+        </div>
+        <div class="ig-section">
+          <div class="ig-label mono">Orientation</div>
+          <ol>
+            <li>Please describe what you would actually do in the first ten seconds of seeing someone collapse.</li>
+            <li>Please be honest. Would you panic, freeze, or act? Why do you think that is the case?</li>
+          </ol>
+        </div>
+        <div class="ig-section">
+          <div class="ig-label mono">Reaction to existing apps</div>
+          <ol>
+            <li>Please open MyResponder or SGSecure now. What is the first thing you notice?</li>
+            <li>Was there ever a moment using it where you felt unsure what to do next?</li>
+          </ol>
+        </div>
+        <div class="ig-section">
+          <div class="ig-label mono">Core</div>
+          <ol>
+            <li>After you have called for help, what do you do while you wait?</li>
+            <li>Do you know any first aid? Would you attempt it on a stranger?</li>
+            <li>Would you know where the nearest AED is right now, without checking?</li>
+          </ol>
+        </div>
+        <div class="ig-section">
+          <div class="ig-label mono">Closing</div>
+          <ol>
+            <li>What is the one thing that would have made you feel more confident in that moment?</li>
+          </ol>
+        </div>
+      </div>
+      <div class="research-inputs">
+        <div class="ri-item"><strong>18</strong><span>Friends, family, and public respondents interviewed, reached partly through social media outreach</span></div>
+        <div class="ri-item"><strong>11</strong><span>Had used MyResponder or SGSecure before this project</span></div>
+        <div class="ri-item"><strong>7</strong><span>Had never opened either app — interviewed for a first-impression reaction</span></div>
+        <div class="ri-item"><strong>2</strong><span>Existing Singapore emergency apps benchmarked for first-open experience</span></div>
+      </div>
+    </div>
+
+    <div class="cpr-gallery" style="margin-top:32px;">
+      <div class="shot-frame"><img src="EmergencyNowApp/image 7.png" alt="MyResponder dashboard screen showing registered responder counts, case statistics, a monthly bar chart, and a live incident map all on one screen"></div>
+      <div class="shot-frame"><img src="EmergencyNowApp/image 15.png" alt="MyResponder incident report form requiring location details and an optional contact section with name, phone number, and email fields"></div>
+    </div>
+    <p class="chart-source mono">Screens from the MyResponder and SGSecure app interfaces, the two apps benchmarked in this research.</p>
+    <div class="callout">
+      <div class="label mono">Why this interface works against you in an emergency</div>
+      <ul class="key-decisions">
+        <li>The dashboard opens with close to eight distinct data modules at once — responder counts,
+          case totals, a monthly bar chart, three tabs, and a live map — with no visual hierarchy
+          telling a panicked user which one matters right now.</li>
+        <li>Five bottom-nav icons carry equal visual weight. The actual emergency call button doesn't
+          read as more urgent than "Camera" or "AED" sitting directly next to it.</li>
+        <li>Reporting an incident means scrolling through a form: a location field, optional location
+          details, then a separate contact section asking for name, phone number, and email — more
+          fields to parse and decide on before help is even requested.</li>
+        <li>Statistics like "97,885 registered responders" and monthly case charts are built for
+          someone auditing the system after the fact, not someone who witnessed an emergency thirty
+          seconds ago and just opened the app.</li>
+        <li>Together, this is cognitive overload by design: too much information competing for
+          attention, and a reporting flow with more steps than the moment can afford — the opposite
+          of the single, streamlined action Pulse's research pointed toward.</li>
+      </ul>
+    </div>
+
+    <div class="synthesis-block">
+      <h3>Synthesis</h3>
+      <p>Eighteen conversations were clustered into four recurring patterns. Together they pointed to
+        one opportunity space — not the moment of noticing danger, and not the arrival of help, but the
+        stretch in between: reporting the incident and giving first aid while waiting. That's where
+        Pulse's SOS flow, live AI call assistance, and CPR guidance are aimed.</p>
+      <div class="affinity-board">
+        <div class="affinity-cluster" style="--cluster:var(--c1)">
+          <div class="cluster-header">Too Much, Too Fast <span class="count">8 notes</span></div>
+          <div class="note">"I opened SGSecure once during a drill and just closed it. Too many icons, I didn't know where to look."<span class="note-src">Friend, non-user</span></div>
+          <div class="note">"MyResponder throws a map, alerts, and buttons at you immediately. That's a lot when you're already panicking."<span class="note-src">Public respondent, Instagram</span></div>
+          <div class="note">"It looks like a government app. Functional, not calming."<span class="note-src">Family member, SGSecure user</span></div>
+        </div>
+        <div class="affinity-cluster" style="--cluster:var(--c2)">
+          <div class="cluster-header">Reported. Now What? <span class="count">7 notes</span></div>
+          <div class="note">"I called for help and then just... stood there. Nothing told me what to do next."<span class="note-src">Public respondent, X/Twitter</span></div>
+          <div class="note">"There's a gap after you report — nobody tells you if you should stay, move the person, or wait."<span class="note-src">Friend, MyResponder user</span></div>
+          <div class="note">"I didn't even know if my report went through."<span class="note-src">Family member, non-user</span></div>
+        </div>
+        <div class="affinity-cluster" style="--cluster:var(--c3)">
+          <div class="cluster-header">The Longing Wait <span class="count">9 notes</span></div>
+          <div class="note">"The minutes after calling felt longer than the emergency itself."<span class="note-src">Public respondent, Instagram poll</span></div>
+          <div class="note">"I didn't know any first aid. I just held her hand and hoped."<span class="note-src">Friend, non-user</span></div>
+          <div class="note">"Even a countdown — 'help is X minutes away' — would've calmed me down."<span class="note-src">Family member, SGSecure user</span></div>
+        </div>
+        <div class="affinity-cluster" style="--cluster:var(--c4)">
+          <div class="cluster-header">Willing, Not Sure <span class="count">6 notes</span></div>
+          <div class="note">"I would've helped if the app just told me one thing to do."<span class="note-src">Public respondent, Instagram</span></div>
+          <div class="note">"I have a first aid badge from school and still froze completely."<span class="note-src">Friend, non-user</span></div>
+          <div class="note">"Give me one job, not a manual."<span class="note-src">Family member, MyResponder user</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 EMPATHY MAP -->
+  <section class="cs-section">
+    <div class="cs-num mono">03 / EMPATHY MAP</div>
+    <h2>Two very different mental states, one moment</h2>
+    <p class="lede">The same five minutes hold two very different people: the one reporting the
+      incident, and a stranger nearby who's willing to help but hasn't been asked yet. Both surfaced
+      repeatedly in conversations with friends, family, and the public — regardless of whether they'd
+      used an emergency app before.</p>
+    <div class="empathy-grid">
+      <div class="empathy-card">
+        <div class="tag mono">The Reporter</div>
+        <h3>First on the scene</h3>
+        <ul>
+          <li>Adrenaline is high, thinking narrows to one track</li>
+          <li>Doesn't know how to start — which app, which button, which step</li>
+          <li>Freezes after reporting: unsure whether to wait, move the person, or begin first aid</li>
+          <li>Needs constant reassurance that help is actually coming</li>
+        </ul>
+      </div>
+      <div class="empathy-card">
+        <div class="tag mono">The Nearby Helper</div>
+        <h3>Willing, but needs direction</h3>
+        <ul>
+          <li>Wants to help but doesn't realize they're needed</li>
+          <li>Needs a specific, small task, not a general alert</li>
+          <li>Needs confidence they won't make things worse</li>
+          <li>Needs a clear, short route, not just a notification</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 USER JOURNEY -->
+  <section class="cs-section">
+    <div class="cs-num mono">04 / USER JOURNEY</div>
+    <h2>One incident, start to finish</h2>
+    <p class="lede">This map exists to answer one question: at which point are people under the most
+      stress, and where can Pulse actually step in? Mapping a single incident start to finish showed
+      stress didn't spike and fade — it stayed high through reporting the incident and through the
+      first-aid wait that followed. That stretch, not the initial shock or the moment help arrives,
+      became the opportunity space for this project.</p>
+
+    <div class="emotion-chart">
+      <svg viewBox="0 0 620 130" preserveAspectRatio="none" role="img" aria-label="Bystander stress level across the incident, staying high through reporting and first aid and easing only once responders arrive">
+        <rect x="94" y="4" width="326" height="114" fill="var(--signal-soft)" opacity="0.6"/>
+        <text x="257" y="17" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" fill="var(--signal)" letter-spacing="0.06em">OPPORTUNITY SPACE — REPORT + FIRST AID</text>
+        <line x1="20" y1="118" x2="600" y2="118" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>
+        <polyline points="40,20 148,18 256,45 364,35 472,55 580,110" fill="none" stroke="var(--signal)" stroke-width="1.5"/>
+        <circle cx="40" cy="20" r="3.5" fill="var(--signal)"/>
+        <circle cx="148" cy="18" r="3.5" fill="var(--signal)"/>
+        <circle cx="256" cy="45" r="3.5" fill="var(--signal)"/>
+        <circle cx="364" cy="35" r="3.5" fill="var(--signal)"/>
+        <circle cx="472" cy="55" r="3.5" fill="var(--signal)"/>
+        <circle cx="580" cy="110" r="3.5" fill="var(--signal)"/>
+      </svg>
+      <div class="ec-caption mono">
+        <span>Stress: high</span>
+        <span>Bystander stress level across the incident</span>
+        <span>Stress: low</span>
+      </div>
+    </div>
+
+    <div class="journey">
+      <div class="journey-step">
+        <div class="step-idx mono">STEP 01 <span class="step-emotion">— SHOCK</span></div>
+        <div class="ph step-ph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 24c4-8 12-13 20-13s16 5 20 13c-4 8-12 13-20 13S8 32 4 24Z"/>
+            <circle cx="24" cy="24" r="5"/>
+          </svg>
+        </div>
+        <h4>Notices danger</h4>
+        <p>Bystander sees someone in a life-threatening situation.</p>
+      </div>
+      <div class="journey-step">
+        <div class="step-idx mono">STEP 02 <span class="step-emotion">— PANIC</span></div>
+        <div class="ph step-ph">
+          <svg viewBox="0 0 48 48" fill="none">
+            <circle cx="24" cy="24" r="18" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="2 5"/>
+            <circle cx="24" cy="24" r="11" stroke="var(--ink-soft)" stroke-width="1.5" stroke-dasharray="2 4"/>
+            <circle cx="24" cy="24" r="5" fill="var(--signal)"/>
+          </svg>
+        </div>
+        <h4>Reports the incident</h4>
+        <p>Taps the SOS button — one unmistakable action, no menus, no hesitation.</p>
+      </div>
+      <div class="journey-step">
+        <div class="step-idx mono">STEP 03 <span class="step-emotion">— REASSURANCE</span></div>
+        <div class="ph step-ph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="5" y="12" width="38" height="22" rx="6"/>
+            <path d="M12 23v2M18 18v12M24 14v20M30 18v12M36 21v6"/>
+          </svg>
+        </div>
+        <h4>AI listens on the call</h4>
+        <p>Suggests next steps in real time while help is being contacted.</p>
+      </div>
+      <div class="journey-step">
+        <div class="step-idx mono">STEP 04 <span class="step-emotion">— STRAIN</span></div>
+        <div class="ph step-ph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 41C11 32 5 24 5 16.5 5 10.7 9.7 6 15.5 6c3.4 0 6.6 1.6 8.5 4.3C25.9 7.6 29.1 6 32.5 6 38.3 6 43 10.7 43 16.5 43 24 37 32 24 41Z"/>
+            <path d="M9 22h6l3-6 4 11 3-8 3 5h8"/>
+          </svg>
+        </div>
+        <h4>Starts first aid</h4>
+        <p>CPR illustrations guide hands-on care through the longest, most uncertain minutes.</p>
+      </div>
+      <div class="journey-step">
+        <div class="step-idx mono">STEP 05 <span class="step-emotion">— COORDINATION</span></div>
+        <div class="ph step-ph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 42S8 28 8 18a14 14 0 1 1 28 0c0 10-14 24-14 24Z"/>
+            <circle cx="22" cy="18" r="5"/>
+            <path d="M35 12a12 12 0 0 1 0 14" stroke="var(--signal)" stroke-dasharray="2 4"/>
+          </svg>
+        </div>
+        <h4>Nearby users notified</h4>
+        <p>Someone closer to an AED is guided to bring it to the scene.</p>
+      </div>
+      <div class="journey-step">
+        <div class="step-idx mono">STEP 06 <span class="step-emotion">— RELIEF</span></div>
+        <div class="ph step-ph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M24 4 8 10v12c0 12 8 19 16 22 8-3 16-10 16-22V10Z"/>
+            <path d="M24 16v16M16 24h16"/>
+          </svg>
+        </div>
+        <h4>Responders arrive</h4>
+        <p>Reporter hands off care; incident resolves.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 SYSTEM & STAKEHOLDERS -->
+  <section class="cs-section">
+    <div class="cs-num mono">05 / SYSTEM &amp; STAKEHOLDERS</div>
+    <h2>One incident, four people, two very different screens</h2>
+    <p class="lede">Pulse doesn't work alone. Every report moves through four people who each need
+      something different from the interface in front of them — and two of those interfaces sit at
+      opposite ends of the same complexity spectrum. The next few sections walk through each screen;
+      this is the map of who each one is for.</p>
+
+    <h3 class="sub-heading">Who's involved</h3>
+    <div class="stakeholder-diagram">
+      <svg viewBox="0 0 780 370" role="img" aria-label="Diagram showing the immediate responder reporting to the emergency dispatcher, who dispatches the ambulance; the immediate responder also triggers a nearby alert for the secondary responder, and the two meet on scene">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-soft)"/>
+          </marker>
+        </defs>
+
+        <line x1="190" y1="60" x2="303" y2="60" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <text x="247" y="48" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="10" fill="var(--ink-soft)">reports</text>
+
+        <line x1="480" y1="60" x2="583" y2="60" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <text x="532" y="48" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="10" fill="var(--ink-soft)">dispatches</text>
+
+        <line x1="120" y1="92" x2="278" y2="243" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#arrow)"/>
+        <text x="230" y="158" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="10" fill="var(--ink-soft)">triggers alert</text>
+
+        <path d="M215,295 C90,340 10,200 90,96" fill="none" stroke="var(--signal)" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#arrow)"/>
+        <text x="65" y="345" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="10" fill="var(--signal)">meets on scene</text>
+
+        <g>
+          <rect x="20" y="28" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="105" y="55" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Immediate Responder</text>
+          <text x="105" y="72" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Mobile — witnesses &amp; reports</text>
+        </g>
+        <g>
+          <rect x="310" y="28" width="170" height="64" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
+          <text x="395" y="55" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Emergency Dispatcher</text>
+          <text x="395" y="72" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Desktop — Pulse Dispatch</text>
+        </g>
+        <g>
+          <rect x="590" y="28" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="675" y="55" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Ambulance</text>
+          <text x="675" y="72" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">On-site — takes over care</text>
+        </g>
+        <g>
+          <rect x="215" y="248" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="300" y="275" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Secondary Responder</text>
+          <text x="300" y="292" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Mobile — brings the AED</text>
+        </g>
+      </svg>
+    </div>
+
+    <h3 class="sub-heading" style="margin-top:56px;">Two apps, opposite jobs</h3>
+    <p class="lede" style="margin-bottom:10px;">The immediate and secondary responder need the interface to disappear. The dispatcher needs
+      it to show everything at once. Pulse's mobile app and its companion, Pulse Dispatch, are
+      designed as two ends of the same system rather than two unrelated products.</p>
+    <div class="system-diagram">
+      <div class="system-panel simple">
+        <div class="tag mono">Simplicity</div>
+        <h3>Mobile App</h3>
+        <p class="sd-sub">Immediate &amp; Secondary Responder</p>
+        <ul>
+          <li>One large action per screen</li>
+          <li>Big touch targets, minimal text</li>
+          <li>Guided, step-by-step</li>
+          <li>Designed for a panicked thumb</li>
+        </ul>
+      </div>
+      <div class="system-bridge">
+        <div class="sd-arrow mono">↔</div>
+        <div class="sd-bridge-label mono">Live call, location &amp; status sync in real time</div>
+      </div>
+      <div class="system-panel complex">
+        <div class="tag mono">Complexity</div>
+        <h3>Desktop App</h3>
+        <p class="sd-sub">Emergency Dispatcher — Pulse Dispatch</p>
+        <ul>
+          <li>Multiple live calls at once</li>
+          <li>Map, transcript &amp; responder status side by side</li>
+          <li>Dense, information-forward</li>
+          <li>Built for fast triage under load</li>
+        </ul>
+        <a href="pulse-dispatch.html" class="system-panel-link mono">View the Pulse Dispatch case study →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 USER FLOW -->
+  <section class="cs-section">
+    <div class="cs-num mono">06 / USER FLOW</div>
+    <h2>How everything connects</h2>
+    <p class="lede">The immediate responder's path runs straight
+      through reporting and first aid. The moment they report, a second path opens automatically for
+      whoever is closest with an AED. Both paths converge back at the scene.</p>
+
+    <div class="stakeholder-diagram">
+      <svg viewBox="0 0 800 450" role="img" aria-label="Flow diagram: the immediate responder moves from the home screen to holding the SOS button, to a live AI-assisted call, to the CPR or first aid guide. The live call also sends a proximity notification to the secondary responder, who navigates to and collects the AED, then hands it off at the scene. Both paths converge as responders arrive">
+        <defs>
+          <marker id="flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-soft)"/>
+          </marker>
+        </defs>
+
+        <line x1="180" y1="92" x2="206" y2="92" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#flow-arrow)"/>
+        <line x1="370" y1="92" x2="396" y2="92" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#flow-arrow)"/>
+        <line x1="560" y1="92" x2="586" y2="92" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#flow-arrow)"/>
+
+        <line x1="480" y1="124" x2="480" y2="216" stroke="var(--signal)" stroke-width="1.5" stroke-dasharray="3 4" marker-end="url(#flow-arrow)"/>
+        <text x="492" y="172" font-family="'IBM Plex Mono',monospace" font-size="10" fill="var(--signal)">sends nearby alert</text>
+
+        <line x1="560" y1="252" x2="586" y2="252" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#flow-arrow)"/>
+
+        <line x1="640" y1="124" x2="560" y2="356" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#flow-arrow)"/>
+        <line x1="670" y1="284" x2="580" y2="356" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#flow-arrow)"/>
+
+        <g>
+          <rect x="20" y="36" width="150" height="18" rx="9" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="0.75"/>
+          <text x="95" y="48.5" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8.5" letter-spacing="0.03em" fill="var(--signal)">IMMEDIATE RESPONDER</text>
+          <rect x="20" y="60" width="160" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="100" y="87" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Home Screen</text>
+          <text x="100" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">SOS button visible</text>
+        </g>
+        <g>
+          <rect x="210" y="60" width="160" height="64" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
+          <text x="290" y="87" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Hold SOS (3s)</text>
+          <text x="290" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Reports the incident</text>
+        </g>
+        <g>
+          <rect x="410" y="36" width="140" height="18" rx="9" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="0.75"/>
+          <text x="480" y="48.5" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8.5" letter-spacing="0.03em" fill="var(--signal)">EMERGENCY DISPATCHER</text>
+          <rect x="400" y="60" width="160" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="480" y="87" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Live Call + AI</text>
+          <text x="480" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Listens, suggests a guide</text>
+        </g>
+        <g>
+          <rect x="590" y="60" width="160" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="670" y="87" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">CPR / First Aid</text>
+          <text x="670" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Step-by-step illustrations</text>
+        </g>
+
+        <g>
+          <rect x="400" y="196" width="150" height="18" rx="9" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="0.75"/>
+          <text x="475" y="208.5" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8.5" letter-spacing="0.03em" fill="var(--signal)">SECONDARY RESPONDER</text>
+          <rect x="400" y="220" width="160" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="480" y="247" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Proximity Notification</text>
+          <text x="480" y="264" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Sent to nearby users</text>
+        </g>
+        <g>
+          <rect x="590" y="220" width="160" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="670" y="247" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Navigate &amp; Collect AED</text>
+          <text x="670" y="264" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Native maps, then hands it off</text>
+        </g>
+
+        <g>
+          <rect x="390" y="360" width="220" height="64" rx="4" fill="var(--paper-dim)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="500" y="387" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Responders Arrive</text>
+          <text x="500" y="404" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Care handed off, incident resolved</text>
+        </g>
+      </svg>
+    </div>
+  </section>
+
+  <!-- 07 VISUAL HIERARCHY -->
+  <section class="cs-section">
+    <div class="cs-num mono">07 / VISUAL HIERARCHY</div>
+    <div class="persona-tag mono">For the Immediate Responder</div>
+    <h2>Designing for a panicked thumb</h2>
+    <p class="lede">The SOS button isn't just red and oversized — its position is deliberate. On a
+      phone held one-handed, the thumb's natural resting arc lands roughly in the middle of the
+      screen, slightly above center — not down at the bottom edge, not up near the header. That's
+      exactly where the button sits, because it carries the single highest-hierarchy action on the
+      screen, and nothing else is allowed to compete with it for that spot.</p>
+
+    <div class="hierarchy-diagram-wrap">
+      <div class="thumb-diagram">
+        <img src="EmergencyNowApp/Vector.png" alt="Pulse app home screen with the red SOS button positioned in the thumb's natural one-handed reach zone">
+      </div>
+      <div class="thumb-legend">
+        <div class="thumb-legend-item">
+          <div class="num">1</div>
+          <p><strong>Natural thumb-reach zone.</strong> With a relaxed one-handed grip, the thumb
+            sweeps through the middle of the screen, slightly above center — not the bottom edge,
+            not the top. That arc is marked by the dashed line and shaded zone.</p>
+        </div>
+        <div class="thumb-legend-item">
+          <div class="num">2</div>
+          <p><strong>Highest-hierarchy action, easiest reach.</strong> The SOS button sits at the
+            center of that zone. It's the one action every other element on the screen defers to,
+            so it gets the position that costs the panicked thumb the least effort.</p>
+        </div>
+        <div class="thumb-legend-item">
+          <div class="num">3</div>
+          <p><strong>Soft red gradient.</strong> Light at the top edge, deeper red toward the
+            bottom, gives the button a raised, pressable surface — a visual cue to push, reinforcing
+            the "hold to activate" instruction beneath it.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="label mono">Design decision</div>
+      <p>An earlier version placed the button lower, closer to the bottom edge, for easier one-handed
+        reach on larger phones. It tested worse — sitting near the bottom, it read as secondary,
+        almost below the fold on smaller screens. Centering it in the natural reach zone kept it
+        reachable without undercutting its priority as the first thing the eye and thumb both land on.</p>
+    </div>
+  </section>
+
+  <!-- 08 LIVE AI ASSIST -->
+  <section class="cs-section">
+    <div class="cs-num mono">08 / LIVE AI ASSIST &amp; FIRST AID GUIDANCE</div>
+    <div class="persona-tag mono">For the Immediate Responder</div>
+    <h2>The AI listens, then tells you exactly what to do</h2>
+    <p class="lede">While the call is connected, the AI transcribes the conversation in the background
+      and listens for keywords — "cardiac arrest," "heart attack," "not breathing." The moment it
+      catches one, it surfaces the relevant guide as a tappable card, so the responder never has to
+      search for help while they're still on the line with dispatch.</p>
+
+    <div class="hierarchy-diagram-wrap">
+      <div class="shot-frame">
+        <img src="EmergencyNowApp/image 18.png" alt="Live call screen showing an ongoing call to 995, nearby AED and first aid locations, and AI-recommended actions: CPR Guide and AED Guide">
+      </div>
+      <div class="thumb-legend">
+        <div class="thumb-legend-item">
+          <div class="num">1</div>
+          <p><strong>Call status stays visible.</strong> The "On Call" pill and the 995 status card
+            never scroll away — the responder can always see they're still connected, even while
+            reading a guide two taps deep.</p>
+        </div>
+        <div class="thumb-legend-item">
+          <div class="num">2</div>
+          <p><strong>Nearby resources, always present.</strong> AED Station and First Aid Kit cards
+            stay above the fold regardless of what the AI recommends — location doesn't get buried
+            under suggestions.</p>
+        </div>
+        <div class="thumb-legend-item">
+          <div class="num">3</div>
+          <p><strong>AI-recommended actions, ranked.</strong> "Recommended Actions" only appears once
+            the AI has caught a relevant keyword. CPR Guide is listed first — the higher-urgency
+            match for this call.</p>
+        </div>
+        <div class="thumb-legend-item">
+          <div class="num">4</div>
+          <p><strong>Call controls never move.</strong> Video, end call, and mute stay fixed at the
+            bottom on every guide screen, so muting or ending the call never requires backing out of
+            a guide first.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="lede" style="margin-top:56px; margin-bottom:0;">In this scenario, dispatch tells the responder to begin CPR. They
+      tap the CPR Guide card and move straight into step-by-step illustrations, without ever leaving
+      the call.</p>
+
+    <div class="cpr-gallery">
+      <div class="shot-frame"><img src="EmergencyNowApp/image 19.png" alt="CPR Guide step 1, open the airways, and step 2, check for breathing, shown with line illustrations"></div>
+      <div class="shot-frame"><img src="EmergencyNowApp/image 20.png" alt="CPR Guide step 3, thirty chest compressions with a highlighted technique tip, and step 4, two rescue breaths"></div>
+    </div>
+
+    <div class="callout" style="margin-top:28px;">
+      <div class="label mono">Key decisions</div>
+      <ul class="key-decisions">
+        <li>Guides open as cards inside the call screen, not as interruptions — the AI never takes
+          over the screen or pauses the call to push a suggestion.</li>
+        <li>Every step follows the same template: a numbered orange badge, a short header above the
+          illustration, and a fuller instruction below it. Someone who already knows CPR can skim the
+          headers alone — "Open the Airways," "Check for Breathing" — while someone who doesn't can
+          drop into the line beneath for guidance.</li>
+        <li>Illustrations are simple line art, not photos, to keep visual noise low under stress and
+          avoid anything that could read as graphic.</li>
+        <li>The one technique detail most likely to be done wrong — arm position during compressions —
+          gets its own solid red callout, visually heavier than the regular instruction text, instead
+          of being just another line of body copy.</li>
+        <li>Step badges reuse the same orange as the nearby-resource cards on the call screen, tying
+          the "AI suggested this" moment to the guide it opens.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 09 SECONDARY RESPONDER -->
+  <section class="cs-section">
+    <div class="cs-num mono">09 / SECONDARY RESPONDER</div>
+    <div class="persona-tag mono">For the Secondary Responder</div>
+    <h2>A notification, then a choice</h2>
+    <p class="lede">When Pulse detects a nearby emergency, everyone within close proximity — not just
+      the person who reported it — gets a push notification. Accepting it drops the secondary
+      responder straight into what's needed: what's happening, where, and the nearest AED to bring,
+      without asking them to dig for any of it.</p>
+
+    <div class="hierarchy-diagram-wrap">
+      <div class="ph-video shot-frame">
+        <video autoplay muted loop playsinline preload="auto">
+          <source src="EmergencyNowApp/Viddemo-1.m4v" type="video/mp4">
+          Your browser doesn't support embedded video. <a href="EmergencyNowApp/Viddemo-1.m4v">Download the clip</a> instead.
+        </video>
+      </div>
+
+      <div class="video-steps mono">
+        <div class="video-step"><span class="vs-num">01</span> Receives a proximity notification</div>
+        <div class="video-step"><span class="vs-num">02</span> Opens the app to incident details &amp; nearest AED</div>
+        <div class="video-step"><span class="vs-num">03</span> Navigates to the AED location</div>
+        <div class="video-step"><span class="vs-num">04</span> Collects the AED and navigates to the accident area</div>
+        <div class="video-step"><span class="vs-num">05</span> Hands off the AED to the immediate responder</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:28px;">
+      <div class="label mono">Key decisions</div>
+      <ul class="key-decisions">
+        <li>Wayfinding to the AED and then to the accident scene hands off to the phone's own native
+          maps app — Apple Maps on iOS, Google Maps on Android — instead of a custom in-app map.</li>
+        <li>The secondary responder is already fluent in their own phone's navigation: live traffic,
+          voice guidance, rerouting. Rebuilding a weaker version of that inside Pulse would only slow
+          them down at the exact moment speed matters most.</li>
+        <li>Pulse's own map view stays minimal — just the AED pin and the incident pin — and steps
+          aside once the responder taps "Navigate," rather than competing with tools they already trust.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 10 USABILITY TESTING -->
+  <section class="cs-section">
+    <div class="cs-num mono">10 / USABILITY TESTING</div>
+    <h2>Testing under simulated stress</h2>
+    <p class="lede">Run as a moderated usability study with 9 students recruited across two university
+      courses — a mix of people who'd completed a first-aid module and people who hadn't. Each
+      participant was handed a scenario card and a working Figma prototype, then asked to think aloud
+      while completing three tasks: report an incident, follow the CPR guide, and find the nearest AED.
+      A visible countdown timer and a low ambient-noise track ran in the background of every session —
+      a simple, low-cost way to approximate time pressure without simulating real danger.</p>
+
+    <div class="test-gallery">
+      <figure class="test-shot">
+        <div class="shot-frame test-shot-crop"><img src="EmergencyNowApp/Group 59.png" alt="Two participants reacting to the Pulse home screen on their own phones during a usability session"></div>
+        <figcaption>First contact: two participants size up the home screen and the SOS button before
+          being handed a scenario card.</figcaption>
+      </figure>
+      <figure class="test-shot">
+        <div class="shot-frame"><img src="EmergencyNowApp/Group 58.png" alt="A participant performing chest compressions on a test partner while following the CPR Guide on screen"></div>
+        <figcaption>Mid-task: chest compressions on a (very willing) test partner, paced by the on-screen
+          CPR steps and the red "keep shoulders over hands" callout.</figcaption>
+      </figure>
+      <figure class="test-shot">
+        <div class="shot-frame"><img src="EmergencyNowApp/Group 57.png" alt="A participant using turn-by-turn navigation to walk to a nearby AED station, 30 metres away"></div>
+        <figcaption>Wayfinding task: walking the AED route using the phone's own native maps app, 30
+          metres out from the nearest station.</figcaption>
+      </figure>
+    </div>
+
+    <div class="research-inputs" style="margin-bottom:36px;">
+      <div class="ri-item"><strong>9</strong><span>Student participants, recruited across two university courses</span></div>
+      <div class="ri-item"><strong>3</strong><span>Tasks per session — report an incident, follow the CPR guide, find the nearest AED</span></div>
+      <div class="ri-item"><strong>2</strong><span>Prototype rounds tested — low-fidelity wireframes, then the high-fidelity build</span></div>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat">
+        <div class="num mono">2.1s</div>
+        <div class="lbl">Avg. time to first tap on SOS, down from 6.4s in the wireframe round</div>
+      </div>
+      <div class="stat">
+        <div class="num mono">94%</div>
+        <div class="lbl">Task success rate reaching the AED wayfinding screen, up from 61%</div>
+      </div>
+      <div class="stat">
+        <div class="num mono">4.6/5</div>
+        <div class="lbl">Post-task confidence rating, up from 3.0/5 before the redesign</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:28px;">
+      <div class="label mono">What changed between rounds</div>
+      <p>System Usability Scale (SUS) score moved from 58 — borderline "OK" — to 84, solidly in
+        "excellent" territory. The two biggest contributors: replacing the wireframe's three-tap SOS
+        confirmation with a single hold-to-activate button, and moving the CPR guide's detailed
+        instructions to sit directly below a short header instead of behind a separate "Learn More" tap.</p>
+    </div>
+  </section>
+
+  <!-- 11 OUTCOME -->
+  <section class="cs-section">
+    <div class="cs-num mono">11 / OUTCOME &amp; REFLECTION</div>
+    <h2>What this system makes possible</h2>
+    <div class="outcome-box">
+      <p>Placeholder text — summarize the projected or measured impact of Pulse, and how it connects
+        to the dispatch console on the other side of the call.</p>
+      <p>Placeholder text — reflect on what you'd explore next: multi-language CPR guidance,
+        wearable integration, offline mode in low-signal areas, etc.</p>
+    </div>
+  </section>
+
+  <div class="cs-footer">
+    <a href="index.html" class="back-link mono">← Back to all work</a>
+    <a href="pulse-dispatch.html" class="next-project mono">
+      NEXT PROJECT
+      <strong>Pulse Dispatch — Web Console →</strong>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span class="mono">© 2026 DAVID NG</span>
+  <span class="mono">CASE STUDY — PULSE</span>
+</footer>
+
+</body>
+</html>

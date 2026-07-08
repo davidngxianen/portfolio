@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio — Industrial &amp; Product Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FDFDFC;
+    --paper-dim:#F3F3F1;
+    --ink:#15171A;
+    --ink-soft:#565A5F;
+    --line:#E2E1DC;
+    --signal:#D2491E;
+    --signal-soft:#F0DCD2;
+    --radius:2px;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--signal);color:var(--paper);}
+
+  h1,h2,h3,.display{
+    font-family:'Space Grotesk',sans-serif;
+    letter-spacing:-0.01em;
+  }
+  .mono{
+    font-family:'IBM Plex Mono',monospace;
+    letter-spacing:0.02em;
+  }
+
+  a{color:inherit;text-decoration:none;}
+
+  /* ---------- ruler rail ---------- */
+  .rail{
+    position:fixed;
+    left:0; top:0; bottom:0;
+    width:34px;
+    border-right:1px solid var(--line);
+    z-index:50;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:20px 0;
+    background:var(--paper);
+  }
+  .rail-progress{
+    position:absolute;
+    left:-1px; top:0;
+    width:2px;
+    background:var(--signal);
+    height:0%;
+    transition:height .05s linear;
+  }
+  .rail-label{
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+    font-size:10px;
+    color:var(--ink-soft);
+    letter-spacing:0.15em;
+  }
+  .rail-ticks{
+    flex:1;
+    width:100%;
+    position:relative;
+    margin:16px 0;
+  }
+  .tick{
+    position:absolute;
+    right:0;
+    width:8px;
+    height:1px;
+    background:var(--line);
+  }
+  .tick.major{width:14px;background:var(--ink-soft);}
+
+  @media (max-width:760px){ .rail{display:none;} }
+
+  .wrap{
+    margin-left:34px;
+  }
+  @media (max-width:760px){ .wrap{margin-left:0;} }
+
+  section{
+    padding:0 6vw;
+    max-width:1400px;
+  }
+
+  /* ---------- nav ---------- */
+  header{
+    position:sticky;
+    top:0;
+    z-index:40;
+    background:rgba(245,244,240,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    padding:18px 6vw;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .logo{
+    font-weight:600;
+    font-size:15px;
+  }
+  .logo span{color:var(--signal);}
+  nav ul{
+    list-style:none;
+    display:flex;
+    gap:32px;
+  }
+  nav a{
+    font-size:13px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    transition:color .15s;
+  }
+  nav a:hover{color:var(--ink);}
+  @media (max-width:640px){ nav ul{gap:18px;} nav a{font-size:11px;} }
+
+  /* ---------- hero ---------- */
+  .hero{
+    padding-top:14vh;
+    padding-bottom:10vh;
+    position:relative;
+  }
+  .hero-eyebrow{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:12px;
+    color:var(--ink-soft);
+    margin-bottom:28px;
+  }
+  .dot{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--signal);
+    flex-shrink:0;
+  }
+  .hero h1{
+    font-size:clamp(2.6rem, 7vw, 6.2rem);
+    line-height:0.98;
+    font-weight:600;
+    max-width:16ch;
+  }
+  .hero-sub{
+    margin-top:32px;
+    max-width:52ch;
+    font-size:17px;
+    line-height:1.6;
+    color:var(--ink-soft);
+  }
+  .hero-meta{
+    display:flex;
+    gap:48px;
+    margin-top:56px;
+    flex-wrap:wrap;
+  }
+  .hero-meta div{font-size:12px;color:var(--ink-soft);}
+  .hero-meta strong{
+    display:block;
+    font-family:'Space Grotesk',sans-serif;
+    font-size:14px;
+    color:var(--ink);
+    margin-top:4px;
+  }
+
+  /* crosshair deco */
+  .crosshair{
+    position:absolute;
+    width:22px;height:22px;
+    opacity:0.5;
+  }
+  .crosshair::before,.crosshair::after{
+    content:'';
+    position:absolute;
+    background:var(--ink-soft);
+  }
+  .crosshair::before{ width:100%;height:1px; top:50%; left:0; }
+  .crosshair::after{ height:100%;width:1px; left:50%; top:0; }
+  .hero .crosshair{ top:14vh; right:8vw; }
+  @media (max-width:760px){ .hero .crosshair{display:none;} }
+
+  /* ---------- section headers ---------- */
+  .section-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    padding-top:90px;
+    padding-bottom:36px;
+    border-bottom:1px solid var(--line);
+    gap:20px;
+    flex-wrap:wrap;
+  }
+  .section-head .idx{
+    font-size:12px;
+    color:var(--ink-soft);
+  }
+  .section-head h2{
+    font-size:clamp(1.6rem,3vw,2.4rem);
+    font-weight:600;
+  }
+
+  /* ---------- filters ---------- */
+  .filters{
+    display:flex;
+    gap:10px;
+    padding:28px 0;
+    flex-wrap:wrap;
+  }
+  .filter-btn{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    padding:8px 16px;
+    border:1px solid var(--line);
+    border-radius:20px;
+    color:var(--ink-soft);
+    background:transparent;
+    cursor:pointer;
+    transition:all .15s;
+    font-family:'Inter',sans-serif;
+  }
+  .filter-btn:hover{ border-color:var(--ink); color:var(--ink); }
+  .filter-btn.active{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:var(--paper);
+  }
+
+  /* ---------- work grid ---------- */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:1px;
+    background:var(--line);
+    border:1px solid var(--line);
+    margin-bottom:100px;
+  }
+  @media (max-width:800px){ .grid{grid-template-columns:1fr;} }
+
+  .card{
+    background:var(--paper);
+    padding:0;
+    position:relative;
+    cursor:pointer;
+    overflow:hidden;
+    transition:background .2s;
+    display:block;
+  }
+  .card:hover{ background:var(--paper-dim); }
+  .card.hidden{ display:none; }
+
+  .card-thumb{
+    aspect-ratio:4/3;
+    background:
+      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
+      var(--paper-dim);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-bottom:1px solid var(--line);
+  }
+  .card-thumb .ph-label{
+    font-size:11px;
+    color:var(--ink-soft);
+    text-align:center;
+    line-height:1.6;
+  }
+  .card-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .card-thumb .corner{
+    position:absolute;
+    width:14px;height:14px;
+    opacity:0;
+    transition:opacity .2s;
+  }
+  .card:hover .corner{ opacity:0.7; }
+  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
+
+  .card-info{
+    padding:20px 22px 24px;
+  }
+  .card-tag{
+    font-size:10px;
+    color:var(--signal);
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    margin-bottom:10px;
+  }
+  .card-title{
+    font-size:20px;
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  .card-desc{
+    font-size:13px;
+    line-height:1.55;
+    color:var(--ink-soft);
+    margin-bottom:14px;
+  }
+  .spec-line{
+    display:flex;
+    gap:18px;
+    font-size:11px;
+    color:var(--ink-soft);
+    flex-wrap:wrap;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+  }
+  .spec-line span b{ color:var(--ink); font-weight:500; }
+
+  .view-case{
+    margin-top:16px;
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--signal);
+    transition:opacity .15s;
+  }
+  .card:hover .view-case{ opacity:0.7; }
+
+  .case-outline{
+    margin-top:16px;
+    border-top:1px dashed var(--line);
+    padding-top:14px;
+  }
+  .case-outline summary{
+    list-style:none;
+    cursor:pointer;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--signal);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .case-outline summary::-webkit-details-marker{ display:none; }
+  .case-outline summary::before{
+    content:'+';
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+    display:inline-block;
+    width:12px;
+  }
+  .case-outline[open] summary::before{ content:'–'; }
+  .case-outline ol{
+    margin:14px 0 2px 0;
+    padding-left:18px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .case-outline li{
+    font-size:12px;
+    line-height:1.55;
+    color:var(--ink-soft);
+  }
+  .case-outline li b{
+    color:var(--ink);
+    font-weight:600;
+    font-family:'Space Grotesk',sans-serif;
+  }
+
+  /* ---------- about ---------- */
+  .about{
+    padding-top:90px;
+    padding-bottom:100px;
+    display:grid;
+    grid-template-columns:1fr 1.4fr;
+    gap:60px;
+  }
+  @media (max-width:800px){ .about{grid-template-columns:1fr;} }
+  .about h2{ font-size:clamp(1.6rem,3vw,2.4rem); font-weight:600; margin-bottom:24px; }
+  .about p{
+    font-size:16px;
+    line-height:1.75;
+    color:var(--ink-soft);
+    max-width:56ch;
+  }
+  .about p + p{ margin-top:18px; }
+
+  .skills-list{ display:flex; flex-direction:column; gap:0; }
+  .skill-row{
+    display:flex;
+    justify-content:space-between;
+    padding:14px 0;
+    border-bottom:1px solid var(--line);
+    font-size:13px;
+  }
+  .skill-row:first-child{ border-top:1px solid var(--line); }
+  .skill-row .label{ color:var(--ink-soft); }
+  .skill-row .val{ color:var(--ink); text-align:right; }
+
+  /* ---------- contact ---------- */
+  .contact{
+    padding-top:90px;
+    padding-bottom:120px;
+  }
+  .contact h2{
+    font-size:clamp(2rem,6vw,4.5rem);
+    font-weight:600;
+    max-width:14ch;
+    line-height:1.05;
+  }
+  .contact-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:56px;
+    flex-wrap:wrap;
+    gap:20px;
+  }
+  .contact-email{
+    font-size:clamp(1.1rem,2.5vw,1.6rem);
+    font-family:'Space Grotesk',sans-serif;
+    border-bottom:1px solid var(--ink);
+    padding-bottom:4px;
+    transition:opacity .15s;
+  }
+  .contact-email:hover{ opacity:0.6; }
+  .socials{ display:flex; gap:24px; }
+  .socials a{ font-size:13px; color:var(--ink-soft); }
+  .socials a:hover{ color:var(--ink); }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:24px 6vw;
+    display:flex;
+    justify-content:space-between;
+    font-size:11px;
+    color:var(--ink-soft);
+  }
+
+  .note{
+    font-size:11px;
+    color:var(--ink-soft);
+    background:var(--signal-soft);
+    border:1px dashed var(--signal);
+    padding:10px 14px;
+    border-radius:3px;
+    margin-top:20px;
+    max-width:60ch;
+  }
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="rail-progress" id="railProgress"></div>
+  <span class="rail-label mono">SCROLL</span>
+  <div class="rail-ticks" id="rticks"></div>
+  <span class="rail-label mono">001</span>
+</div>
+
+<div class="wrap">
+
+  <header>
+    <div class="nav-inner">
+      <div class="logo mono">DAVID NG<span>.</span></div>
+      <nav>
+        <ul>
+          <li><a href="#work">Work</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="crosshair"></div>
+    <div class="hero-eyebrow mono">
+      <span class="dot"></span> AVAILABLE FOR NEW PROJECTS — 2026
+    </div>
+    <h1>Objects, interfaces,<br>and the systems<br>between them.</h1>
+    <p class="hero-sub">
+      I'm an industrial designer working across physical products and digital interfaces —
+      from injection-molded hardware to the screens that control it. This is a working
+      archive of that practice.
+    </p>
+    <div class="hero-meta">
+      <div>ROLE <strong>Industrial &amp; Product Designer</strong></div>
+      <div>BASED <strong>—</strong></div>
+      <div>DISCIPLINES <strong>UI/UX · Industrial Design</strong></div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="section-head">
+      <h2>Selected Work</h2>
+      <span class="idx mono">06 PROJECTS</span>
+    </div>
+
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">All</button>
+      <button class="filter-btn" data-filter="industrial">Industrial Design</button>
+      <button class="filter-btn" data-filter="uiux">UI/UX</button>
+    </div>
+
+    <div class="grid" id="grid">
+
+      <div class="card" data-cat="industrial">
+        <div class="card-thumb">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="ph-label mono">PROJECT IMAGE<br>01 / REPLACE</span>
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">Industrial Design</div>
+          <div class="card-title">Project Title One</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2025</b></span>
+            <span>MATERIAL <b>Aluminum, ABS</b></span>
+            <span>ROLE <b>Lead Designer</b></span>
+          </div>
+        </div>
+      </div>
+
+      <a class="card" data-cat="uiux" href="pulse-app.html">
+        <div class="card-thumb">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <img src="EmergencyNowApp/hero-image.png" alt="Hands holding a phone showing the Pulse app home screen, with a large red SOS call button, current location, and nearby AED and first aid locations">
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">UI / UX — Mobile App</div>
+          <div class="card-title">Pulse — Emergency Response App</div>
+          <div class="card-desc">A bystander-to-responder app: one-tap SOS calling, live AI call assistance,
+            step-by-step CPR illustrations, AED wayfinding, and nearby-user alerts so help arrives from every direction.</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2026</b></span>
+            <span>PLATFORM <b>iOS, Android</b></span>
+            <span>ROLE <b>Lead UX Designer</b></span>
+          </div>
+          <div class="view-case mono">View case study →</div>
+        </div>
+      </a>
+
+      <div class="card" data-cat="industrial">
+        <div class="card-thumb">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="ph-label mono">PROJECT IMAGE<br>03 / REPLACE</span>
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">Industrial Design</div>
+          <div class="card-title">Project Title Three</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2024</b></span>
+            <span>MATERIAL <b>Oak, Steel</b></span>
+            <span>ROLE <b>Designer</b></span>
+          </div>
+        </div>
+      </div>
+
+      <a class="card" data-cat="uiux" href="pulse-dispatch.html">
+        <div class="card-thumb">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="ph-label mono">DISPATCH CONSOLE<br>LIVE CALL VIEW<br>[ REPLACE IMAGE ]</span>
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">UI / UX — Web Console</div>
+          <div class="card-title">Pulse Dispatch — Web Console</div>
+          <div class="card-desc">Companion web interface for emergency dispatch teams: streamlined call intake,
+            live AI-assisted transcripts, and a map view coordinating nearby volunteer responders in real time.</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2026</b></span>
+            <span>PLATFORM <b>Web (Desktop)</b></span>
+            <span>ROLE <b>Lead UX Designer</b></span>
+          </div>
+          <div class="view-case mono">View case study →</div>
+        </div>
+      </a>
+
+      <div class="card" data-cat="industrial">
+        <div class="card-thumb">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="ph-label mono">PROJECT IMAGE<br>05 / REPLACE</span>
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">Industrial Design</div>
+          <div class="card-title">Project Title Five</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2023</b></span>
+            <span>MATERIAL <b>PC, Silicone</b></span>
+            <span>ROLE <b>Lead Designer</b></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card" data-cat="uiux">
+        <div class="card-thumb">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <span class="ph-label mono">PROJECT IMAGE<br>06 / REPLACE</span>
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">UI / UX</div>
+          <div class="card-title">Project Title Six</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2023</b></span>
+            <span>PLATFORM <b>Mobile App</b></span>
+            <span>ROLE <b>Product Designer</b></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="section-head">
+      <h2>About</h2>
+      <span class="idx mono">PROFILE</span>
+    </div>
+    <div class="about">
+      <div>
+        <p>
+          Replace this with your own bio — a short paragraph on your background, how you moved
+          between physical and digital design, and what kind of problems you like to solve.
+        </p>
+        <p>
+          A second paragraph works well for training, past studios or companies, and any
+          specific process or philosophy you bring to a project.
+        </p>
+        <div class="note mono">
+          NOTE: swap this copy, the skills list, and the project cards above with your own
+          content and images.
+        </div>
+      </div>
+      <div class="skills-list">
+        <div class="skill-row"><span class="label">CAD &amp; Modeling</span><span class="val">SolidWorks, Rhino, Fusion 360</span></div>
+        <div class="skill-row"><span class="label">Prototyping</span><span class="val">3D Printing, CNC, Foam</span></div>
+        <div class="skill-row"><span class="label">UI/UX Tools</span><span class="val">Figma, Framer, Principle</span></div>
+        <div class="skill-row"><span class="label">Rendering</span><span class="val">KeyShot, Blender</span></div>
+        <div class="skill-row"><span class="label">Education</span><span class="val">Your School, Program, Year</span></div>
+        <div class="skill-row"><span class="label">Experience</span><span class="val">X Years in Practice</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="section-head">
+      <h2>Contact</h2>
+      <span class="idx mono">GET IN TOUCH</span>
+    </div>
+    <div class="contact">
+      <h2>Let's build<br>something.</h2>
+      <div class="contact-row">
+        <a href="mailto:hello@yourname.com" class="contact-email">hello@yourname.com</a>
+        <div class="socials mono">
+          <a href="#">LINKEDIN</a>
+          <a href="#">INSTAGRAM</a>
+          <a href="#">RESUME ↓</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span class="mono">© 2026 DAVID NG</span>
+    <span class="mono">DESIGNED &amp; BUILT AS A PORTFOLIO TEMPLATE</span>
+  </footer>
+
+</div>
+
+<script>
+  // ruler ticks
+  const rticks = document.getElementById('rticks');
+  const count = 24;
+  for(let i=0;i<=count;i++){
+    const t = document.createElement('div');
+    t.className = 'tick' + (i % 4 === 0 ? ' major' : '');
+    t.style.top = (i/count*100) + '%';
+    rticks.appendChild(t);
+  }
+
+  // scroll progress
+  const progress = document.getElementById('railProgress');
+  window.addEventListener('scroll', () => {
+    const h = document.documentElement;
+    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.height = scrolled + '%';
+  });
+
+  // filters
+  const buttons = document.querySelectorAll('.filter-btn');
+  const cards = document.querySelectorAll('.card');
+  buttons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      buttons.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const f = btn.dataset.filter;
+      cards.forEach(c => {
+        if(f === 'all' || c.dataset.cat === f){
+          c.classList.remove('hidden');
+        } else {
+          c.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
