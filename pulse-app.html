@@ -132,6 +132,10 @@
   .chart-source{ font-size:11px; color:var(--ink-soft); margin-top:14px; line-height:1.6; }
   .chart-source a{ color:var(--signal); text-decoration:underline; text-underline-offset:2px; }
   .chart-source a:hover{ color:var(--ink); }
+  .competitor-label{ font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:600; color:var(--signal); line-height:1.4; }
+  .competitor-row{ display:grid; grid-template-columns:220px 1fr; gap:32px; align-items:start; margin-top:32px; }
+  .competitor-row .cpr-gallery{ margin-top:0; }
+  @media (max-width:800px){ .competitor-row{ grid-template-columns:1fr; } }
 
   /* emotion chart */
   .emotion-chart{ margin:30px 0 6px; }
@@ -302,6 +306,7 @@
       <div>TOOLS <strong>Figma, Illustrator, Claude</strong></div>
       <div>ROLE <strong>UI/UX Designer</strong></div>
       <div>TIMELINE <strong>10 weeks</strong></div>
+      <div>COMPATIBLE WITH <strong><a href="pulse-dispatch.html" style="border-bottom:1px solid var(--ink-soft);">Pulse Dispatch →</a></strong></div>
     </div>
     <p class="cs-meta-note mono">Figma and Illustrator carried the original 2021 design work. Claude
       was brought in later, in 2026, to help update and polish this case study page.</p>
@@ -315,10 +320,13 @@
   <section class="cs-section">
     <div class="cs-num mono">01 / OVERVIEW</div>
     <h2>Bystanders freeze when it matters most</h2>
-    <p class="lede">In an emergency, the biggest delay isn't the ambulance — it's the moment before anyone
-      acts. People witness someone in danger and don't know who to call, what to do while help is
-      on the way, or where the nearest AED is. Pulse was designed to close that gap by turning any
-      bystander into a capable first responder within seconds.</p>
+    <p class="lede">When someone collapses in public, survival depends on what happens in the first few
+      minutes — long before an ambulance can arrive. Most bystanders freeze in that window: they don't
+      know who to call, what to do while help is on the way, or where the nearest AED is. Pulse turns
+      any bystander into a capable first responder within seconds, using the phone already in their
+      hand — while on the other end of that call, an emergency dispatcher coordinates the response
+      through a companion platform,
+      <a href="pulse-dispatch.html" style="border-bottom:1px solid var(--ink-soft);">Pulse Dispatch</a>.</p>
     <div class="stat-chart">
       <div class="chart-label mono">Out-of-hospital cardiac arrest — survival to discharge, by bystander action</div>
       <svg viewBox="0 0 620 260" role="img" aria-label="Bar chart: survival rate is under 10 percent with no bystander action, over 40 percent with bystander CPR, and up to 70 percent with bystander CPR and AED used together">
@@ -405,11 +413,14 @@
       </div>
     </div>
 
-    <div class="cpr-gallery" style="margin-top:32px;">
-      <div class="shot-frame"><img src="EmergencyNowApp/image 7.png" alt="MyResponder dashboard screen showing registered responder counts, case statistics, a monthly bar chart, and a live incident map all on one screen"></div>
-      <div class="shot-frame"><img src="EmergencyNowApp/image 15.png" alt="MyResponder incident report form requiring location details and an optional contact section with name, phone number, and email fields"></div>
+    <div class="competitor-row">
+      <p class="competitor-label">Screens from MyResponder and SGSecure — existing competitor apps
+        benchmarked in this research.</p>
+      <div class="cpr-gallery">
+        <div class="shot-frame"><img src="EmergencyNowApp/image 7.png" alt="MyResponder dashboard screen showing registered responder counts, case statistics, a monthly bar chart, and a live incident map all on one screen"></div>
+        <div class="shot-frame"><img src="EmergencyNowApp/image 15.png" alt="MyResponder incident report form requiring location details and an optional contact section with name, phone number, and email fields"></div>
+      </div>
     </div>
-    <p class="chart-source mono">Screens from the MyResponder and SGSecure app interfaces, the two apps benchmarked in this research.</p>
     <div class="callout">
       <div class="label mono">Why this interface works against you in an emergency</div>
       <ul class="key-decisions">
@@ -599,14 +610,174 @@
     </div>
   </section>
 
-  <!-- 05 SYSTEM & STAKEHOLDERS -->
+  <!-- 05 VISUAL HIERARCHY -->
   <section class="cs-section">
-    <div class="cs-num mono">05 / SYSTEM &amp; STAKEHOLDERS</div>
+    <div class="cs-num mono">05 / VISUAL HIERARCHY</div>
+    <div class="persona-tag mono">For the Immediate Responder</div>
+    <h2>Designing for a panicked thumb</h2>
+    <p class="lede">The SOS button isn't just red and oversized — its position is deliberate. On a
+      phone held one-handed, the thumb's natural resting arc lands roughly in the middle of the
+      screen, slightly above center — not down at the bottom edge, not up near the header. That's
+      exactly where the button sits, because it carries the single highest-hierarchy action on the
+      screen, and nothing else is allowed to compete with it for that spot.</p>
+
+    <div class="hierarchy-diagram-wrap">
+      <div class="thumb-diagram">
+        <img src="EmergencyNowApp/Vector.png" alt="Pulse app home screen with the red SOS button positioned in the thumb's natural one-handed reach zone">
+        <p class="chart-source mono" style="margin-top:10px;">Pulse's home screen — original UI, designed for this project.</p>
+      </div>
+      <div class="thumb-legend">
+        <div class="thumb-legend-item">
+          <div class="num">1</div>
+          <p><strong>Natural thumb-reach zone.</strong> With a relaxed one-handed grip, the thumb
+            sweeps through the middle of the screen, slightly above center — not the bottom edge,
+            not the top. That arc is marked by the dashed line and shaded zone.</p>
+        </div>
+        <div class="thumb-legend-item">
+          <div class="num">2</div>
+          <p><strong>Highest-hierarchy action, easiest reach.</strong> The SOS button sits at the
+            center of that zone. It's the one action every other element on the screen defers to,
+            so it gets the position that costs the panicked thumb the least effort.</p>
+        </div>
+        <div class="thumb-legend-item">
+          <div class="num">3</div>
+          <p><strong>Soft red gradient.</strong> Light at the top edge, deeper red toward the
+            bottom, gives the button a raised, pressable surface — a visual cue to push, reinforcing
+            the "hold to activate" instruction beneath it.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="label mono">Design decision</div>
+      <p>An earlier version placed the button lower, closer to the bottom edge, for easier one-handed
+        reach on larger phones. It tested worse — sitting near the bottom, it read as secondary,
+        almost below the fold on smaller screens. Centering it in the natural reach zone kept it
+        reachable without undercutting its priority as the first thing the eye and thumb both land on.</p>
+    </div>
+  </section>
+
+  <!-- 06 LIVE AI ASSIST -->
+  <section class="cs-section">
+    <div class="cs-num mono">06 / LIVE AI ASSIST &amp; FIRST AID GUIDANCE</div>
+    <div class="persona-tag mono">For the Immediate Responder</div>
+    <h2>The AI listens, then tells you exactly what to do</h2>
+    <p class="lede">While the call is connected, the AI transcribes the conversation in the background
+      and listens for keywords — "cardiac arrest," "heart attack," "not breathing." The moment it
+      catches one, it surfaces the relevant guide as a tappable card, so the responder never has to
+      search for help while they're still on the line with dispatch.</p>
+
+    <div class="hierarchy-diagram-wrap">
+      <div class="shot-frame">
+        <img src="EmergencyNowApp/image 18.png" alt="Live call screen showing an ongoing call to 995, nearby AED and first aid locations, and AI-recommended actions: CPR Guide and AED Guide">
+      </div>
+      <div class="thumb-legend">
+        <div class="thumb-legend-item">
+          <div class="num">1</div>
+          <p><strong>Call status stays visible.</strong> The "On Call" pill and the 995 status card
+            never scroll away — the responder can always see they're still connected, even while
+            reading a guide two taps deep.</p>
+        </div>
+        <div class="thumb-legend-item">
+          <div class="num">2</div>
+          <p><strong>Nearby resources, always present.</strong> AED Station and First Aid Kit cards
+            stay above the fold regardless of what the AI recommends — location doesn't get buried
+            under suggestions.</p>
+        </div>
+        <div class="thumb-legend-item">
+          <div class="num">3</div>
+          <p><strong>AI-recommended actions, ranked.</strong> "Recommended Actions" only appears once
+            the AI has caught a relevant keyword. CPR Guide is listed first — the higher-urgency
+            match for this call.</p>
+        </div>
+        <div class="thumb-legend-item">
+          <div class="num">4</div>
+          <p><strong>Call controls never move.</strong> Video, end call, and mute stay fixed at the
+            bottom on every guide screen, so muting or ending the call never requires backing out of
+            a guide first.</p>
+        </div>
+      </div>
+    </div>
+
+    <p class="lede" style="margin-top:56px; margin-bottom:0;">In this scenario, dispatch tells the responder to begin CPR. They
+      tap the CPR Guide card and move straight into step-by-step illustrations, without ever leaving
+      the call.</p>
+
+    <div class="cpr-gallery">
+      <div class="shot-frame"><img src="EmergencyNowApp/image 19.png" alt="CPR Guide step 1, open the airways, and step 2, check for breathing, shown with line illustrations"></div>
+      <div class="shot-frame"><img src="EmergencyNowApp/image 20.png" alt="CPR Guide step 3, thirty chest compressions with a highlighted technique tip, and step 4, two rescue breaths"></div>
+    </div>
+
+    <div class="callout" style="margin-top:28px;">
+      <div class="label mono">Key decisions</div>
+      <ul class="key-decisions">
+        <li>Guides open as cards inside the call screen, not as interruptions — the AI never takes
+          over the screen or pauses the call to push a suggestion.</li>
+        <li>Every step follows the same template: a numbered orange badge, a short header above the
+          illustration, and a fuller instruction below it. Someone who already knows CPR can skim the
+          headers alone — "Open the Airways," "Check for Breathing" — while someone who doesn't can
+          drop into the line beneath for guidance.</li>
+        <li>Illustrations are simple line art, not photos, to keep visual noise low under stress and
+          avoid anything that could read as graphic.</li>
+        <li>The one technique detail most likely to be done wrong — arm position during compressions —
+          gets its own solid red callout, visually heavier than the regular instruction text, instead
+          of being just another line of body copy.</li>
+        <li>Step badges reuse the same orange as the nearby-resource cards on the call screen, tying
+          the "AI suggested this" moment to the guide it opens.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 07 SECONDARY RESPONDER -->
+  <section class="cs-section">
+    <div class="cs-num mono">07 / SECONDARY RESPONDER</div>
+    <div class="persona-tag mono">For the Secondary Responder</div>
+    <h2>A notification, then a choice</h2>
+    <p class="lede">When Pulse detects a nearby emergency, everyone within close proximity — not just
+      the person who reported it — gets a push notification. Accepting it drops the secondary
+      responder straight into what's needed: what's happening, where, and the nearest AED to bring,
+      without asking them to dig for any of it.</p>
+
+    <div class="hierarchy-diagram-wrap">
+      <div class="ph-video shot-frame">
+        <video autoplay muted loop playsinline preload="auto">
+          <source src="EmergencyNowApp/Viddemo-1.m4v" type="video/mp4">
+          Your browser doesn't support embedded video. <a href="EmergencyNowApp/Viddemo-1.m4v">Download the clip</a> instead.
+        </video>
+      </div>
+
+      <div class="video-steps mono">
+        <div class="video-step"><span class="vs-num">01</span> Receives a proximity notification</div>
+        <div class="video-step"><span class="vs-num">02</span> Opens the app to incident details &amp; nearest AED</div>
+        <div class="video-step"><span class="vs-num">03</span> Navigates to the AED location</div>
+        <div class="video-step"><span class="vs-num">04</span> Collects the AED and navigates to the accident area</div>
+        <div class="video-step"><span class="vs-num">05</span> Hands off the AED to the immediate responder</div>
+      </div>
+    </div>
+
+    <div class="callout" style="margin-top:28px;">
+      <div class="label mono">Key decisions</div>
+      <ul class="key-decisions">
+        <li>Wayfinding to the AED and then to the accident scene hands off to the phone's own native
+          maps app — Apple Maps on iOS, Google Maps on Android — instead of a custom in-app map.</li>
+        <li>The secondary responder is already fluent in their own phone's navigation: live traffic,
+          voice guidance, rerouting. Rebuilding a weaker version of that inside Pulse would only slow
+          them down at the exact moment speed matters most.</li>
+        <li>Pulse's own map view stays minimal — just the AED pin and the incident pin — and steps
+          aside once the responder taps "Navigate," rather than competing with tools they already trust.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 08 SYSTEM & STAKEHOLDERS -->
+  <section class="cs-section">
+    <div class="cs-num mono">08 / SYSTEM &amp; STAKEHOLDERS</div>
     <h2>One incident, four people, two very different screens</h2>
-    <p class="lede">Pulse doesn't work alone. Every report moves through four people who each need
-      something different from the interface in front of them — and two of those interfaces sit at
-      opposite ends of the same complexity spectrum. The next few sections walk through each screen;
-      this is the map of who each one is for.</p>
+    <p class="lede">The screens so far only tell half the story. Behind every Pulse report are four
+      people, not one: the immediate responder who reports and gives first aid, the emergency
+      dispatcher coordinating on a completely different screen, the secondary responder rushing an
+      AED to the scene, and the ambulance crew taking over on arrival. This section maps how those
+      four people, and their two very different interfaces, fit into a single incident.</p>
 
     <h3 class="sub-heading">Who's involved</h3>
     <div class="stakeholder-diagram">
@@ -687,13 +858,14 @@
     </div>
   </section>
 
-  <!-- 06 USER FLOW -->
+  <!-- 09 USER FLOW -->
   <section class="cs-section">
-    <div class="cs-num mono">06 / USER FLOW</div>
+    <div class="cs-num mono">09 / USER FLOW</div>
     <h2>How everything connects</h2>
-    <p class="lede">The immediate responder's path runs straight
-      through reporting and first aid. The moment they report, a second path opens automatically for
-      whoever is closest with an AED. Both paths converge back at the scene.</p>
+    <p class="lede">Put together, the immediate and secondary responder's screens form one continuous
+      flow, not two separate apps. The diagram below traces a single incident start to finish: one
+      path for the person reporting and giving first aid, a second path that opens automatically for
+      whoever is closest with an AED, and a single point where both converge back at the scene.</p>
 
     <div class="stakeholder-diagram">
       <svg viewBox="0 0 800 450" role="img" aria-label="Flow diagram: the immediate responder moves from the home screen to holding the SOS button, to a live AI-assisted call, to the CPR or first aid guide. The live call also sends a proximity notification to the secondary responder, who navigates to and collects the AED, then hands it off at the scene. Both paths converge as responders arrive">
@@ -759,164 +931,6 @@
           <text x="500" y="404" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Care handed off, incident resolved</text>
         </g>
       </svg>
-    </div>
-  </section>
-
-  <!-- 07 VISUAL HIERARCHY -->
-  <section class="cs-section">
-    <div class="cs-num mono">07 / VISUAL HIERARCHY</div>
-    <div class="persona-tag mono">For the Immediate Responder</div>
-    <h2>Designing for a panicked thumb</h2>
-    <p class="lede">The SOS button isn't just red and oversized — its position is deliberate. On a
-      phone held one-handed, the thumb's natural resting arc lands roughly in the middle of the
-      screen, slightly above center — not down at the bottom edge, not up near the header. That's
-      exactly where the button sits, because it carries the single highest-hierarchy action on the
-      screen, and nothing else is allowed to compete with it for that spot.</p>
-
-    <div class="hierarchy-diagram-wrap">
-      <div class="thumb-diagram">
-        <img src="EmergencyNowApp/Vector.png" alt="Pulse app home screen with the red SOS button positioned in the thumb's natural one-handed reach zone">
-      </div>
-      <div class="thumb-legend">
-        <div class="thumb-legend-item">
-          <div class="num">1</div>
-          <p><strong>Natural thumb-reach zone.</strong> With a relaxed one-handed grip, the thumb
-            sweeps through the middle of the screen, slightly above center — not the bottom edge,
-            not the top. That arc is marked by the dashed line and shaded zone.</p>
-        </div>
-        <div class="thumb-legend-item">
-          <div class="num">2</div>
-          <p><strong>Highest-hierarchy action, easiest reach.</strong> The SOS button sits at the
-            center of that zone. It's the one action every other element on the screen defers to,
-            so it gets the position that costs the panicked thumb the least effort.</p>
-        </div>
-        <div class="thumb-legend-item">
-          <div class="num">3</div>
-          <p><strong>Soft red gradient.</strong> Light at the top edge, deeper red toward the
-            bottom, gives the button a raised, pressable surface — a visual cue to push, reinforcing
-            the "hold to activate" instruction beneath it.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="callout">
-      <div class="label mono">Design decision</div>
-      <p>An earlier version placed the button lower, closer to the bottom edge, for easier one-handed
-        reach on larger phones. It tested worse — sitting near the bottom, it read as secondary,
-        almost below the fold on smaller screens. Centering it in the natural reach zone kept it
-        reachable without undercutting its priority as the first thing the eye and thumb both land on.</p>
-    </div>
-  </section>
-
-  <!-- 08 LIVE AI ASSIST -->
-  <section class="cs-section">
-    <div class="cs-num mono">08 / LIVE AI ASSIST &amp; FIRST AID GUIDANCE</div>
-    <div class="persona-tag mono">For the Immediate Responder</div>
-    <h2>The AI listens, then tells you exactly what to do</h2>
-    <p class="lede">While the call is connected, the AI transcribes the conversation in the background
-      and listens for keywords — "cardiac arrest," "heart attack," "not breathing." The moment it
-      catches one, it surfaces the relevant guide as a tappable card, so the responder never has to
-      search for help while they're still on the line with dispatch.</p>
-
-    <div class="hierarchy-diagram-wrap">
-      <div class="shot-frame">
-        <img src="EmergencyNowApp/image 18.png" alt="Live call screen showing an ongoing call to 995, nearby AED and first aid locations, and AI-recommended actions: CPR Guide and AED Guide">
-      </div>
-      <div class="thumb-legend">
-        <div class="thumb-legend-item">
-          <div class="num">1</div>
-          <p><strong>Call status stays visible.</strong> The "On Call" pill and the 995 status card
-            never scroll away — the responder can always see they're still connected, even while
-            reading a guide two taps deep.</p>
-        </div>
-        <div class="thumb-legend-item">
-          <div class="num">2</div>
-          <p><strong>Nearby resources, always present.</strong> AED Station and First Aid Kit cards
-            stay above the fold regardless of what the AI recommends — location doesn't get buried
-            under suggestions.</p>
-        </div>
-        <div class="thumb-legend-item">
-          <div class="num">3</div>
-          <p><strong>AI-recommended actions, ranked.</strong> "Recommended Actions" only appears once
-            the AI has caught a relevant keyword. CPR Guide is listed first — the higher-urgency
-            match for this call.</p>
-        </div>
-        <div class="thumb-legend-item">
-          <div class="num">4</div>
-          <p><strong>Call controls never move.</strong> Video, end call, and mute stay fixed at the
-            bottom on every guide screen, so muting or ending the call never requires backing out of
-            a guide first.</p>
-        </div>
-      </div>
-    </div>
-
-    <p class="lede" style="margin-top:56px; margin-bottom:0;">In this scenario, dispatch tells the responder to begin CPR. They
-      tap the CPR Guide card and move straight into step-by-step illustrations, without ever leaving
-      the call.</p>
-
-    <div class="cpr-gallery">
-      <div class="shot-frame"><img src="EmergencyNowApp/image 19.png" alt="CPR Guide step 1, open the airways, and step 2, check for breathing, shown with line illustrations"></div>
-      <div class="shot-frame"><img src="EmergencyNowApp/image 20.png" alt="CPR Guide step 3, thirty chest compressions with a highlighted technique tip, and step 4, two rescue breaths"></div>
-    </div>
-
-    <div class="callout" style="margin-top:28px;">
-      <div class="label mono">Key decisions</div>
-      <ul class="key-decisions">
-        <li>Guides open as cards inside the call screen, not as interruptions — the AI never takes
-          over the screen or pauses the call to push a suggestion.</li>
-        <li>Every step follows the same template: a numbered orange badge, a short header above the
-          illustration, and a fuller instruction below it. Someone who already knows CPR can skim the
-          headers alone — "Open the Airways," "Check for Breathing" — while someone who doesn't can
-          drop into the line beneath for guidance.</li>
-        <li>Illustrations are simple line art, not photos, to keep visual noise low under stress and
-          avoid anything that could read as graphic.</li>
-        <li>The one technique detail most likely to be done wrong — arm position during compressions —
-          gets its own solid red callout, visually heavier than the regular instruction text, instead
-          of being just another line of body copy.</li>
-        <li>Step badges reuse the same orange as the nearby-resource cards on the call screen, tying
-          the "AI suggested this" moment to the guide it opens.</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 09 SECONDARY RESPONDER -->
-  <section class="cs-section">
-    <div class="cs-num mono">09 / SECONDARY RESPONDER</div>
-    <div class="persona-tag mono">For the Secondary Responder</div>
-    <h2>A notification, then a choice</h2>
-    <p class="lede">When Pulse detects a nearby emergency, everyone within close proximity — not just
-      the person who reported it — gets a push notification. Accepting it drops the secondary
-      responder straight into what's needed: what's happening, where, and the nearest AED to bring,
-      without asking them to dig for any of it.</p>
-
-    <div class="hierarchy-diagram-wrap">
-      <div class="ph-video shot-frame">
-        <video autoplay muted loop playsinline preload="auto">
-          <source src="EmergencyNowApp/Viddemo-1.m4v" type="video/mp4">
-          Your browser doesn't support embedded video. <a href="EmergencyNowApp/Viddemo-1.m4v">Download the clip</a> instead.
-        </video>
-      </div>
-
-      <div class="video-steps mono">
-        <div class="video-step"><span class="vs-num">01</span> Receives a proximity notification</div>
-        <div class="video-step"><span class="vs-num">02</span> Opens the app to incident details &amp; nearest AED</div>
-        <div class="video-step"><span class="vs-num">03</span> Navigates to the AED location</div>
-        <div class="video-step"><span class="vs-num">04</span> Collects the AED and navigates to the accident area</div>
-        <div class="video-step"><span class="vs-num">05</span> Hands off the AED to the immediate responder</div>
-      </div>
-    </div>
-
-    <div class="callout" style="margin-top:28px;">
-      <div class="label mono">Key decisions</div>
-      <ul class="key-decisions">
-        <li>Wayfinding to the AED and then to the accident scene hands off to the phone's own native
-          maps app — Apple Maps on iOS, Google Maps on Android — instead of a custom in-app map.</li>
-        <li>The secondary responder is already fluent in their own phone's navigation: live traffic,
-          voice guidance, rerouting. Rebuilding a weaker version of that inside Pulse would only slow
-          them down at the exact moment speed matters most.</li>
-        <li>Pulse's own map view stays minimal — just the AED pin and the incident pin — and steps
-          aside once the responder taps "Navigate," rather than competing with tools they already trust.</li>
-      </ul>
     </div>
   </section>
 
