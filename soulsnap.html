@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SoulSnap: Emotion Tagged Memories Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FDFDFC;
+    --paper-dim:#F3F3F1;
+    --ink:#15171A;
+    --ink-soft:#565A5F;
+    --line:#E2E1DC;
+    --signal:#D2491E;
+    --signal-soft:#F0DCD2;
+    --c2:#4B6D8C;
+    --c3:#748C57;
+    --c4:#8C5C74;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--signal);color:var(--paper);}
+  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(253,253,252,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    padding:18px 6vw;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .back-link{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
+    transition:color .15s;
+  }
+  .back-link:hover{ color:var(--ink); }
+  .logo{ font-weight:600; font-size:15px; }
+  .logo span{ color:var(--signal); }
+
+  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
+
+  /* hero */
+  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
+  .cs-eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:22px;
+  }
+  .cs-hero h1{
+    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
+    max-width:20ch; margin-bottom:24px;
+  }
+  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
+  .cs-meta{ display:flex; gap:48px; margin-top:44px; flex-wrap:wrap; }
+  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
+  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+
+  /* image placeholder */
+  .ph{
+    background:
+      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
+      var(--paper-dim);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .ph span{ font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.7; padding:20px; }
+  .ph .corner{ position:absolute; width:14px; height:14px; opacity:0.5; }
+  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
+
+  .ph-hero{ aspect-ratio:16/8; margin-top:0; }
+  .ph-hero img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+  .ph-square{ aspect-ratio:4/5; }
+  .ph-wide{ aspect-ratio:16/9; }
+
+  /* section shell */
+  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .cs-section:last-of-type{ border-bottom:none; }
+  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
+  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:24ch; }
+  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; margin-bottom:36px; }
+  .sub-heading{ font-size:16px; font-weight:600; margin:0 0 14px; }
+
+  /* two column */
+  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:32px; }
+  @media (max-width:800px){ .two-col{ grid-template-columns:1fr; } }
+
+  /* concept connection */
+  .concept-connection{ display:flex; align-items:flex-start; gap:24px; margin-top:28px; }
+  .concept-connection-img{ flex:1; display:flex; align-items:center; justify-content:center; height:320px; padding:24px; }
+  .concept-connection-img-lg{ flex:1.4; height:auto; padding:0; flex-direction:column; }
+  .concept-connection-img-frame{ display:flex; align-items:center; justify-content:center; height:440px; width:100%; }
+  .concept-connection-img img{ max-width:100%; max-height:100%; width:auto; height:auto; display:block; }
+  .concept-connection-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); text-align:center; max-width:320px; margin-top:16px; }
+  .concept-connection-arrow{ display:flex; flex-direction:column; align-items:center; gap:8px; flex-shrink:0; margin-top:148px; }
+  .concept-connection-arrow svg{ width:56px; height:24px; }
+  .concept-connection-arrow span{ font-size:10px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.06em; white-space:nowrap; }
+  @media (max-width:700px){
+    .concept-connection{ flex-direction:column; }
+    .concept-connection-img{ width:100%; height:260px; }
+    .concept-connection-arrow{ flex-direction:row; margin-top:0; }
+    .concept-connection-arrow svg{ transform:rotate(90deg); }
+  }
+
+  .step-label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-top:44px; margin-bottom:14px; }
+  .step-label:first-of-type{ margin-top:36px; }
+
+  /* overview screens */
+  .overview-screens{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:28px; }
+  .overview-screens img{ width:100%; display:block; border-radius:20px; box-shadow:0 24px 48px -24px rgba(21,23,26,0.35); }
+  @media (max-width:700px){ .overview-screens{ grid-template-columns:1fr; max-width:320px; margin-left:auto; margin-right:auto; } }
+
+  /* detail screens (same sizing/rounding as overview screens) */
+  .detail-screens{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:32px; }
+  .detail-screens img, .detail-screens video{ width:100%; display:block; border-radius:20px; box-shadow:0 24px 48px -24px rgba(21,23,26,0.35); }
+  .detail-screens .process-video-caption{ margin-top:14px; }
+  @media (max-width:700px){ .detail-screens{ grid-template-columns:1fr; max-width:320px; margin-left:auto; margin-right:auto; } }
+
+  /* iterations */
+  .before-after{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:28px; }
+  .before-after img{ width:100%; display:block; border-radius:20px; box-shadow:0 24px 48px -24px rgba(21,23,26,0.35); }
+  .before-after-label{ font-size:12px; color:var(--ink-soft); text-align:center; letter-spacing:0.04em; margin-top:14px; }
+  @media (max-width:700px){ .before-after{ grid-template-columns:1fr; max-width:360px; margin-left:auto; margin-right:auto; } }
+
+  .iteration-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; margin-top:32px; }
+  .iteration-item .ph{ aspect-ratio:9/16; }
+  .iteration-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:14px; }
+  .iteration-caption strong{ color:var(--ink); font-family:'Space Grotesk',sans-serif; font-weight:600; }
+  @media (max-width:800px){ .iteration-row{ grid-template-columns:1fr; max-width:360px; margin-left:auto; margin-right:auto; } }
+
+  /* screenshot / video frame */
+  .shot-frame{ box-shadow:0 20px 40px -12px rgba(21,23,26,0.28), 0 4px 14px rgba(21,23,26,0.12); overflow:hidden; }
+  .shot-frame video{ width:100%; height:auto; display:block; }
+
+  /* process videos */
+  .process-videos{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; margin-top:32px; }
+  .process-video-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:14px; }
+  .process-video-caption strong{ color:var(--ink); font-family:'Space Grotesk',sans-serif; font-weight:600; }
+  @media (max-width:800px){ .process-videos{ grid-template-columns:1fr; } }
+
+  /* research findings */
+  .finding-block{ margin-top:40px; }
+  .finding-block:first-of-type{ margin-top:0; }
+  .finding-block h3{ font-size:18px; font-weight:600; margin-bottom:10px; }
+  .finding-block p{ font-size:14.5px; line-height:1.75; color:var(--ink-soft); max-width:70ch; }
+
+  .research-inputs{ border:1px solid var(--line); padding:26px; display:flex; flex-direction:column; gap:16px; margin-top:28px; }
+  .ri-item{ display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--line); padding-bottom:16px; }
+  .ri-item:last-child{ border-bottom:none; padding-bottom:0; }
+  .ri-item strong{ font-family:'Space Grotesk',sans-serif; font-size:16px; color:var(--signal); min-width:120px; flex-shrink:0; }
+  .ri-item span{ font-size:12px; color:var(--ink-soft); line-height:1.5; }
+
+  /* callout */
+  .callout{
+    background:var(--signal-soft);
+    border:1px dashed var(--signal);
+    padding:22px 26px;
+    border-radius:3px;
+    margin-top:28px;
+  }
+  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
+  .key-decisions{ list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:4px; }
+  .key-decisions li{ font-size:13.5px; line-height:1.6; color:var(--ink); padding-left:16px; position:relative; }
+  .key-decisions li::before{ content:'—'; position:absolute; left:0; color:var(--signal); }
+
+  /* layers of memory diagram */
+  .memory-layers-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:56ch; margin-top:20px; margin-bottom:16px; font-style:italic; }
+  .memory-layers-img{ max-width:360px; }
+  .memory-layers-img-lg{ max-width:460px; }
+  .memory-layers-img-xl{ max-width:560px; margin-top:28px; }
+  .memory-layers-img-sm{ max-width:220px; margin-top:44px; margin-bottom:44px; }
+  .memory-layers-img img{ width:100%; display:block; }
+
+  /* dissertation callout */
+  .dissertation-callout{ display:block; background:var(--signal-soft); border:1px dashed var(--signal); padding:22px 26px; border-radius:3px; margin-bottom:36px; transition:background .15s, border-color .15s; }
+  .dissertation-callout:hover{ background:var(--signal); border-color:var(--signal); }
+  .dissertation-callout:hover .dc-label,
+  .dissertation-callout:hover .dc-title{ color:var(--paper); }
+  .dc-label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:8px; }
+  .dc-title{ font-family:'Space Grotesk',sans-serif; font-size:16px; font-weight:600; color:var(--ink); }
+
+  /* flow diagrams */
+  .stakeholder-diagram{ margin-top:20px; overflow-x:auto; }
+  .stakeholder-diagram svg{ width:100%; min-width:640px; height:auto; display:block; }
+
+  /* journey */
+  .journey{ display:flex; gap:0; overflow-x:auto; margin-top:24px; padding-bottom:12px; }
+  .journey-step{ flex:0 0 220px; padding-right:24px; margin-right:24px; border-right:1px dashed var(--line); }
+  .journey-step:last-child{ border-right:none; }
+  .journey-step .step-idx{ font-size:11px; color:var(--signal); margin-bottom:10px; }
+  .journey-step .step-ph{ aspect-ratio:3/4; margin-bottom:14px; }
+  .journey-step .step-ph svg{ width:40%; }
+  .journey-step h4{ font-size:14px; font-weight:600; margin-bottom:8px; }
+  .journey-step p{ font-size:12px; color:var(--ink-soft); line-height:1.5; }
+
+  /* outcome / next */
+  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
+  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; }
+
+  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .next-project{ font-size:13px; color:var(--ink-soft); }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project:hover strong{ color:var(--signal); }
+
+  footer.site-footer{
+    border-top:1px solid var(--line);
+    padding:24px 6vw;
+    display:flex; justify-content:space-between;
+    font-size:11px; color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="back-link mono">← Back to work</a>
+    <div class="logo mono">DAVID NG<span>.</span></div>
+  </div>
+</header>
+
+<main>
+
+  <section class="cs-hero">
+    <div class="cs-eyebrow mono"><span>●</span> UI/UX · Exploratory Thesis Project</div>
+    <h1>SoulSnap: Emotion Tagged Memories</h1>
+    <p>A photo captures what a moment looked like. It rarely captures what it felt like. SoulSnap
+      pairs photos with the wearer's actual physiological emotion, recorded through a wearable
+      sensor band and turned into a visual tag attached to the memory itself.</p>
+    <div class="cs-meta">
+      <div>YEAR <strong>[ YEAR ]</strong></div>
+      <div>TOOLS <strong>Arduino, p5.js, Figma</strong></div>
+      <div>ROLE <strong>[ ROLE ]</strong></div>
+      <div>PLATFORM <strong>Mobile App + Wearable</strong></div>
+    </div>
+  </section>
+
+  <div class="ph ph-hero">
+    <img src="soulsnap/herosoulsnap2.png" alt="Hands holding a phone showing the SoulSnap app home screen, with a weekly emotion bubble chart, positive emotion and stress index scores, and the wrist wearing the SoulBand sensor">
+  </div>
+
+  <!-- 01 OVERVIEW -->
+  <section class="cs-section">
+    <div class="cs-num mono">01 / OVERVIEW</div>
+    <h2>We remember what happened. We forget how it felt.</h2>
+    <p class="lede">Every photo is a record of a moment that has already changed by the time you
+      look back at it. The scene stays exactly as it was framed. The feeling underneath it fades,
+      gets rewritten, or disappears entirely. SoulSnap is an exploratory thesis project built
+      around one question: what if a photo could carry its original feeling forward, not just its
+      image?</p>
+    <div class="overview-screens">
+      <img src="soulsnap/image 967.png" alt="SoulSnap home screen showing a weekly emotion bubble chart, records found, percent of positive emotions, and stress index score">
+      <img src="soulsnap/image 965.png" alt="A captured photo at a fairground with an emotion intensity bubble overlay, plus the location and time it was taken">
+      <img src="soulsnap/image 968.png" alt="Intensity of emotions screen showing concentric circles ranking joy from most intense to least intense">
+    </div>
+  </section>
+
+  <!-- 02 RESEARCH -->
+  <section class="cs-section">
+    <div class="cs-num mono">02 / RESEARCH</div>
+    <h2>What actually makes a memory stick</h2>
+    <p class="lede">Before designing anything, the research asked a simpler question first: how
+      does memory actually work, what makes it stronger, and how are people already trying to
+      hold onto it.</p>
+
+    <a href="Thesis Dissertation.pdf" target="_blank" rel="noopener" class="dissertation-callout">
+      <div class="dc-label mono">Full Research</div>
+      <div class="dc-title">Read the dissertation this project grew out of, on emotion, memory,
+        and how each can be captured →</div>
+    </a>
+
+    <div class="finding-block">
+      <h3>What a photo leaves out</h3>
+      <p>A photo only ever keeps the visual aspect of a moment, what could be seen from behind
+        the lens. Everything else stays invisible: the feelings, the emotions, the senses in
+        play, and the environment, the surrounding, the ambience, even the sound of it. Looking
+        back at a photo later means reconstructing all of that from memory alone, asking the
+        imagination to foster what the image never recorded in the first place.</p>
+    </div>
+    <div class="memory-layers-img memory-layers-img-lg">
+      <img src="soulsnap/Group 7.svg" alt="Diagram showing a photo's visible visual aspect layered in front of its invisible feelings, emotions, senses, environment, and ambience">
+    </div>
+
+    <div class="finding-block">
+      <h3>How people keep memories today</h3>
+      <p>Photo albums, camera rolls, journals, and social captions all do the same basic thing.
+        They store the visual or written surface of a moment. A caption might say "so happy here",
+        but it is written after the fact, filtered through memory and self presentation. None of
+        these methods capture the felt, physiological state of the person living the moment, only
+        their later description of it.</p>
+    </div>
+
+    <div class="finding-block">
+      <h3>Emotions and senses, intertwined</h3>
+      <p>One conclusion kept surfacing above the rest: emotion and sensation are not two separate
+        channels worth recording apart from each other. Arousal sharpens what the senses pick up,
+        and what the senses register in turn feeds the emotional state itself. They rise and fall
+        together, which is exactly why a physiological signal, not a written caption, is what
+        comes closest to capturing a moment as it was actually felt.</p>
+    </div>
+    <div class="memory-layers-img memory-layers-img-sm">
+      <img src="soulsnap/Group 9.svg" alt="Diagram of two overlapping circles joined by a looping arrow, representing how emotion and sensation feed into and reinforce each other">
+    </div>
+
+    <div class="callout">
+      <div class="label mono">Synthesis</div>
+      <p>Across all three areas, one pattern kept repeating: memory strength and memory feeling
+        are the same thing. The research question became a design question. What if a memory
+        could be tagged with the actual emotional state a person was in, recorded at the moment
+        it happened, not reconstructed afterward?</p>
+    </div>
+
+    <div class="finding-block">
+      <h3>What this pointed toward</h3>
+      <p>What the research eventually pointed toward was an app system that tags emotions to
+        different moments of life, each one signifying something unique and special. Through the
+        stimulation of quickly reactivating overlapping representations and the reorganisation of
+        related memories into an integrated network, it encourages linkages between past neutral
+        occurrences (Zhu, 2020).</p>
+    </div>
+    <div class="memory-layers-img memory-layers-img-xl">
+      <img src="soulsnap/Group 6.svg" alt="Chart plotting significant emotional moments, such as happy, sad, excited, angry, and moody, across a timeline of life">
+    </div>
+    <div class="finding-block">
+      <p>The research points to long term memories being rich in sensory and perceptual cues,
+        with emotion playing a motivating role in boosting those cues. It is what makes emotion so
+        central to building a memory that lasts.</p>
+    </div>
+  </section>
+
+  <!-- 03 THE CONCEPT -->
+  <section class="cs-section">
+    <div class="cs-num mono">03 / THE CONCEPT</div>
+    <h2>Tagging memories with the emotion behind them</h2>
+    <p class="lede">SoulSnap reads raw physiological data straight off the wearable sensor band,
+      which pairs a GSR sensor and a pulse sensor on the wrist, and visualizes it as circle blobs
+      on a timeline, each one colored to act as visual guidance toward the emotions a person could
+      have been experiencing at that exact moment. The photo shows what the moment looked like.
+      The blob offers a guide to what it may have felt like.</p>
+    <div class="concept-connection">
+      <div class="concept-connection-img">
+        <img src="soulsnap/watchband.png" alt="The SoulBand wearable sensor band prototype, worn on the wrist">
+      </div>
+      <div class="concept-connection-arrow">
+        <svg viewBox="0 0 56 24" fill="none">
+          <path d="M2 12h46" stroke="var(--ink-soft)" stroke-width="1.5"/>
+          <path d="M40 5l8 7-8 7" stroke="var(--ink-soft)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span class="mono">raw signal</span>
+      </div>
+      <div class="concept-connection-img concept-connection-img-lg">
+        <div class="concept-connection-img-frame">
+          <img src="soulsnap/Group 45.png" alt="SoulSnap app screen showing the weekly emotion bubble chart generated from the band's sensor data">
+        </div>
+        <p class="concept-connection-caption">The timeline of blobs shown here is not a literal
+          readout of what was felt. It is guidance, a visual estimate of how the wearer's emotions
+          were likely shifting across that stretch of time.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 HOW IT WORKS -->
+  <section class="cs-section">
+    <div class="cs-num mono">04 / HOW IT WORKS</div>
+    <h2>From raw signal to a visual signature</h2>
+    <p class="lede">Following on from the wearable band above, this section walks through how its
+      GSR sensor and pulse sensor readings actually turn into that visual signature. Two sensors,
+      a microcontroller, and a data visualization sketch turn a raw electrical signal into
+      something a person can actually look at and recognize later.</p>
+
+    <div class="stakeholder-diagram">
+      <svg viewBox="0 0 940 140" role="img" aria-label="Flow diagram: the hand band's GSR and pulse sensors send raw signal to an Arduino, which computes an arousal score, which p5.js renders as a visual signature attached to the tagged photo">
+        <defs>
+          <marker id="hiw-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-soft)"/>
+          </marker>
+        </defs>
+        <line x1="210" y1="70" x2="246" y2="70" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#hiw-arrow)"/>
+        <line x1="440" y1="70" x2="476" y2="70" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#hiw-arrow)"/>
+        <line x1="670" y1="70" x2="706" y2="70" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#hiw-arrow)"/>
+        <g>
+          <rect x="20" y="30" width="190" height="80" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="115" y="63" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Hand Band</text>
+          <text x="115" y="80" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">GSR + pulse sensors,</text>
+          <text x="115" y="93" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">worn on the wrist</text>
+        </g>
+        <g>
+          <rect x="250" y="30" width="190" height="80" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="345" y="63" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Arduino</text>
+          <text x="345" y="80" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Reads raw signal,</text>
+          <text x="345" y="93" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">computes an arousal score</text>
+        </g>
+        <g>
+          <rect x="480" y="30" width="190" height="80" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
+          <text x="575" y="63" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">p5.js</text>
+          <text x="575" y="80" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Renders the score as</text>
+          <text x="575" y="93" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">a visual signature</text>
+        </g>
+        <g>
+          <rect x="710" y="30" width="210" height="80" rx="4" fill="var(--paper-dim)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="815" y="63" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Tagged Photo</text>
+          <text x="815" y="80" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Signature attached to</text>
+          <text x="815" y="93" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">the moment it was taken</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="research-inputs">
+      <div class="ri-item"><strong>GSR sensor</strong><span>Measures skin conductance, which rises with sympathetic nervous system activation, a direct signal of arousal</span></div>
+      <div class="ri-item"><strong>Pulse sensor</strong><span>Measures heart rate and its variability, a second arousal linked signal, worn alongside the GSR sensor</span></div>
+      <div class="ri-item"><strong>Arduino</strong><span>Continuously samples both raw signals and computes a combined arousal score in real time</span></div>
+      <div class="ri-item"><strong>p5.js</strong><span>Takes the arousal score and maps it to color, shape, and motion, generating a unique visual signature per moment</span></div>
+    </div>
+
+    <div class="finding-block">
+      <h3>How the emotion score is computed</h3>
+      <p>The score comes from combining two live readings: skin conductance from the GSR sensor,
+        which rises with sympathetic nervous system arousal, and heart rate variability from the
+        pulse sensor. Weighted together, the two produce a single arousal value that the
+        visualization then maps to a blob's color, size, and motion.</p>
+    </div>
+    <div class="memory-layers-img memory-layers-img-xl">
+      <img src="soulsnap/Group 10.svg" alt="Diagram showing how GSR sensor and pulse sensor readings are combined into a computed emotion score">
+    </div>
+    <div class="finding-block">
+      <p>This score serves as a guide for users to reflect on the emotions tagged to a memory. It
+        is not a definitive or precise measure of a person's emotional state, but rather a tool to
+        aid self reflection and understanding.</p>
+    </div>
+
+    <div class="process-videos">
+      <div class="process-video-item">
+        <div class="shot-frame">
+          <video autoplay muted loop playsinline preload="auto">
+            <source src="soulsnap/IMG_4041.MP4" type="video/mp4">
+            Your browser does not support embedded video. <a href="soulsnap/IMG_4041.MP4">Download the clip</a> instead.
+          </video>
+        </div>
+        <p class="process-video-caption"><strong>Raw signal reading.</strong> Live output straight
+          off the Arduino, reading raw data from the GSR sensor and the pulse sensor.</p>
+      </div>
+      <div class="process-video-item">
+        <div class="shot-frame">
+          <video autoplay muted loop playsinline preload="auto">
+            <source src="soulsnap/IMG_4040.MOV">
+            Your browser does not support embedded video. <a href="soulsnap/IMG_4040.MOV">Download the clip</a> instead.
+          </video>
+        </div>
+        <p class="process-video-caption"><strong>Consolidating the signal.</strong> The raw sensor
+          readings consolidated and converted into the visual plotter, built in p5.js.</p>
+      </div>
+      <div class="process-video-item">
+        <div class="shot-frame">
+          <video autoplay muted loop playsinline preload="auto">
+            <source src="soulsnap/IMG_4039.MOV">
+            Your browser does not support embedded video. <a href="soulsnap/IMG_4039.MOV">Download the clip</a> instead.
+          </video>
+        </div>
+        <p class="process-video-caption"><strong>Proof of concept.</strong> The full pipeline, from
+          measuring the wearer's sweat gland activity and heart rate through to the visual output.</p>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="label mono">An honest limitation</div>
+      <p>GSR and pulse data are strong signals for arousal, how intense a feeling is, but they
+        cannot reliably tell whether that intensity is positive or negative. A racing heart at a
+        finish line and a racing heart in an argument can look identical on these two sensors
+        alone. Rather than standing in for a precise reading, it serves as a guide, prompting the
+        user to reflect and think back on what they may have actually felt.</p>
+    </div>
+  </section>
+
+  <!-- 05 APP INTERFACE & USER JOURNEY -->
+  <section class="cs-section">
+    <div class="cs-num mono">05 / APP INTERFACE &amp; USER JOURNEY</div>
+    <h2>Walking through a tagged memory, start to finish</h2>
+    <p class="lede">Six steps, from putting on the band to looking back at an old photo months
+      later and feeling something closer to the original moment.</p>
+
+    <div class="journey">
+      <div class="journey-step">
+        <div class="step-idx mono">STEP 01</div>
+        <div class="ph step-ph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 24a14 14 0 0 1 28 0"/>
+            <path d="M10 24a14 14 0 0 0 28 0"/>
+            <circle cx="24" cy="10" r="3"/>
+          </svg>
+        </div>
+        <h4>Pairs the hand band</h4>
+        <p>Worn on the wrist, connected to the app, taking a short baseline reading before use.</p>
+      </div>
+      <div class="journey-step">
+        <div class="step-idx mono">STEP 02</div>
+        <div class="ph step-ph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="6" y="14" width="36" height="26" rx="4"/>
+            <circle cx="24" cy="27" r="8"/>
+            <path d="M17 14l3-5h8l3 5"/>
+          </svg>
+        </div>
+        <h4>Captures the moment</h4>
+        <p>Takes a photo in app, or imports one from the camera roll within the active session.</p>
+      </div>
+      <div class="journey-step">
+        <div class="step-idx mono">STEP 03</div>
+        <div class="ph step-ph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 24h6l3-9 6 18 4-13 3 4h10"/>
+          </svg>
+        </div>
+        <h4>Tags it automatically</h4>
+        <p>Matches the photo's timestamp to the sensor stream and generates its emotion signature.</p>
+      </div>
+      <div class="journey-step">
+        <div class="step-idx mono">STEP 04</div>
+        <div class="ph step-ph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="7" y="7" width="34" height="34" rx="4"/>
+            <path d="M7 30l9-10 7 7 6-8 12 13" stroke="var(--signal)"/>
+          </svg>
+        </div>
+        <h4>Builds the memory card</h4>
+        <p>Photo and signature sit together, a visual fingerprint of that specific moment.</p>
+      </div>
+      <div class="journey-step">
+        <div class="step-idx mono">STEP 05</div>
+        <div class="ph step-ph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 34h36"/>
+            <circle cx="12" cy="26" r="3"/>
+            <circle cx="22" cy="14" r="3"/>
+            <circle cx="32" cy="22" r="3"/>
+            <circle cx="40" cy="10" r="3"/>
+          </svg>
+        </div>
+        <h4>Sits on the timeline</h4>
+        <p>Photos arrange by emotional intensity, letting the highs and lows of weeks be scanned at once.</p>
+      </div>
+      <div class="journey-step">
+        <div class="step-idx mono">STEP 06</div>
+        <div class="ph step-ph">
+          <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M36 15a15 15 0 1 0 3 9"/>
+            <path d="M36 6v9h-9"/>
+          </svg>
+        </div>
+        <h4>Revisits the memory</h4>
+        <p>Reopening an old photo brings its signature back too, a cue toward how it actually felt.</p>
+      </div>
+    </div>
+
+    <div class="finding-block">
+      <h3>Always recording in the background</h3>
+      <p>While the hand band is worn, the wearer's biometric data is recorded continuously in the
+        background, whether the app is open or not.</p>
+    </div>
+  </section>
+
+  <!-- 06 ITERATIONS -->
+  <section class="cs-section">
+    <div class="cs-num mono">06 / ITERATIONS</div>
+    <h2>Getting from a rough idea to the interface ahead</h2>
+    <p class="lede">The interface shown throughout this case study did not arrive fully formed. It
+      went through several rounds of iteration first, each one testing a different way to surface
+      the emotion data without burying the photo underneath it.</p>
+
+    <div class="finding-block">
+      <h3>Home screen</h3>
+      <p>An earlier version of the home screen (left) next to the final design (right).</p>
+    </div>
+
+    <div class="before-after">
+      <div>
+        <img src="soulsnap/Group 50.png" alt="Earlier version of the SoulSnap home screen, using a reddish orange gradient background with separate My Library and SnapBand bars stacked below the chart">
+        <p class="before-after-label mono">Initial Draft — Concept No. 2</p>
+      </div>
+      <div>
+        <img src="soulsnap/image 967.png" alt="Final SoulSnap home screen, using a blue to gold gradient background with the Albums and SoulBand tabs combined into the same card as the chart">
+        <p class="before-after-label mono">Final UI</p>
+      </div>
+    </div>
+
+    <ul class="key-decisions" style="margin-top:28px;">
+      <li>Moved away from the reddish orange palette. A UI leaning red on its own reads as
+        "angry", which works against a tool meant to represent the full range of what a person
+        feels, not just one emotion. A more vibrant, multi hued palette links better to the
+        different emotions actually being tracked.</li>
+      <li>Combined the "Albums" and "SoulBand" tabs directly into the same card as the chart,
+        instead of stacking them as separate bars underneath it, cleaning up the overall layout.</li>
+      <li>Redesigned the capture button at the bottom, from an open bracket viewfinder icon into a
+        solid circular button, making it read clearly as the primary action on the screen.</li>
+    </ul>
+
+    <div class="finding-block" style="margin-top:44px;">
+      <h3>Emotion timeline chart</h3>
+      <p>An earlier version of the emotion timeline (left) next to the final design (right).</p>
+    </div>
+
+    <div class="before-after">
+      <div>
+        <img src="soulsnap/Group 47.png" alt="Earlier version of the emotion timeline, showing a small cropped square photo above a vertical top to bottom timeline made of angular wireframe line patterns">
+        <p class="before-after-label mono">Initial Draft — Concept No. 2</p>
+      </div>
+      <div>
+        <img src="soulsnap/image 971.png" alt="Final emotion timeline, showing a full screen photo above a horizontal left to right row of colored blobs marking emotion intensity">
+        <p class="before-after-label mono">Final UI</p>
+      </div>
+    </div>
+
+    <ul class="key-decisions" style="margin-top:28px;">
+      <li>Enlarged the captured photo to fill the entire screen, instead of the cropped square
+        version used earlier, making it feel more immersive and visually impactful.</li>
+      <li>The earlier timeline read top to bottom and leaned on angular wireframe line patterns
+        that felt technical, closer to a schematic than a memory, with an order that read
+        awkwardly.</li>
+      <li>The final timeline reads horizontally instead, left to right, matching the direction
+        people naturally read in, which makes it feel visually correct.</li>
+      <li>Replaced the wireframe pattern with soft, colored blobs as the visual element, moving
+        the timeline away from looking like a technical schematic and closer to something felt
+        rather than measured.</li>
+    </ul>
+
+    <div class="finding-block" style="margin-top:44px;">
+      <h3>Emotion map</h3>
+      <p>An earlier version of the emotion map (left) next to the final design (right).</p>
+    </div>
+
+    <div class="before-after">
+      <div>
+        <img src="soulsnap/Group 49.png" alt="Earlier version of the emotion map, with a stat card carrying the SoulSnap logo and wordmark blending closely into the dark map background">
+        <p class="before-after-label mono">Initial Draft — Concept No. 2</p>
+      </div>
+      <div>
+        <img src="soulsnap/image 979.png" alt="Final emotion map, with a Discoveries stat card standing out clearly against the map, plus a back arrow and a separate compass badge in the top corners">
+        <p class="before-after-label mono">Final UI</p>
+      </div>
+    </div>
+
+    <ul class="key-decisions" style="margin-top:28px;">
+      <li>The floating stat card now sits on a clearer, more contrasted surface, so it reads as
+        its own distinct layer sitting above the map, instead of blending into the dark map tone
+        the way the earlier version did.</li>
+      <li>Replaced the SoulSnap logo and wordmark inside the card with a plain "Discoveries"
+        label, so the card reads immediately as a data panel rather than a repeated piece of
+        branding the user has already seen on the home screen.</li>
+      <li>Added a back arrow and a separate compass badge in the top corners, giving the screen
+        clear navigation and orientation controls that the earlier version left out.</li>
+    </ul>
+  </section>
+
+  <!-- 07 IN THE APP -->
+  <section class="cs-section">
+    <div class="cs-num mono">07 / IN THE APP</div>
+    <h2>What the journey actually looks like (with the final UI design)</h2>
+
+    <div class="step-label mono">Step 01 — Capturing an Image</div>
+    <div class="overview-screens">
+      <img src="soulsnap/image 973.png" alt="Camera viewfinder inside the SoulSnap app, framing a ferris wheel at a fairground before capturing the photo">
+      <img src="soulsnap/image 970.png" alt="Processing screen after capture, showing a five minute scrubber and a Process Emotion Timeline button">
+      <img src="soulsnap/image 971.png" alt="Captured photo with the intensity of emotions bubble timeline tagged underneath it, alongside an Add a note button">
+    </div>
+    <p class="process-video-caption" style="margin-bottom:32px;"><strong>Opening the app to snap a
+      photo captures the moment.</strong> The five minutes of biometric data recorded leading up
+      to that shot are then processed into an emotion timeline and tagged directly to the image,
+      visualized on the app as a timeline attached to it.</p>
+
+    <div class="step-label mono">Step 02 — Reviewing the Tagged Moment</div>
+    <div class="detail-screens" style="margin-top:0;">
+      <div>
+        <video autoplay muted loop playsinline preload="auto">
+          <source src="soulsnap/IMG_4042.MP4" type="video/mp4">
+          Your browser does not support embedded video. <a href="soulsnap/IMG_4042.MP4">Download the clip</a> instead.
+        </video>
+        <p class="process-video-caption"><strong>Tapping the info button.</strong> Explains what
+          the visual output actually symbolizes.</p>
+      </div>
+      <div>
+        <img src="soulsnap/image 974.png" alt="Add a note screen with a text field open, journaling details about a day at the carnival and who was there">
+        <p class="process-video-caption"><strong>Adding a note.</strong> The user can also choose
+          to journal down what happened when the photo was taken.</p>
+      </div>
+    </div>
+
+    <div class="finding-block">
+      <h3>Key decisions</h3>
+      <ul class="key-decisions">
+        <li>Recording biometric data passively in the background, rather than asking the wearer to
+          start and stop tracking manually, so tagging never depends on someone remembering to
+          turn it on before the moment has already passed.</li>
+        <li>Splitting the flow into capturing first and reviewing second, instead of one long
+          screen, mirrors how the moment is actually lived through, first experienced, only
+          understood afterward.</li>
+        <li>Showing the five minute processing window as a visible scrubber, rather than a silent
+          loading spinner, so the wearer can see what the app is doing with their data instead of
+          just waiting on faith.</li>
+        <li>Placing the info button directly on the result screen, instead of behind a separate
+          help menu, puts the explanation exactly where curiosity about the blobs is highest.</li>
+        <li>Folding the note taking step into the same flow as the tag, rather than a step added
+          later, catches context while the memory is still fresh instead of relying on someone to
+          come back to it.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 08 POST EXPERIENCE -->
+  <section class="cs-section">
+    <div class="cs-num mono">08 / POST EXPERIENCE</div>
+    <h2>Looking back at the whole album, not just one photo</h2>
+    <p class="lede">Tagging a single moment is only half the idea. The other half is what
+      happens once weeks, months, or years of tagged moments sit next to each other.</p>
+
+    <div class="finding-block">
+      <h3>An emotion trend, not just a memory</h3>
+      <p>Inside the album, every visualized emotion can be grouped by week, month, or year,
+        turning individual moments into a readable trend. Instead of scrolling through photos one
+        at a time, a person can see the shape of how they have been feeling across a whole
+        stretch of life at a glance.</p>
+    </div>
+    <div class="detail-screens">
+      <video autoplay muted loop playsinline preload="auto">
+        <source src="soulsnap/IMG_4043.MP4" type="video/mp4">
+        Your browser does not support embedded video. <a href="soulsnap/IMG_4043.MP4">Download the clip</a> instead.
+      </video>
+    </div>
+
+    <div class="finding-block">
+      <h3>An emotion map, not just a timeline</h3>
+      <p>The same visualized emotions can also sit on a map, tagged to the location each photo
+        was captured at. Time tells one story about how an emotion changed. Place tells another,
+        surfacing which locations tend to carry which feelings.</p>
+    </div>
+    <div class="detail-screens">
+      <video autoplay muted loop playsinline preload="auto">
+        <source src="soulsnap/IMG_4045.MOV">
+        Your browser does not support embedded video. <a href="soulsnap/IMG_4045.MOV">Download the clip</a> instead.
+      </video>
+    </div>
+
+    <div class="callout">
+      <div class="label mono">Why this matters</div>
+      <p>Neither view is just a nicer way to browse old photos. Seeing emotion laid out across
+        time and place lets a person reflect on and consolidate their own behavior and thought
+        patterns, noticing shifts and repeats that stay invisible one photo at a time.</p>
+    </div>
+
+    <div class="finding-block">
+      <h3>Key decisions</h3>
+      <ul class="key-decisions">
+        <li>Splitting the trend and the map into two separate views, rather than layering both
+          onto one screen, keeps each one legible on its own instead of competing for the same
+          small space.</li>
+        <li>Reusing the same colored blobs from the tagging flow for both the trend chart and the
+          map, so the wearer never has to learn a second visual language just to read their own
+          data back.</li>
+        <li>Giving the trend view a week, month, and year toggle, rather than one fixed zoom
+          level, so reflection can happen at whatever distance actually feels useful, a single
+          rough week or a longer stretch of life.</li>
+        <li>Keeping the stat card on the map as a compact overlay rather than a full separate
+          screen, so location stays the main thing being looked at, with the numbers supporting it
+          instead of replacing it.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 09 WHY EMOTION HELPS RECALL -->
+  <section class="cs-section">
+    <div class="cs-num mono">09 / WHY EMOTION HELPS RECALL</div>
+    <h2>Why tagging emotion actually helps memory</h2>
+    <p class="lede">A plain photo asks you to reconstruct a moment mostly from what it looked
+      like. A tagged one gives you a second cue: what it felt like to be there.</p>
+    <div class="callout" style="margin-top:0;">
+      <div class="label mono">The mechanism</div>
+      <p>Retrieval works best when part of the original encoding context reappears at recall,
+        the encoding specificity principle mentioned in the
+        <a href="Thesis Dissertation.pdf" target="_blank" rel="noopener" style="border-bottom:1px solid var(--ink-soft);">research</a>.
+        A photo alone only ever reintroduces the visual context. SoulSnap's emotion
+        signature reintroduces a second layer, an abstract trace of the internal, physiological
+        state the person was actually in. Seeing that signature again does not just remind
+        someone what a scene looked like. It nudges the same arousal pathway that made the moment
+        memorable in the first place, the same effect behind a familiar smell or song suddenly
+        making an old memory feel vivid again, translated here into a wearable sensor and a data
+        visualization instead of a scent or a melody.</p>
+    </div>
+
+    <div class="finding-block">
+      <h3>How It All Connects</h3>
+      <p>The reasoning behind SoulSnap maps in one line: the roles a person plays with their own
+        data lead to specific user stories, which serve a smaller set of underlying values, all
+        pointing toward a single outcome, using emotion data to control, adapt, and create
+        experiences, in service of emotional health and memories that last.</p>
+
+      <div class="stakeholder-diagram">
+        <svg viewBox="0 0 1180 560" role="img" aria-label="Mind map: user roles of learning about, tracking, sharing, and analyzing emotion data feed into the user stories of journaling efficiently and finding out what affects emotions, which serve the values of getting through an event, increasing emotion awareness, and making social or behavioural changes, all leading to one outcome, to control, adapt, and create emotion experiences in service of emotional health and lasting memories">
+          <text x="10" y="35" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">User Roles</text>
+          <text x="10" y="185" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">User Stories</text>
+          <text x="10" y="325" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Values</text>
+          <text x="10" y="465" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Outcome</text>
+
+          <g stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="4 4" fill="none">
+            <line x1="240" y1="58" x2="700" y2="165"/>
+            <line x1="460" y1="58" x2="420" y2="165"/>
+            <line x1="460" y1="58" x2="700" y2="165"/>
+            <line x1="680" y1="58" x2="700" y2="165"/>
+            <line x1="900" y1="58" x2="700" y2="165"/>
+            <line x1="420" y1="205" x2="300" y2="305"/>
+            <line x1="700" y1="205" x2="300" y2="305"/>
+            <line x1="700" y1="205" x2="580" y2="305"/>
+            <line x1="700" y1="205" x2="880" y2="305"/>
+            <line x1="300" y1="345" x2="580" y2="445"/>
+            <line x1="580" y1="345" x2="580" y2="445"/>
+            <line x1="880" y1="345" x2="580" y2="445"/>
+          </g>
+
+          <g font-family="'Inter',sans-serif" font-size="15" fill="var(--ink)" text-anchor="middle">
+            <text x="240" y="30"><tspan x="240" dy="0">Learn about</tspan><tspan x="240" dy="18">emotion</tspan></text>
+            <text x="460" y="30"><tspan x="460" dy="0">Track</tspan><tspan x="460" dy="18">emotion</tspan></text>
+            <text x="680" y="30"><tspan x="680" dy="0">Share</tspan><tspan x="680" dy="18">emotion data</tspan></text>
+            <text x="900" y="39">Analyze data</text>
+
+            <text x="420" y="180"><tspan x="420" dy="0">Journal</tspan><tspan x="420" dy="18">efficiently</tspan></text>
+            <text x="700" y="180"><tspan x="700" dy="0">Find out what</tspan><tspan x="700" dy="18">affects my emotions</tspan></text>
+
+            <text x="300" y="320"><tspan x="300" dy="0">Get through</tspan><tspan x="300" dy="18">an event</tspan></text>
+            <text x="580" y="320"><tspan x="580" dy="0">Increase emotion</tspan><tspan x="580" dy="18">awareness</tspan></text>
+            <text x="880" y="320"><tspan x="880" dy="0">Make social or</tspan><tspan x="880" dy="18">behavioural changes</tspan></text>
+
+            <text x="580" y="460"><tspan x="580" dy="0">To control, adapt, and create emotion experiences with</tspan><tspan x="580" dy="20">the goal of emotional health and creating lasting memories</tspan></text>
+          </g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 OUTCOME & REFLECTION -->
+  <section class="cs-section">
+    <div class="cs-num mono">10 / OUTCOME &amp; REFLECTION</div>
+    <h2>What this project makes possible</h2>
+    <div class="outcome-box">
+      <h3 class="sub-heading">Summary</h3>
+      <p>SoulSnap started as a research question about memory and ended as a working bridge
+        between a photo and the body that took it. Research across encoding, memory strength, and
+        current keepsake habits pointed to the same conclusion: memory and emotion are not
+        separate systems, they are the same system. The prototype proves the bridge is buildable
+        with accessible hardware. A GSR sensor and a pulse sensor on a wrist worn band, read by an
+        Arduino, visualized in p5.js, is enough to attach a real physiological trace to a photo at
+        the moment it is taken, rather than relying on a caption written after the feeling has
+        already faded.</p>
+
+      <h3 class="sub-heading" style="margin-top:20px;">What Comes Next</h3>
+      <ul class="key-decisions">
+        <li>Valence, not just arousal: adding signals like facial expression or a light self
+          report tag, so signatures can move beyond intensity toward genuine positive or negative
+          emotion.</li>
+        <li>A wearable, not a prototype: moving from the current hand band toward a form factor
+          someone would actually wear through an ordinary day.</li>
+        <li>Personalized calibration: adjusting the arousal to color mapping against each wearer's
+          own baseline, since resting GSR and heart rate vary enough between people that a shared
+          scale might read two very different states as the same signature.</li>
+        <li>Pattern surfacing across views: cross referencing the trend chart and the map
+          automatically, so the app can point out on its own that a certain location tends to
+          carry a certain feeling, instead of leaving that comparison entirely up to the person.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="cs-footer">
+    <a href="index.html" class="back-link mono">← Back to all work</a>
+    <a href="pulse-app.html" class="next-project mono">
+      MORE WORK
+      <strong>Pulse: Emergency Response App →</strong>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span class="mono">© 2026 DAVID NG</span>
+  <span class="mono">CASE STUDY · SOULSNAP</span>
+</footer>
+
+</body>
+</html>

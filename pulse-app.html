@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pulse — Emergency Response App — Case Study</title>
+<title>Pulse: Emergency Response App Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -143,10 +143,17 @@
   .ec-caption{ display:flex; justify-content:space-between; font-size:10px; color:var(--ink-soft); margin-top:8px; text-transform:uppercase; letter-spacing:0.06em; }
 
   /* interview guide */
-  .interview-guide{ border:1px solid var(--line); background:var(--paper-dim); padding:26px; counter-reset:q; }
-  .ig-header{ display:flex; justify-content:space-between; align-items:baseline; border-bottom:1px solid var(--ink); padding-bottom:10px; margin-bottom:18px; }
+  .interview-guide{ border:1px solid var(--line); background:var(--paper-dim); padding:20px 26px; counter-reset:q; }
+  .interview-guide summary{
+    list-style:none; cursor:pointer; display:flex; align-items:center; gap:10px;
+    font-size:12px; text-transform:uppercase; letter-spacing:0.08em; font-weight:600; color:var(--ink);
+    padding:6px 0;
+  }
+  .interview-guide summary::-webkit-details-marker{ display:none; }
+  .interview-guide summary::before{ content:'+'; font-family:'IBM Plex Mono',monospace; font-size:15px; color:var(--signal); display:inline-block; width:14px; }
+  .interview-guide[open] summary::before{ content:'–'; }
+  .ig-body{ margin-top:16px; padding-top:16px; border-top:1px solid var(--ink); }
   .ig-title{ font-size:12px; text-transform:uppercase; letter-spacing:0.08em; font-weight:600; color:var(--ink); }
-  .ig-version{ font-size:10px; color:var(--ink-soft); }
   .ig-section{ margin-bottom:16px; }
   .ig-section:last-child{ margin-bottom:0; }
   .ig-label{ font-size:10px; text-transform:uppercase; letter-spacing:0.07em; color:var(--signal); margin-bottom:8px; }
@@ -296,11 +303,11 @@
 <main>
 
   <section class="cs-hero">
-    <div class="cs-eyebrow mono"><span>●</span> UI/UX — Mobile App Case Study</div>
-    <h1>Pulse — Emergency Response App</h1>
-    <p>A bystander-to-responder app: one-tap SOS calling, live AI call assistance, step-by-step
-      CPR illustrations, AED wayfinding, and nearby-user alerts — so help arrives from every
-      direction, not just the ambulance.</p>
+    <div class="cs-eyebrow mono"><span>●</span> UI/UX · Mobile App Case Study</div>
+    <h1>Pulse: Emergency Response App</h1>
+    <p>An app that turns any bystander into a responder. One tap calls for help. AI assists the
+      call live. Illustrated steps guide CPR. Nearby users get alerted to bring an AED. Help
+      arrives from every direction, not just the ambulance.</p>
     <div class="cs-meta">
       <div>YEAR <strong>2021</strong></div>
       <div>TOOLS <strong>Figma, Illustrator, Claude</strong></div>
@@ -308,8 +315,8 @@
       <div>TIMELINE <strong>10 weeks</strong></div>
       <div>COMPATIBLE WITH <strong><a href="pulse-dispatch.html" style="border-bottom:1px solid var(--ink-soft);">Pulse Dispatch →</a></strong></div>
     </div>
-    <p class="cs-meta-note mono">Figma and Illustrator carried the original 2021 design work. Claude
-      was brought in later, in 2026, to help update and polish this case study page.</p>
+    <p class="cs-meta-note mono">Figma and Illustrator carried the 2021 design work. Claude helped
+      update this case study page in 2026.</p>
   </section>
 
   <div class="ph ph-hero">
@@ -320,15 +327,14 @@
   <section class="cs-section">
     <div class="cs-num mono">01 / OVERVIEW</div>
     <h2>Bystanders freeze when it matters most</h2>
-    <p class="lede">When someone collapses in public, survival depends on what happens in the first few
-      minutes — long before an ambulance can arrive. Most bystanders freeze in that window: they don't
-      know who to call, what to do while help is on the way, or where the nearest AED is. Pulse turns
-      any bystander into a capable first responder within seconds, using the phone already in their
-      hand — while on the other end of that call, an emergency dispatcher coordinates the response
-      through a companion platform,
+    <p class="lede">When someone collapses in public, survival depends on the first few minutes, long
+      before an ambulance can arrive. Most bystanders freeze. They do not know who to call, what to
+      do while help is on the way, or where the nearest AED is. Pulse turns any bystander into a
+      capable first responder within seconds, using the phone already in their hand. On the other end
+      of that call, an emergency dispatcher coordinates the response through a companion platform,
       <a href="pulse-dispatch.html" style="border-bottom:1px solid var(--ink-soft);">Pulse Dispatch</a>.</p>
     <div class="stat-chart">
-      <div class="chart-label mono">Out-of-hospital cardiac arrest — survival to discharge, by bystander action</div>
+      <div class="chart-label mono">Out of hospital cardiac arrest survival, by bystander action</div>
       <svg viewBox="0 0 620 260" role="img" aria-label="Bar chart: survival rate is under 10 percent with no bystander action, over 40 percent with bystander CPR, and up to 70 percent with bystander CPR and AED used together">
         <line x1="20" y1="210" x2="600" y2="210" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>
 
@@ -348,9 +354,9 @@
         <text x="525" y="244" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">together</text>
       </svg>
       <p class="chart-source mono">Sources:
-        <a href="https://cpr.heart.org/en/resources/cpr-facts-and-stats" target="_blank" rel="noopener">American Heart Association — CPR Facts &amp; Stats</a>,
+        <a href="https://cpr.heart.org/en/resources/cpr-facts-and-stats" target="_blank" rel="noopener">American Heart Association: CPR Facts &amp; Stats</a>,
         <a href="https://www.heart.org/en/news/2024/11/11/starting-bystander-cpr-within-10-minutes-of-cardiac-arrest-may-improve-survival" target="_blank" rel="noopener">heart.org (2024)</a>,
-        <a href="https://www.myheart.org.sg/health/out-of-hospital-cardiac-arrest-statistics/" target="_blank" rel="noopener">Singapore Heart Foundation — OHCA Statistics</a>
+        <a href="https://www.myheart.org.sg/health/out-of-hospital-cardiac-arrest-statistics/" target="_blank" rel="noopener">Singapore Heart Foundation: OHCA Statistics</a>
       </p>
     </div>
   </section>
@@ -359,62 +365,62 @@
   <section class="cs-section">
     <div class="cs-num mono">02 / RESEARCH</div>
     <h2>Understanding the seconds that matter</h2>
-    <p class="lede">Research started with a first-look comparison against MyResponder and SGSecure, the
-      two apps already used for emergencies in Singapore — both landed as visually loud and
-      information-dense on the very first screen. From there, conversations with friends, family, and
-      members of the public (reached partly through social media) surfaced the deeper problem: people
-      didn't know how to start, or what to do once they had.</p>
+    <p class="lede">Research began with a quick comparison against MyResponder and SGSecure, the two
+      apps Singapore already uses for emergencies. Both looked loud and packed with information on the
+      very first screen. Conversations with friends, family, and the public, reached partly through
+      social media, surfaced the real problem: people did not know how to start, or what to do once
+      they had.</p>
     <div class="two-col">
-      <div class="interview-guide">
-        <div class="ig-header">
-          <span class="ig-title mono">Interview Guide</span>
+      <details class="interview-guide">
+        <summary>Interview Guide (9 Questions)</summary>
+        <div class="ig-body">
+          <div class="ig-section">
+            <div class="ig-label mono">Screener</div>
+            <ol>
+              <li>Have you ever witnessed or been present during a medical emergency, such as a collapse, cardiac arrest, or serious injury?</li>
+              <li>Have you used MyResponder or SGSecure before this interview? If so, when and why did you use it?</li>
+            </ol>
+          </div>
+          <div class="ig-section">
+            <div class="ig-label mono">Orientation</div>
+            <ol>
+              <li>Please describe what you would actually do in the first ten seconds of seeing someone collapse.</li>
+              <li>Please be honest. Would you panic, freeze, or act? Why do you think that is the case?</li>
+            </ol>
+          </div>
+          <div class="ig-section">
+            <div class="ig-label mono">Reaction to existing apps</div>
+            <ol>
+              <li>Please open MyResponder or SGSecure now. What is the first thing you notice?</li>
+              <li>Was there ever a moment using it where you felt unsure what to do next?</li>
+            </ol>
+          </div>
+          <div class="ig-section">
+            <div class="ig-label mono">Core</div>
+            <ol>
+              <li>After you have called for help, what do you do while you wait?</li>
+              <li>Do you know any first aid? Would you attempt it on a stranger?</li>
+              <li>Would you know where the nearest AED is right now, without checking?</li>
+            </ol>
+          </div>
+          <div class="ig-section">
+            <div class="ig-label mono">Closing</div>
+            <ol>
+              <li>What is the one thing that would have made you feel more confident in that moment?</li>
+            </ol>
+          </div>
         </div>
-        <div class="ig-section">
-          <div class="ig-label mono">Screener</div>
-          <ol>
-            <li>Have you ever witnessed or been present during a medical emergency, such as a collapse, cardiac arrest, or serious injury?</li>
-            <li>Have you used MyResponder or SGSecure before this interview? If so, when and why did you use it?</li>
-          </ol>
-        </div>
-        <div class="ig-section">
-          <div class="ig-label mono">Orientation</div>
-          <ol>
-            <li>Please describe what you would actually do in the first ten seconds of seeing someone collapse.</li>
-            <li>Please be honest. Would you panic, freeze, or act? Why do you think that is the case?</li>
-          </ol>
-        </div>
-        <div class="ig-section">
-          <div class="ig-label mono">Reaction to existing apps</div>
-          <ol>
-            <li>Please open MyResponder or SGSecure now. What is the first thing you notice?</li>
-            <li>Was there ever a moment using it where you felt unsure what to do next?</li>
-          </ol>
-        </div>
-        <div class="ig-section">
-          <div class="ig-label mono">Core</div>
-          <ol>
-            <li>After you have called for help, what do you do while you wait?</li>
-            <li>Do you know any first aid? Would you attempt it on a stranger?</li>
-            <li>Would you know where the nearest AED is right now, without checking?</li>
-          </ol>
-        </div>
-        <div class="ig-section">
-          <div class="ig-label mono">Closing</div>
-          <ol>
-            <li>What is the one thing that would have made you feel more confident in that moment?</li>
-          </ol>
-        </div>
-      </div>
+      </details>
       <div class="research-inputs">
         <div class="ri-item"><strong>18</strong><span>Friends, family, and public respondents interviewed, reached partly through social media outreach</span></div>
         <div class="ri-item"><strong>11</strong><span>Had used MyResponder or SGSecure before this project</span></div>
-        <div class="ri-item"><strong>7</strong><span>Had never opened either app — interviewed for a first-impression reaction</span></div>
-        <div class="ri-item"><strong>2</strong><span>Existing Singapore emergency apps benchmarked for first-open experience</span></div>
+        <div class="ri-item"><strong>7</strong><span>Had never opened either app before. Interviewed for a first impression</span></div>
+        <div class="ri-item"><strong>2</strong><span>Existing Singapore emergency apps benchmarked for their opening screen</span></div>
       </div>
     </div>
 
     <div class="competitor-row">
-      <p class="competitor-label">Screens from MyResponder and SGSecure — existing competitor apps
+      <p class="competitor-label">Screens from MyResponder and SGSecure, existing competitor apps
         benchmarked in this research.</p>
       <div class="cpr-gallery">
         <div class="shot-frame"><img src="EmergencyNowApp/image 7.png" alt="MyResponder dashboard screen showing registered responder counts, case statistics, a monthly bar chart, and a live incident map all on one screen"></div>
@@ -424,28 +430,28 @@
     <div class="callout">
       <div class="label mono">Why this interface works against you in an emergency</div>
       <ul class="key-decisions">
-        <li>The dashboard opens with close to eight distinct data modules at once — responder counts,
-          case totals, a monthly bar chart, three tabs, and a live map — with no visual hierarchy
-          telling a panicked user which one matters right now.</li>
-        <li>Five bottom-nav icons carry equal visual weight. The actual emergency call button doesn't
-          read as more urgent than "Camera" or "AED" sitting directly next to it.</li>
+        <li>The dashboard opens with close to eight data modules at once: responder counts, case
+          totals, a monthly bar chart, three tabs, and a live map. Nothing tells a panicked user
+          which one matters right now.</li>
+        <li>Five bottom navigation icons carry equal visual weight. The actual emergency call button
+          does not read as more urgent than Camera or AED sitting right next to it.</li>
         <li>Reporting an incident means scrolling through a form: a location field, optional location
-          details, then a separate contact section asking for name, phone number, and email — more
-          fields to parse and decide on before help is even requested.</li>
+          details, then a separate contact section for name, phone number, and email. More fields to
+          parse before help is even requested.</li>
         <li>Statistics like "97,885 registered responders" and monthly case charts are built for
           someone auditing the system after the fact, not someone who witnessed an emergency thirty
           seconds ago and just opened the app.</li>
-        <li>Together, this is cognitive overload by design: too much information competing for
-          attention, and a reporting flow with more steps than the moment can afford — the opposite
-          of the single, streamlined action Pulse's research pointed toward.</li>
+        <li>Together, this is cognitive overload by design. Too much information competes for
+          attention, and the reporting flow has more steps than the moment can afford. That is the
+          opposite of the single, streamlined action Pulse's research pointed toward.</li>
       </ul>
     </div>
 
     <div class="synthesis-block">
       <h3>Synthesis</h3>
-      <p>Eighteen conversations were clustered into four recurring patterns. Together they pointed to
-        one opportunity space — not the moment of noticing danger, and not the arrival of help, but the
-        stretch in between: reporting the incident and giving first aid while waiting. That's where
+      <p>Eighteen conversations clustered into four recurring patterns. Together they pointed to one
+        opportunity space: not the moment of noticing danger, and not the arrival of help, but the
+        stretch in between, reporting the incident and giving first aid while waiting. That is where
         Pulse's SOS flow, live AI call assistance, and CPR guidance are aimed.</p>
       <div class="affinity-board">
         <div class="affinity-cluster" style="--cluster:var(--c1)">
@@ -481,16 +487,16 @@
     <div class="cs-num mono">03 / EMPATHY MAP</div>
     <h2>Two very different mental states, one moment</h2>
     <p class="lede">The same five minutes hold two very different people: the one reporting the
-      incident, and a stranger nearby who's willing to help but hasn't been asked yet. Both surfaced
-      repeatedly in conversations with friends, family, and the public — regardless of whether they'd
-      used an emergency app before.</p>
+      incident, and a stranger nearby who is willing to help but has not been asked yet. Both
+      surfaced repeatedly in conversations with friends, family, and the public, regardless of
+      whether they had used an emergency app before.</p>
     <div class="empathy-grid">
       <div class="empathy-card">
         <div class="tag mono">The Reporter</div>
         <h3>First on the scene</h3>
         <ul>
           <li>Adrenaline is high, thinking narrows to one track</li>
-          <li>Doesn't know how to start — which app, which button, which step</li>
+          <li>Does not know how to start: which app, which button, which step</li>
           <li>Freezes after reporting: unsure whether to wait, move the person, or begin first aid</li>
           <li>Needs constant reassurance that help is actually coming</li>
         </ul>
@@ -499,9 +505,9 @@
         <div class="tag mono">The Nearby Helper</div>
         <h3>Willing, but needs direction</h3>
         <ul>
-          <li>Wants to help but doesn't realize they're needed</li>
+          <li>Wants to help but does not realize they are needed</li>
           <li>Needs a specific, small task, not a general alert</li>
-          <li>Needs confidence they won't make things worse</li>
+          <li>Needs confidence they will not make things worse</li>
           <li>Needs a clear, short route, not just a notification</li>
         </ul>
       </div>
@@ -513,15 +519,15 @@
     <div class="cs-num mono">04 / USER JOURNEY</div>
     <h2>One incident, start to finish</h2>
     <p class="lede">This map exists to answer one question: at which point are people under the most
-      stress, and where can Pulse actually step in? Mapping a single incident start to finish showed
-      stress didn't spike and fade — it stayed high through reporting the incident and through the
-      first-aid wait that followed. That stretch, not the initial shock or the moment help arrives,
-      became the opportunity space for this project.</p>
+      stress, and where can Pulse actually step in? Mapping a single incident from start to finish
+      showed that stress did not spike and fade. It stayed high through reporting the incident and
+      through the first aid wait that followed. That stretch, not the initial shock or the moment
+      help arrives, became the opportunity space for this project.</p>
 
     <div class="emotion-chart">
       <svg viewBox="0 0 620 130" preserveAspectRatio="none" role="img" aria-label="Bystander stress level across the incident, staying high through reporting and first aid and easing only once responders arrive">
         <rect x="94" y="4" width="326" height="114" fill="var(--signal-soft)" opacity="0.6"/>
-        <text x="257" y="17" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" fill="var(--signal)" letter-spacing="0.06em">OPPORTUNITY SPACE — REPORT + FIRST AID</text>
+        <text x="257" y="17" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="9" fill="var(--signal)" letter-spacing="0.06em">OPPORTUNITY SPACE: REPORT + FIRST AID</text>
         <line x1="20" y1="118" x2="600" y2="118" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>
         <polyline points="40,20 148,18 256,45 364,35 472,55 580,110" fill="none" stroke="var(--signal)" stroke-width="1.5"/>
         <circle cx="40" cy="20" r="3.5" fill="var(--signal)"/>
@@ -540,7 +546,7 @@
 
     <div class="journey">
       <div class="journey-step">
-        <div class="step-idx mono">STEP 01 <span class="step-emotion">— SHOCK</span></div>
+        <div class="step-idx mono">STEP 01 <span class="step-emotion">· SHOCK</span></div>
         <div class="ph step-ph">
           <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M4 24c4-8 12-13 20-13s16 5 20 13c-4 8-12 13-20 13S8 32 4 24Z"/>
@@ -548,10 +554,10 @@
           </svg>
         </div>
         <h4>Notices danger</h4>
-        <p>Bystander sees someone in a life-threatening situation.</p>
+        <p>Bystander sees someone whose life is in danger.</p>
       </div>
       <div class="journey-step">
-        <div class="step-idx mono">STEP 02 <span class="step-emotion">— PANIC</span></div>
+        <div class="step-idx mono">STEP 02 <span class="step-emotion">· PANIC</span></div>
         <div class="ph step-ph">
           <svg viewBox="0 0 48 48" fill="none">
             <circle cx="24" cy="24" r="18" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="2 5"/>
@@ -560,10 +566,10 @@
           </svg>
         </div>
         <h4>Reports the incident</h4>
-        <p>Taps the SOS button — one unmistakable action, no menus, no hesitation.</p>
+        <p>Taps the SOS button. One unmistakable action, no menus, no hesitation.</p>
       </div>
       <div class="journey-step">
-        <div class="step-idx mono">STEP 03 <span class="step-emotion">— REASSURANCE</span></div>
+        <div class="step-idx mono">STEP 03 <span class="step-emotion">· REASSURANCE</span></div>
         <div class="ph step-ph">
           <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <rect x="5" y="12" width="38" height="22" rx="6"/>
@@ -574,7 +580,7 @@
         <p>Suggests next steps in real time while help is being contacted.</p>
       </div>
       <div class="journey-step">
-        <div class="step-idx mono">STEP 04 <span class="step-emotion">— STRAIN</span></div>
+        <div class="step-idx mono">STEP 04 <span class="step-emotion">· STRAIN</span></div>
         <div class="ph step-ph">
           <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M24 41C11 32 5 24 5 16.5 5 10.7 9.7 6 15.5 6c3.4 0 6.6 1.6 8.5 4.3C25.9 7.6 29.1 6 32.5 6 38.3 6 43 10.7 43 16.5 43 24 37 32 24 41Z"/>
@@ -582,10 +588,10 @@
           </svg>
         </div>
         <h4>Starts first aid</h4>
-        <p>CPR illustrations guide hands-on care through the longest, most uncertain minutes.</p>
+        <p>CPR illustrations guide direct care through the longest, most uncertain minutes.</p>
       </div>
       <div class="journey-step">
-        <div class="step-idx mono">STEP 05 <span class="step-emotion">— COORDINATION</span></div>
+        <div class="step-idx mono">STEP 05 <span class="step-emotion">· COORDINATION</span></div>
         <div class="ph step-ph">
           <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M22 42S8 28 8 18a14 14 0 1 1 28 0c0 10-14 24-14 24Z"/>
@@ -597,7 +603,7 @@
         <p>Someone closer to an AED is guided to bring it to the scene.</p>
       </div>
       <div class="journey-step">
-        <div class="step-idx mono">STEP 06 <span class="step-emotion">— RELIEF</span></div>
+        <div class="step-idx mono">STEP 06 <span class="step-emotion">· RELIEF</span></div>
         <div class="ph step-ph">
           <svg viewBox="0 0 48 48" fill="none" stroke="var(--ink)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
             <path d="M24 4 8 10v12c0 12 8 19 16 22 8-3 16-10 16-22V10Z"/>
@@ -615,45 +621,46 @@
     <div class="cs-num mono">05 / VISUAL HIERARCHY</div>
     <div class="persona-tag mono">For the Immediate Responder</div>
     <h2>Designing for a panicked thumb</h2>
-    <p class="lede">The SOS button isn't just red and oversized — its position is deliberate. On a
-      phone held one-handed, the thumb's natural resting arc lands roughly in the middle of the
-      screen, slightly above center — not down at the bottom edge, not up near the header. That's
-      exactly where the button sits, because it carries the single highest-hierarchy action on the
+    <p class="lede">The SOS button is not just red and oversized. Its position is deliberate. On a
+      phone held in one hand, the thumb's natural resting arc lands roughly in the middle of the
+      screen, slightly above center, not down at the bottom edge and not up near the header. That is
+      exactly where the button sits, because it carries the single highest priority action on the
       screen, and nothing else is allowed to compete with it for that spot.</p>
 
     <div class="hierarchy-diagram-wrap">
       <div class="thumb-diagram">
-        <img src="EmergencyNowApp/Vector.png" alt="Pulse app home screen with the red SOS button positioned in the thumb's natural one-handed reach zone">
-        <p class="chart-source mono" style="margin-top:10px;">Pulse's home screen — original UI, designed for this project.</p>
+        <img src="EmergencyNowApp/Vector.png" alt="Pulse app home screen with the red SOS button positioned in the thumb's natural reach zone">
+        <p class="chart-source mono" style="margin-top:10px;">Pulse's home screen. Original UI, designed for this project.</p>
       </div>
       <div class="thumb-legend">
         <div class="thumb-legend-item">
           <div class="num">1</div>
-          <p><strong>Natural thumb-reach zone.</strong> With a relaxed one-handed grip, the thumb
-            sweeps through the middle of the screen, slightly above center — not the bottom edge,
+          <p><strong>Natural thumb reach zone.</strong> With a relaxed grip in one hand, the thumb
+            sweeps through the middle of the screen, slightly above center, not the bottom edge and
             not the top. That arc is marked by the dashed line and shaded zone.</p>
         </div>
         <div class="thumb-legend-item">
           <div class="num">2</div>
-          <p><strong>Highest-hierarchy action, easiest reach.</strong> The SOS button sits at the
-            center of that zone. It's the one action every other element on the screen defers to,
+          <p><strong>Highest priority action, easiest reach.</strong> The SOS button sits at the
+            center of that zone. It is the one action every other element on the screen defers to,
             so it gets the position that costs the panicked thumb the least effort.</p>
         </div>
         <div class="thumb-legend-item">
           <div class="num">3</div>
-          <p><strong>Soft red gradient.</strong> Light at the top edge, deeper red toward the
-            bottom, gives the button a raised, pressable surface — a visual cue to push, reinforcing
-            the "hold to activate" instruction beneath it.</p>
+          <p><strong>Soft red gradient.</strong> Light at the top edge and deeper red toward the
+            bottom give the button a raised, pressable surface. It is a visual cue to push,
+            reinforcing the hold to activate instruction beneath it.</p>
         </div>
       </div>
     </div>
 
     <div class="callout">
       <div class="label mono">Design decision</div>
-      <p>An earlier version placed the button lower, closer to the bottom edge, for easier one-handed
-        reach on larger phones. It tested worse — sitting near the bottom, it read as secondary,
-        almost below the fold on smaller screens. Centering it in the natural reach zone kept it
-        reachable without undercutting its priority as the first thing the eye and thumb both land on.</p>
+      <p>An earlier version placed the button lower, closer to the bottom edge, for easier reach
+        with one hand on larger phones. It tested worse. Sitting near the bottom, it read as
+        secondary, almost below the fold on smaller screens. Centering it in the natural reach zone
+        kept it reachable without undercutting its priority as the first thing the eye and thumb
+        both land on.</p>
     </div>
   </section>
 
@@ -663,31 +670,31 @@
     <div class="persona-tag mono">For the Immediate Responder</div>
     <h2>The AI listens, then tells you exactly what to do</h2>
     <p class="lede">While the call is connected, the AI transcribes the conversation in the background
-      and listens for keywords — "cardiac arrest," "heart attack," "not breathing." The moment it
-      catches one, it surfaces the relevant guide as a tappable card, so the responder never has to
-      search for help while they're still on the line with dispatch.</p>
+      and listens for keywords: cardiac arrest, heart attack, not breathing. The moment it catches
+      one, it surfaces the relevant guide as a tappable card, so the responder never has to search
+      for help while still on the line with dispatch.</p>
 
     <div class="hierarchy-diagram-wrap">
       <div class="shot-frame">
-        <img src="EmergencyNowApp/image 18.png" alt="Live call screen showing an ongoing call to 995, nearby AED and first aid locations, and AI-recommended actions: CPR Guide and AED Guide">
+        <img src="EmergencyNowApp/image 18.png" alt="Live call screen showing an ongoing call to 995, nearby AED and first aid locations, and AI recommended actions: CPR Guide and AED Guide">
       </div>
       <div class="thumb-legend">
         <div class="thumb-legend-item">
           <div class="num">1</div>
-          <p><strong>Call status stays visible.</strong> The "On Call" pill and the 995 status card
-            never scroll away — the responder can always see they're still connected, even while
+          <p><strong>Call status stays visible.</strong> The On Call pill and the 995 status card
+            never scroll away. The responder can always see they are still connected, even while
             reading a guide two taps deep.</p>
         </div>
         <div class="thumb-legend-item">
           <div class="num">2</div>
           <p><strong>Nearby resources, always present.</strong> AED Station and First Aid Kit cards
-            stay above the fold regardless of what the AI recommends — location doesn't get buried
+            stay above the fold regardless of what the AI recommends. Location does not get buried
             under suggestions.</p>
         </div>
         <div class="thumb-legend-item">
           <div class="num">3</div>
-          <p><strong>AI-recommended actions, ranked.</strong> "Recommended Actions" only appears once
-            the AI has caught a relevant keyword. CPR Guide is listed first — the higher-urgency
+          <p><strong>AI recommended actions, ranked.</strong> Recommended Actions only appears once
+            the AI has caught a relevant keyword. CPR Guide is listed first, the higher urgency
             match for this call.</p>
         </div>
         <div class="thumb-legend-item">
@@ -700,8 +707,8 @@
     </div>
 
     <p class="lede" style="margin-top:56px; margin-bottom:0;">In this scenario, dispatch tells the responder to begin CPR. They
-      tap the CPR Guide card and move straight into step-by-step illustrations, without ever leaving
-      the call.</p>
+      tap the CPR Guide card and move straight into illustrated steps, without ever leaving the
+      call.</p>
 
     <div class="cpr-gallery">
       <div class="shot-frame"><img src="EmergencyNowApp/image 19.png" alt="CPR Guide step 1, open the airways, and step 2, check for breathing, shown with line illustrations"></div>
@@ -711,19 +718,16 @@
     <div class="callout" style="margin-top:28px;">
       <div class="label mono">Key decisions</div>
       <ul class="key-decisions">
-        <li>Guides open as cards inside the call screen, not as interruptions — the AI never takes
+        <li>Guides open as cards inside the call screen, not as interruptions. The AI never takes
           over the screen or pauses the call to push a suggestion.</li>
-        <li>Every step follows the same template: a numbered orange badge, a short header above the
-          illustration, and a fuller instruction below it. Someone who already knows CPR can skim the
-          headers alone — "Open the Airways," "Check for Breathing" — while someone who doesn't can
-          drop into the line beneath for guidance.</li>
+        <li>Someone who already knows CPR can skim the headers alone, phrases like Open the Airways
+          or Check for Breathing, while someone who does not can drop into the line beneath for
+          guidance.</li>
         <li>Illustrations are simple line art, not photos, to keep visual noise low under stress and
           avoid anything that could read as graphic.</li>
-        <li>The one technique detail most likely to be done wrong — arm position during compressions —
+        <li>The one technique detail most likely to be done wrong, arm position during compressions,
           gets its own solid red callout, visually heavier than the regular instruction text, instead
           of being just another line of body copy.</li>
-        <li>Step badges reuse the same orange as the nearby-resource cards on the call screen, tying
-          the "AI suggested this" moment to the guide it opens.</li>
       </ul>
     </div>
   </section>
@@ -733,16 +737,16 @@
     <div class="cs-num mono">07 / SECONDARY RESPONDER</div>
     <div class="persona-tag mono">For the Secondary Responder</div>
     <h2>A notification, then a choice</h2>
-    <p class="lede">When Pulse detects a nearby emergency, everyone within close proximity — not just
-      the person who reported it — gets a push notification. Accepting it drops the secondary
-      responder straight into what's needed: what's happening, where, and the nearest AED to bring,
-      without asking them to dig for any of it.</p>
+    <p class="lede">When Pulse detects a nearby emergency, everyone within close proximity, not just
+      the person who reported it, gets a push notification. Accepting it drops the secondary
+      responder straight into what is needed: what is happening, where, and the nearest AED to
+      bring, without asking them to dig for any of it.</p>
 
     <div class="hierarchy-diagram-wrap">
       <div class="ph-video shot-frame">
         <video autoplay muted loop playsinline preload="auto">
           <source src="EmergencyNowApp/Viddemo-1.m4v" type="video/mp4">
-          Your browser doesn't support embedded video. <a href="EmergencyNowApp/Viddemo-1.m4v">Download the clip</a> instead.
+          Your browser does not support embedded video. <a href="EmergencyNowApp/Viddemo-1.m4v">Download the clip</a> instead.
         </video>
       </div>
 
@@ -759,12 +763,14 @@
       <div class="label mono">Key decisions</div>
       <ul class="key-decisions">
         <li>Wayfinding to the AED and then to the accident scene hands off to the phone's own native
-          maps app — Apple Maps on iOS, Google Maps on Android — instead of a custom in-app map.</li>
+          maps app, Apple Maps on iOS or Google Maps on Android, instead of a custom map built into
+          Pulse.</li>
         <li>The secondary responder is already fluent in their own phone's navigation: live traffic,
           voice guidance, rerouting. Rebuilding a weaker version of that inside Pulse would only slow
           them down at the exact moment speed matters most.</li>
-        <li>Pulse's own map view stays minimal — just the AED pin and the incident pin — and steps
-          aside once the responder taps "Navigate," rather than competing with tools they already trust.</li>
+        <li>Pulse's own map view stays minimal, just the AED pin and the incident pin, and steps
+          aside once the responder taps Navigate, rather than competing with tools they already
+          trust.</li>
       </ul>
     </div>
   </section>
@@ -773,13 +779,13 @@
   <section class="cs-section">
     <div class="cs-num mono">08 / SYSTEM &amp; STAKEHOLDERS</div>
     <h2>One incident, four people, two very different screens</h2>
-    <p class="lede">The screens so far only tell half the story. Behind every Pulse report are four
-      people, not one: the immediate responder who reports and gives first aid, the emergency
-      dispatcher coordinating on a completely different screen, the secondary responder rushing an
-      AED to the scene, and the ambulance crew taking over on arrival. This section maps how those
-      four people, and their two very different interfaces, fit into a single incident.</p>
+    <p class="lede">The screens so far tell half the story. Behind every Pulse report are four
+      people, not one: the immediate responder reporting and giving first aid, the emergency
+      dispatcher on a different screen entirely, the secondary responder rushing an AED to the
+      scene, and the ambulance crew taking over on arrival. This section maps how those four
+      people, and their two interfaces, fit into a single incident.</p>
 
-    <h3 class="sub-heading">Who's involved</h3>
+    <h3 class="sub-heading">Who is involved</h3>
     <div class="stakeholder-diagram">
       <svg viewBox="0 0 780 370" role="img" aria-label="Diagram showing the immediate responder reporting to the emergency dispatcher, who dispatches the ambulance; the immediate responder also triggers a nearby alert for the secondary responder, and the two meet on scene">
         <defs>
@@ -803,22 +809,22 @@
         <g>
           <rect x="20" y="28" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
           <text x="105" y="55" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Immediate Responder</text>
-          <text x="105" y="72" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Mobile — witnesses &amp; reports</text>
+          <text x="105" y="72" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Mobile · witnesses &amp; reports</text>
         </g>
         <g>
           <rect x="310" y="28" width="170" height="64" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
           <text x="395" y="55" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Emergency Dispatcher</text>
-          <text x="395" y="72" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Desktop — Pulse Dispatch</text>
+          <text x="395" y="72" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Desktop · Pulse Dispatch</text>
         </g>
         <g>
           <rect x="590" y="28" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
           <text x="675" y="55" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Ambulance</text>
-          <text x="675" y="72" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">On-site — takes over care</text>
+          <text x="675" y="72" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">On site · takes over care</text>
         </g>
         <g>
           <rect x="215" y="248" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
           <text x="300" y="275" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Secondary Responder</text>
-          <text x="300" y="292" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Mobile — brings the AED</text>
+          <text x="300" y="292" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Mobile · brings the AED</text>
         </g>
       </svg>
     </div>
@@ -835,7 +841,7 @@
         <ul>
           <li>One large action per screen</li>
           <li>Big touch targets, minimal text</li>
-          <li>Guided, step-by-step</li>
+          <li>Guided, one step at a time</li>
           <li>Designed for a panicked thumb</li>
         </ul>
       </div>
@@ -846,11 +852,11 @@
       <div class="system-panel complex">
         <div class="tag mono">Complexity</div>
         <h3>Desktop App</h3>
-        <p class="sd-sub">Emergency Dispatcher — Pulse Dispatch</p>
+        <p class="sd-sub">Emergency Dispatcher · Pulse Dispatch</p>
         <ul>
           <li>Multiple live calls at once</li>
           <li>Map, transcript &amp; responder status side by side</li>
-          <li>Dense, information-forward</li>
+          <li>Dense, information first</li>
           <li>Built for fast triage under load</li>
         </ul>
         <a href="pulse-dispatch.html" class="system-panel-link mono">View the Pulse Dispatch case study →</a>
@@ -868,7 +874,7 @@
       whoever is closest with an AED, and a single point where both converge back at the scene.</p>
 
     <div class="stakeholder-diagram">
-      <svg viewBox="0 0 800 450" role="img" aria-label="Flow diagram: the immediate responder moves from the home screen to holding the SOS button, to a live AI-assisted call, to the CPR or first aid guide. The live call also sends a proximity notification to the secondary responder, who navigates to and collects the AED, then hands it off at the scene. Both paths converge as responders arrive">
+      <svg viewBox="0 0 800 450" role="img" aria-label="Flow diagram: the immediate responder moves from the home screen to holding the SOS button, to a live AI assisted call, to the CPR or first aid guide. The live call also sends a proximity notification to the secondary responder, who navigates to and collects the AED, then hands it off at the scene. Both paths converge as responders arrive">
         <defs>
           <marker id="flow-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-soft)"/>
@@ -909,7 +915,7 @@
         <g>
           <rect x="590" y="60" width="160" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
           <text x="670" y="87" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">CPR / First Aid</text>
-          <text x="670" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Step-by-step illustrations</text>
+          <text x="670" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Illustrated, step by step</text>
         </g>
 
         <g>
@@ -939,11 +945,11 @@
     <div class="cs-num mono">10 / USABILITY TESTING</div>
     <h2>Testing under simulated stress</h2>
     <p class="lede">Run as a moderated usability study with 9 students recruited across two university
-      courses — a mix of people who'd completed a first-aid module and people who hadn't. Each
+      courses, a mix of people who had completed a first aid module and people who had not. Each
       participant was handed a scenario card and a working Figma prototype, then asked to think aloud
-      while completing three tasks: report an incident, follow the CPR guide, and find the nearest AED.
-      A visible countdown timer and a low ambient-noise track ran in the background of every session —
-      a simple, low-cost way to approximate time pressure without simulating real danger.</p>
+      while completing three tasks: report an incident, follow the CPR guide, and find the nearest
+      AED. A visible countdown timer and a low ambient noise track ran in the background of every
+      session, a simple, low cost way to approximate time pressure without simulating real danger.</p>
 
     <div class="test-gallery">
       <figure class="test-shot">
@@ -953,11 +959,11 @@
       </figure>
       <figure class="test-shot">
         <div class="shot-frame"><img src="EmergencyNowApp/Group 58.png" alt="A participant performing chest compressions on a test partner while following the CPR Guide on screen"></div>
-        <figcaption>Mid-task: chest compressions on a (very willing) test partner, paced by the on-screen
-          CPR steps and the red "keep shoulders over hands" callout.</figcaption>
+        <figcaption>Midway through the task: chest compressions on a very willing test partner,
+          paced by the CPR steps on screen and the red keep shoulders over hands callout.</figcaption>
       </figure>
       <figure class="test-shot">
-        <div class="shot-frame"><img src="EmergencyNowApp/Group 57.png" alt="A participant using turn-by-turn navigation to walk to a nearby AED station, 30 metres away"></div>
+        <div class="shot-frame"><img src="EmergencyNowApp/Group 57.png" alt="A participant using turn by turn navigation to walk to a nearby AED station, 30 metres away"></div>
         <figcaption>Wayfinding task: walking the AED route using the phone's own native maps app, 30
           metres out from the nearest station.</figcaption>
       </figure>
@@ -965,8 +971,8 @@
 
     <div class="research-inputs" style="margin-bottom:36px;">
       <div class="ri-item"><strong>9</strong><span>Student participants, recruited across two university courses</span></div>
-      <div class="ri-item"><strong>3</strong><span>Tasks per session — report an incident, follow the CPR guide, find the nearest AED</span></div>
-      <div class="ri-item"><strong>2</strong><span>Prototype rounds tested — low-fidelity wireframes, then the high-fidelity build</span></div>
+      <div class="ri-item"><strong>3</strong><span>Tasks per session: report an incident, follow the CPR guide, find the nearest AED</span></div>
+      <div class="ri-item"><strong>2</strong><span>Prototype rounds tested: low fidelity wireframes, then the high fidelity build</span></div>
     </div>
 
     <div class="stat-row">
@@ -980,16 +986,16 @@
       </div>
       <div class="stat">
         <div class="num mono">4.6/5</div>
-        <div class="lbl">Post-task confidence rating, up from 3.0/5 before the redesign</div>
+        <div class="lbl">Confidence rating after the task, up from 3.0/5 before the redesign</div>
       </div>
     </div>
 
     <div class="callout" style="margin-top:28px;">
       <div class="label mono">What changed between rounds</div>
-      <p>System Usability Scale (SUS) score moved from 58 — borderline "OK" — to 84, solidly in
-        "excellent" territory. The two biggest contributors: replacing the wireframe's three-tap SOS
-        confirmation with a single hold-to-activate button, and moving the CPR guide's detailed
-        instructions to sit directly below a short header instead of behind a separate "Learn More" tap.</p>
+      <p>System Usability Scale score moved from 58, borderline OK, to 84, solidly in excellent
+        territory. The two biggest contributors: replacing the wireframe's three tap SOS confirmation
+        with a single hold to activate button, and moving the CPR guide's detailed instructions to
+        sit directly below a short header instead of behind a separate Learn More tap.</p>
     </div>
   </section>
 
@@ -999,16 +1005,16 @@
     <h2>What this system makes possible</h2>
     <div class="outcome-box">
       <h3 class="sub-heading">Summary</h3>
-      <p>Pulse started from a simple observation: the ambulance was never the delay, the moment
+      <p>Pulse started from a simple observation. The ambulance was never the delay. The moment
         before anyone acted was. Research with eighteen people in Singapore, benchmarked against
-        MyResponder and SGSecure, pointed to a specific opportunity space — the stretch between
-        reporting an incident and getting through the first-aid wait, not the initial shock or the
-        moment help finally arrives. Everything in the final design traces back to that: a home
-        screen built around a single, thumb-reachable SOS button; a live call that listens for
-        medical keywords and surfaces CPR or AED guidance without the responder ever leaving it; and
-        a second flow that quietly recruits whoever is closest with an AED, guided there by their own
+        MyResponder and SGSecure, pointed to a specific opportunity space: the stretch between
+        reporting an incident and getting through the first aid wait, not the initial shock or the
+        moment help finally arrives. Everything in the final design traces back to that. A home
+        screen built around a single SOS button within thumb's reach. A live call that listens for
+        medical keywords and surfaces CPR or AED guidance without the responder ever leaving it. A
+        second flow that quietly recruits whoever is closest with an AED, guided there by their own
         phone's native maps. On the other end of the same incident sits Pulse Dispatch, the desktop
-        counterpart built for the emergency dispatcher managing multiple calls at once — proof that
+        counterpart built for the emergency dispatcher managing multiple calls at once. Proof that
         the mobile app's simplicity and the console's density are two expressions of one system,
         not two separate products.</p>
       <p>A moderated usability study with nine university students backed the direction: time to
@@ -1016,19 +1022,19 @@
         wayfinding flow rose from 61% to 94%, and the System Usability Scale score moved from a
         borderline 58 to an excellent 84 between prototype rounds.</p>
 
-      <h3 class="sub-heading" style="margin-top:20px;">What's Next</h3>
+      <h3 class="sub-heading" style="margin-top:20px;">What Comes Next</h3>
       <ul class="key-decisions">
-        <li>The AI listener is still a UX exploration, not a working system — the actual
-          keyword-detection and triage algorithm behind it would need real development with
-          clinicians and NLP engineers before it could be trusted on a live call.</li>
+        <li>The AI listener is still a UX exploration, not a working system. The actual keyword
+          detection and triage algorithm behind it would need real development with clinicians and
+          NLP engineers before it could be trusted on a live call.</li>
         <li>Every screen in this case study is English only, which does not reflect Singapore.
-          Multi-language support, Mandarin, Malay, and Tamil at minimum, is close to a requirement
-          here, not a nice-to-have.</li>
+          Support for multiple languages, Mandarin, Malay, and Tamil at minimum, is close to a
+          requirement here, not a bonus.</li>
         <li>The entire interface only exists in a light theme. A dark mode would matter in exactly
-          the low-light, nighttime scenarios this app is designed for.</li>
-        <li>The guidance library only covers cardiac emergencies right now. I would want to expand it
-          to other situations — starting with fire: where the nearest extinguisher is, and how to
-          use it — so Pulse is useful beyond one kind of emergency.</li>
+          the low light, nighttime scenarios this app is designed for.</li>
+        <li>The guidance library only covers cardiac emergencies right now. I would want to expand
+          it to other situations, starting with fire: where the nearest extinguisher is, and how to
+          use it, so Pulse is useful beyond one kind of emergency.</li>
       </ul>
     </div>
   </section>
@@ -1037,7 +1043,7 @@
     <a href="index.html" class="back-link mono">← Back to all work</a>
     <a href="pulse-dispatch.html" class="next-project mono">
       NEXT PROJECT
-      <strong>Pulse Dispatch — Web Console →</strong>
+      <strong>Pulse Dispatch · Web Console →</strong>
     </a>
   </div>
 
@@ -1045,7 +1051,7 @@
 
 <footer class="site-footer">
   <span class="mono">© 2026 DAVID NG</span>
-  <span class="mono">CASE STUDY — PULSE</span>
+  <span class="mono">CASE STUDY · PULSE</span>
 </footer>
 
 </body>

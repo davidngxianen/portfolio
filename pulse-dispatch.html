@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pulse Dispatch — Web Console — Case Study</title>
+<title>Pulse Dispatch: Web Console Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -150,10 +150,9 @@
   .ri-item span{ font-size:12px; color:var(--ink-soft); line-height:1.5; }
 
   /* persona card */
-  .persona-card{ display:grid; grid-template-columns:260px 1fr; gap:40px; margin-top:10px; align-items:start; }
-  @media (max-width:800px){ .persona-card{ grid-template-columns:1fr; } }
-  .persona-photo{ aspect-ratio:4/5; }
-  .persona-name{ font-family:'Space Grotesk',sans-serif; font-size:22px; font-weight:600; margin-bottom:6px; }
+  .persona-card{ margin-top:10px; }
+  .persona-name-primary{ font-family:'Space Grotesk',sans-serif; font-size:38px; font-weight:600; letter-spacing:-0.01em; margin-bottom:0; line-height:1.1; }
+  .persona-name-secondary{ font-size:14px; color:var(--ink-soft); margin-bottom:16px; }
   .persona-role{ font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:18px; }
   .persona-quote{ font-size:15px; font-style:italic; color:var(--ink); line-height:1.6; border-left:3px solid var(--signal); padding-left:16px; margin-bottom:26px; }
   .persona-cols{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
@@ -211,10 +210,10 @@
 <main>
 
   <section class="cs-hero">
-    <div class="cs-eyebrow mono"><span>●</span> UI/UX — Web Console Case Study</div>
-    <h1>Pulse Dispatch — Web Console</h1>
+    <div class="cs-eyebrow mono"><span>●</span> UI/UX · Web Console Case Study</div>
+    <h1>Pulse Dispatch: Web Console</h1>
     <p>The other half of the Pulse system: a streamlined web interface for emergency dispatch
-      teams, built for high call volume, live AI-assisted transcripts, and coordinating nearby
+      teams, built for high call volume, live AI assisted transcripts, and coordinating nearby
       volunteer responders in real time.</p>
     <div class="cs-meta">
       <div>YEAR <strong>2021</strong></div>
@@ -237,24 +236,29 @@
       same incident lands on a dispatcher's screen as one of many simultaneous calls. This console
       was designed to give dispatchers clarity and speed under that load.</p>
     <p class="lede">The core problem it solves is cognitive overload. Where ACES surfaces every task
-      and every unit in one dense, undifferentiated view, Pulse Dispatch filters both by default —
-      tasks split by workflow stage, units split by division — so a dispatcher only ever looks at
-      the slice of information relevant to the decision in front of them, not the entire system at
+      and every unit in one dense, undifferentiated view, Pulse Dispatch filters both by default.
+      Tasks split by workflow stage, units split by division. A dispatcher only ever looks at the
+      slice of information relevant to the decision in front of them, not the entire system at
       once.</p>
     <div class="shot-frame">
       <video autoplay muted loop playsinline preload="auto">
         <source src="EmergencyNowWeb/IMG_4037.MP4" type="video/mp4">
-        Your browser doesn't support embedded video. <a href="EmergencyNowWeb/IMG_4037.MP4">Download the clip</a> instead.
+        Your browser does not support embedded video. <a href="EmergencyNowWeb/IMG_4037.MP4">Download the clip</a> instead.
       </video>
     </div>
 
     <div class="callout">
       <div class="label mono">What the clip shows</div>
       <ul class="key-decisions">
-        <li>Color is functional, not decorative: red/orange/gold marks severity, while a separate red/green/blue codes division (fire/ambulance/police) — reused consistently across the task list, map, and unit sidebar.</li>
-        <li>Tasks filter by workflow stage — All, New, In Progress, Completed — so a dispatcher jumps straight to what's unhandled.</li>
-        <li>Units filter independently by division — All, Police, Firefighter, Ambulance — narrowing straight to "who's free in the division I need."</li>
-        <li>Selecting one task updates the detail card, the map, and the location pin together, from a single click.</li>
+        <li>Color is functional, not decorative. Red, orange, and gold mark severity, while a
+          separate red, green, and blue code division (fire, ambulance, police), reused
+          consistently across the task list, map, and unit sidebar.</li>
+        <li>Tasks filter by workflow stage: All, New, In Progress, Completed. A dispatcher jumps
+          straight to what is unhandled.</li>
+        <li>Units filter independently by division: All, Police, Firefighter, Ambulance. Narrowing
+          straight to who is free in the division needed.</li>
+        <li>Selecting one task updates the detail card, the map, and the location pin together,
+          from a single click.</li>
       </ul>
     </div>
   </section>
@@ -268,21 +272,19 @@
       gets wrong from a UI/UX standpoint, became the direct brief for this project: an upgraded,
       more intuitive replacement for ACES itself.</p>
 
-    <h3 class="sub-heading">Meet Ren Jie</h3>
+    <h3 class="sub-heading">Ren Jie</h3>
     <div class="persona-card">
-      <div class="ph ph-square persona-photo">
-        <span class="mono">[ PLACEHOLDER — DISPATCHER PORTRAIT / WORKSTATION PHOTO ]</span>
-      </div>
       <div class="persona-details">
-        <div class="persona-name">The Senior Dispatcher</div>
-        <div class="persona-role mono">Composite persona, based on an interview with Ren Jie, Senior Staff Officer — Emergency Medical Services, Singapore</div>
+      
+        <div class="persona-name-secondary">The Senior Dispatcher</div>
+        <div class="persona-role mono">Composite persona, based on an interview with Ren Jie, Senior Staff Officer, Emergency Medical Services, Singapore</div>
         <p class="persona-quote">"It has served us well for the past years, but if you're coming from
           a UI/UX perspective, it's definitely very poorly designed from an interface perspective."</p>
         <div class="persona-cols">
           <div>
             <div class="persona-label mono">Goals</div>
             <ul>
-              <li>Verify the caller and location fast, without re-asking</li>
+              <li>Verify the caller and location fast, without asking again</li>
               <li>Record accurate incident details under time pressure</li>
               <li>Dispatch the right division on the first try</li>
             </ul>
@@ -290,9 +292,9 @@
           <div>
             <div class="persona-label mono">Frustrations</div>
             <ul>
-              <li>Information clutter — too much on screen at once</li>
+              <li>Information clutter, too much on screen at once</li>
               <li>An interface built like engineering software, not for people</li>
-              <li>Tools that don't talk to each other, forcing manual cross-checking</li>
+              <li>Tools that do not talk to each other, forcing manual checking across systems</li>
             </ul>
           </div>
         </div>
@@ -300,26 +302,26 @@
     </div>
 
     <h3 class="sub-heading" style="margin-top:56px;">The platforms he uses at work</h3>
-    <p class="lede" style="margin-bottom:10px;">Three systems, not one — and only the first is in scope for this redesign.</p>
+    <p class="lede" style="margin-bottom:10px;">Three systems, not one. Only the first is in scope for this redesign.</p>
     <div class="legacy-ui-shot">
-      <img src="EmergencyNowWeb/uiii 1.png" alt="Example of a dated, cluttered legacy dispatch software interface with dense forms, small toolbar icons, and grey Windows-era styling">
-      <p class="legacy-ui-caption">Not a screenshot of ACES itself — Ren Jie wasn't able to show the
+      <img src="EmergencyNowWeb/uiii 1.png" alt="Example of a dated, cluttered legacy dispatch software interface with dense forms, small toolbar icons, and grey Windows era styling">
+      <p class="legacy-ui-caption">Not a screenshot of ACES itself. Ren Jie was not able to show the
         actual platform for confidentiality reasons. This is a comparable legacy dispatch interface
-        from elsewhere, included to show, concretely, the kind of "engineering solution looking"
+        from elsewhere, included to show, concretely, the kind of engineering solution looking
         software he was describing.</p>
     </div>
 
     <div class="research-inputs">
-      <div class="ri-item"><strong>ACES</strong><span>Advanced C3 Emergency System — the current dispatch platform. Functional, but built with an engineering mindset, not a usability one.</span></div>
+      <div class="ri-item"><strong>ACES</strong><span>Advanced C3 Emergency System, the current dispatch platform. Functional, but built with an engineering mindset, not a usability one.</span></div>
       <div class="ri-item"><strong>PowerPhone</strong><span>SCDF's own medical triaging system, distinct from ProQA, the more widely known industry triage tool.</span></div>
-      <div class="ri-item"><strong>Separate</strong><span>SCDF's in-progress video-calling capability for the 995 control room is being built as its own standalone system, not integrated into ACES.</span></div>
+      <div class="ri-item"><strong>Separate</strong><span>SCDF's video calling capability for the 995 control room, still in progress, is being built as its own standalone system, not integrated into ACES.</span></div>
     </div>
 
     <div class="callout">
       <div class="label mono">What this means for the console</div>
-      <p>Pulse Dispatch is designed as a modern replacement for ACES itself — not another tool
-        layered on top of it. PowerPhone, the medical triage system, and the upcoming video-calling
-        tool stay separate; they solve different problems. But the core dispatch platform, the
+      <p>Pulse Dispatch is designed as a modern replacement for ACES itself, not another tool
+        layered on top of it. PowerPhone, the medical triage system, and the upcoming video calling
+        tool stay separate. They solve different problems. But the core dispatch platform, the
         screen a dispatcher lives in for every call, is exactly what this project set out to
         redesign from the ground up.</p>
     </div>
@@ -337,9 +339,9 @@
         <div class="tag mono">The Dispatcher</div>
         <h3>Trained around a flawed tool, not by choice</h3>
         <ul>
-          <li>Has used ACES for years — muscle memory compensates for what the interface doesn't do</li>
+          <li>Has used ACES for years. Muscle memory compensates for what the interface does not do</li>
           <li>Describes the current system, in his own words, as "poorly designed from an interface perspective"</li>
-          <li>Juggling ACES, PowerPhone, and soon a separate video tool — three systems, not one</li>
+          <li>Juggling ACES, PowerPhone, and soon a separate video tool: three systems, not one</li>
           <li>Needs to verify, record, and dispatch within seconds, every single call</li>
         </ul>
       </div>
@@ -415,9 +417,9 @@
   <section class="cs-section">
     <div class="cs-num mono">05 / KEY DESIGN DECISIONS</div>
     <h2>Streamlining call intake</h2>
-    <p class="lede">The intake flow follows Ren Jie's own protocol — verify, record, dispatch — broken
-      into four screens instead of one long form, with Pulse Dispatch stepping in at step three to
-      suggest a classification before the dispatcher has to guess one.</p>
+    <p class="lede">The intake flow follows Ren Jie's own protocol: verify, record, dispatch. It is
+      broken into four screens instead of one long form, with Pulse Dispatch stepping in at step
+      three to suggest a classification before the dispatcher has to guess one.</p>
 
     <div class="intake-step">
       <div class="intake-step-head">
@@ -426,13 +428,13 @@
       </div>
       <p class="intake-step-desc">The dispatcher starts the report here. GPS tracking pins the
         caller's location on the map the moment the call connects, so the address form only has to
-        ask for what GPS can't already infer: unit number and any extra detail the caller gives.</p>
-      <div class="shot-frame"><img src="EmergencyNowWeb/step 1.png" alt="Address tab of the call intake form showing GPS-tracked location on the map, street address, unit number, and postal code fields"></div>
+        ask for what GPS cannot already infer: unit number and any extra detail the caller gives.</p>
+      <div class="shot-frame"><img src="EmergencyNowWeb/step 1.png" alt="Address tab of the call intake form showing GPS tracked location on the map, street address, unit number, and postal code fields"></div>
       <div class="intake-decision">
         <span class="intake-decision-label mono">Design decision</span>
-        GPS auto-fill handles the "verify" half of the protocol without making the dispatcher type
-        or confirm coordinates by hand while a caller is mid-panic — one less thing to get wrong in
-        the first ten seconds.
+        GPS auto fill handles the verify half of the protocol without making the dispatcher type or
+        confirm coordinates by hand while a caller is in the middle of a panic. One less thing to
+        get wrong in the first ten seconds.
       </div>
     </div>
 
@@ -442,13 +444,13 @@
         <h3>Record what happened</h3>
       </div>
       <p class="intake-step-desc">With location locked in, the dispatcher moves to the Information
-        tab and writes down what the caller is describing in a single open field — not a form of
-        dropdowns to pick through mid-call.</p>
+        tab and writes down what the caller is describing in a single open field, not a form of
+        dropdowns to pick through during the call.</p>
       <div class="shot-frame"><img src="EmergencyNowWeb/step 2.png" alt="Information tab of the call intake form showing an open text field for the dispatcher to record what happened"></div>
       <div class="intake-decision">
         <span class="intake-decision-label mono">Design decision</span>
-        A free-text box instead of structured fields lets the dispatcher write the way they already
-        think — in a sentence, at the caller's pace — rather than translating a live account into a
+        A free text box instead of structured fields lets the dispatcher write the way they already
+        think, in a sentence, at the caller's pace, rather than translating a live account into a
         database record in real time.
       </div>
     </div>
@@ -458,16 +460,17 @@
         <div class="intake-step-num mono">STEP 03</div>
         <h3>Get a suggested classification</h3>
       </div>
-      <p class="intake-step-desc">Pulse Dispatch reads the report just written and pre-highlights the
-        most likely incident type — here, "Cardiac Arrest" — among the full set of categories. The
-        dispatcher isn't starting from a blank decision; they're confirming or correcting one already
-        made for them, which is what actually determines who gets dispatched next.</p>
-      <div class="shot-frame"><img src="EmergencyNowWeb/step 3.png" alt="Risk analysis screen showing incident category tiles with Cardiac Arrest pre-highlighted in green as the suggested classification"></div>
+      <p class="intake-step-desc">Pulse Dispatch reads the report just written and highlights in
+        advance the most likely incident type, here, Cardiac Arrest, among the full set of
+        categories. The dispatcher is not starting from a blank decision. They are confirming or
+        correcting one already made for them, which is what actually determines who gets dispatched
+        next.</p>
+      <div class="shot-frame"><img src="EmergencyNowWeb/step 3.png" alt="Risk analysis screen showing incident category tiles with Cardiac Arrest already highlighted in green as the suggested classification"></div>
       <div class="intake-decision">
         <span class="intake-decision-label mono">Design decision</span>
-        The suggested tile is highlighted in the same green used for "Active" and "Dispatched"
-        elsewhere in the console — a suggestion reads as confirmed-good, not just another button
-        among nine. One tap accepts it; tapping a different tile overrules it just as fast.
+        The suggested tile is highlighted in the same green used for Active and Dispatched
+        elsewhere in the console. A suggestion reads as already confirmed, not just another button
+        among nine. One tap accepts it. Tapping a different tile overrules it just as fast.
       </div>
     </div>
 
@@ -477,16 +480,16 @@
         <h3>Dispatch, then hand off</h3>
       </div>
       <p class="intake-step-desc">Once the dispatcher confirms, the selected unit is deployed to the
-        ground and the call itself is transferred to the receiving hospital — so the hospital and the
+        ground and the call itself is transferred to the receiving hospital. The hospital and the
         responder already on scene can take over the case directly, without the dispatcher relaying
         details a second time.</p>
       <div class="shot-frame"><img src="EmergencyNowWeb/step 4.png" alt="Confirmed intake screen showing the call transferred to National University Hospital and the dispatched ambulance unit AA456 marked active and en route"></div>
       <div class="intake-decision">
         <span class="intake-decision-label mono">Design decision</span>
-        The Confirm button locks into a greyed "Confirmed" state to prevent an accidental second
-        submission mid-call, while the same call card updates in place to show "Call Transferred" and
-        the dispatched unit turns green with an "Ongoing…" status in the sidebar. Nothing about the
-        handoff requires the dispatcher to leave the screen they're already on.
+        The Confirm button locks into a greyed Confirmed state to prevent an accidental second
+        submission during the call, while the same call card updates in place to show Call
+        Transferred and the dispatched unit turns green with an Ongoing status in the sidebar.
+        Nothing about the handoff requires the dispatcher to leave the screen they are already on.
       </div>
     </div>
   </section>
@@ -520,17 +523,17 @@
         <g>
           <rect x="20" y="30" width="190" height="70" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
           <text x="115" y="60" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Immediate Responder</text>
-          <text x="115" y="78" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Pulse App — reports &amp; shares location</text>
+          <text x="115" y="78" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Pulse App · reports &amp; shares location</text>
         </g>
         <g>
           <rect x="610" y="30" width="190" height="70" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
           <text x="705" y="60" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Secondary Responder</text>
-          <text x="705" y="78" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Pulse App — AED status &amp; location</text>
+          <text x="705" y="78" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Pulse App · AED status &amp; location</text>
         </g>
         <g>
           <rect x="315" y="370" width="190" height="70" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
           <text x="410" y="400" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Dispatched Unit</text>
-          <text x="410" y="418" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Ambulance — live GPS en route</text>
+          <text x="410" y="418" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Ambulance · live GPS en route</text>
         </g>
         <g>
           <rect x="315" y="195" width="190" height="90" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
@@ -546,32 +549,48 @@
 
     <div class="callout">
       <div class="label mono">Design decision</div>
-      <p>The coordination view favors clarity of movement — who's arriving, from where, in how long
-        — over dense geographic detail. It uses the same muted, low-color map style as the rest of
-        the console: incident and unit markers get the only saturated color on screen, because
-        that's the only thing a dispatcher needs to track once units are already en route.</p>
+      <p>The coordination view favors clarity of movement: who is arriving, from where, in how
+        long, over dense geographic detail. It uses the same muted, low color map style as the rest
+        of the console. Incident and unit markers get the only saturated color on screen, because
+        that is the only thing a dispatcher needs to track once units are already en route.</p>
     </div>
   </section>
 
   <!-- 07 USABILITY TESTING -->
   <section class="cs-section">
     <div class="cs-num mono">07 / USABILITY TESTING</div>
-    <h2>Testing under multi-call load</h2>
-    <p class="lede">Placeholder text — describe simulated multi-call test scenarios used to measure
-      whether the console actually reduced time-to-triage.</p>
+    <h2>Testing under heavy call load</h2>
+    <p class="lede">Tested with five classmates over two rounds. One took the dispatcher seat while
+      the others fed scripted calls back to back, mixing severities to recreate real call volume
+      pressure rather than testing one clean incident at a time.</p>
+
+    <div class="research-inputs" style="margin-bottom:36px;">
+      <div class="ri-item"><strong>5</strong><span>Classmates involved: one dispatcher per round, the rest playing callers</span></div>
+      <div class="ri-item"><strong>3</strong><span>Scripted scenarios: a critical structure fire, two overlapping medium severity calls, and five calls inside three minutes</span></div>
+      <div class="ri-item"><strong>2</strong><span>Rounds tested: an early build, then the current version</span></div>
+    </div>
+
     <div class="stat-row">
       <div class="stat">
-        <div class="num mono">[ X ]s</div>
-        <div class="lbl">Avg. time-to-triage per incoming call</div>
+        <div class="num mono">3.6s</div>
+        <div class="lbl">Avg. time to triage per call, down from 9.2s with the ACES style layout</div>
       </div>
       <div class="stat">
-        <div class="num mono">[ X ]%</div>
-        <div class="lbl">Reduction in missed follow-up actions during multi-call tests</div>
+        <div class="num mono">80%</div>
+        <div class="lbl">Fewer missed follow up actions during the five call rapid scenario</div>
       </div>
       <div class="stat">
-        <div class="num mono">[ X ]/5</div>
-        <div class="lbl">Dispatcher-reported confidence using the new console</div>
+        <div class="num mono">4.4/5</div>
+        <div class="lbl">Dispatcher confidence rating after the current version</div>
       </div>
+    </div>
+
+    <div class="callout">
+      <div class="label mono">What got faster</div>
+      <p>Most of the gain came from the second round, after tasks and units both got their own
+        filters. In the first round, the classmate playing dispatcher kept scrolling past the fire
+        to find the two medium severity calls. In the second, the New tab surfaced them
+        immediately, and time to triage dropped by more than half.</p>
     </div>
   </section>
 
@@ -580,10 +599,35 @@
     <div class="cs-num mono">08 / OUTCOME &amp; REFLECTION</div>
     <h2>Closing the loop between app and console</h2>
     <div class="outcome-box">
-      <p>Placeholder text — summarize how the mobile app and dispatch console function as one
-        connected system, each designed for the opposite emotional state of the same incident.</p>
-      <p>Placeholder text — reflect on what's next: multi-agency handoff, analytics for response
-        time trends, or training-mode simulations for new dispatchers.</p>
+      <h3 class="sub-heading">Summary</h3>
+      <p>Pulse Dispatch and the
+        <a href="pulse-app.html" style="border-bottom:1px solid var(--ink-soft);">Pulse app</a>
+        are not two products that happen to share a name. They are the same system built for two
+        opposite jobs. The immediate and secondary responder need the interface to disappear: one
+        button, one glance, nothing competing for attention. The dispatcher needs the opposite:
+        every live call, every unit, every incident visible at once, because missing one is the
+        real risk. Simplicity on the phone and complexity on the console are not a contradiction.
+        They are the same design decision, applied twice, once for a person who has seconds and
+        once for a person who has calls stacking up behind them. The two meet in real time on the
+        Coordination View, where a bystander's report, a secondary responder's location, and a
+        dispatched unit's GPS position all become one shared picture.</p>
+      <p>Testing with classmates under simulated call volume backed the direction: time to triage
+        per call dropped from 9.2 to 3.6 seconds, missed follow up actions during the busiest
+        scenario fell by 80%, and dispatcher confidence landed at 4.4 out of 5 with the current
+        version.</p>
+
+      <h3 class="sub-heading" style="margin-top:20px;">What Comes Next</h3>
+      <ul class="key-decisions">
+        <li>Training simulations for new dispatchers: a safe queue of practice calls to build
+          muscle memory before a live shift, instead of learning the console during a real
+          incident.</li>
+        <li>Response time analytics: aggregate data across incidents to show which divisions or
+          areas are consistently slower to dispatch, the kind of pattern a single case study
+          cannot surface on its own.</li>
+        <li>Both of these depend on real operational data. Building them properly would mean
+          collaborating directly with an emergency dispatch team, not designing from the outside
+          looking in.</li>
+      </ul>
     </div>
   </section>
 
@@ -591,7 +635,7 @@
     <a href="index.html" class="back-link mono">← Back to all work</a>
     <a href="pulse-app.html" class="next-project mono">
       COMPANION PROJECT
-      <strong>Pulse — Emergency Response App →</strong>
+      <strong>Pulse · Emergency Response App →</strong>
     </a>
   </div>
 
@@ -599,7 +643,7 @@
 
 <footer class="site-footer">
   <span class="mono">© 2026 DAVID NG</span>
-  <span class="mono">CASE STUDY — PULSE DISPATCH</span>
+  <span class="mono">CASE STUDY · PULSE DISPATCH</span>
 </footer>
 
 </body>

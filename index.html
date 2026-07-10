@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio — Industrial &amp; Product Design</title>
+<title>Portfolio: Industrial &amp; Product Design</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -39,55 +39,6 @@
 
   a{color:inherit;text-decoration:none;}
 
-  /* ---------- ruler rail ---------- */
-  .rail{
-    position:fixed;
-    left:0; top:0; bottom:0;
-    width:34px;
-    border-right:1px solid var(--line);
-    z-index:50;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    padding:20px 0;
-    background:var(--paper);
-  }
-  .rail-progress{
-    position:absolute;
-    left:-1px; top:0;
-    width:2px;
-    background:var(--signal);
-    height:0%;
-    transition:height .05s linear;
-  }
-  .rail-label{
-    writing-mode:vertical-rl;
-    transform:rotate(180deg);
-    font-size:10px;
-    color:var(--ink-soft);
-    letter-spacing:0.15em;
-  }
-  .rail-ticks{
-    flex:1;
-    width:100%;
-    position:relative;
-    margin:16px 0;
-  }
-  .tick{
-    position:absolute;
-    right:0;
-    width:8px;
-    height:1px;
-    background:var(--line);
-  }
-  .tick.major{width:14px;background:var(--ink-soft);}
-
-  @media (max-width:760px){ .rail{display:none;} }
-
-  .wrap{
-    margin-left:34px;
-  }
-  @media (max-width:760px){ .wrap{margin-left:0;} }
 
   section{
     padding:0 6vw;
@@ -161,6 +112,7 @@
     line-height:1.6;
     color:var(--ink-soft);
   }
+  .hero-sub p + p{ margin-top:16px; }
   .hero-meta{
     display:flex;
     gap:48px;
@@ -479,13 +431,6 @@
 </head>
 <body>
 
-<div class="rail">
-  <div class="rail-progress" id="railProgress"></div>
-  <span class="rail-label mono">SCROLL</span>
-  <div class="rail-ticks" id="rticks"></div>
-  <span class="rail-label mono">001</span>
-</div>
-
 <div class="wrap">
 
   <header>
@@ -496,6 +441,7 @@
           <li><a href="#work">Work</a></li>
           <li><a href="#about">About</a></li>
           <li><a href="#contact">Contact</a></li>
+          <li><a href="Resume - David.pdf" target="_blank" rel="noopener">Resume</a></li>
         </ul>
       </nav>
     </div>
@@ -504,14 +450,18 @@
   <section class="hero">
     <div class="crosshair"></div>
     <div class="hero-eyebrow mono">
-      <span class="dot"></span> AVAILABLE FOR NEW PROJECTS — 2026
+      <span class="dot"></span> AVAILABLE FOR NEW PROJECTS OR WORK · 2026
     </div>
     <h1>Objects, interfaces,<br>and the systems<br>between them.</h1>
-    <p class="hero-sub">
-      I'm an industrial designer working across physical products and digital interfaces —
-      from injection-molded hardware to the screens that control it. This is a working
-      archive of that practice.
-    </p>
+    <div class="hero-sub">
+      <p>Hi, I am David, an Industrial Designer from Singapore.</p>
+      <p>I design products across both the physical and digital world. From injection moulded
+        hardware to the interfaces that power them.</p>
+      <p>This portfolio documents nearly a decade of my design journey, bringing together selected
+        academic and professional work for clients and companies. It reflects my curiosity,
+        multidisciplinary approach, and passion for creating thoughtful, user centred
+        experiences.</p>
+    </div>
     <div class="hero-meta">
       <div>ROLE <strong>Industrial &amp; Product Designer</strong></div>
       <div>BASED <strong>Singapore</strong></div>
@@ -555,10 +505,11 @@
           <img src="EmergencyNowApp/hero-image.png" alt="Hands holding a phone showing the Pulse app home screen, with a large red SOS call button, current location, and nearby AED and first aid locations">
         </div>
         <div class="card-info">
-          <div class="card-tag mono">UI / UX — Mobile App</div>
-          <div class="card-title">Pulse — Emergency Response App</div>
-          <div class="card-desc">A bystander-to-responder app: one-tap SOS calling, live AI call assistance,
-            step-by-step CPR illustrations, AED wayfinding, and nearby-user alerts so help arrives from every direction.</div>
+          <div class="card-tag mono">UI / UX · Mobile App</div>
+          <div class="card-title">Pulse: Emergency Response App</div>
+          <div class="card-desc">An app that turns any bystander into a responder: one tap for
+            help, live AI call assistance, illustrated CPR steps, AED routes, and alerts to bring
+            nearby help.</div>
           <div class="spec-line mono">
             <span>YEAR <b>2021</b></span>
             <span>PLATFORM <b>iOS</b></span>
@@ -590,10 +541,10 @@
           <img src="EmergencyNowWeb/image 17.png" alt="Pulse Dispatch console showing a task list of active incidents ranked by severity, a live map, and a unit status sidebar">
         </div>
         <div class="card-info">
-          <div class="card-tag mono">UI / UX — Web Console</div>
-          <div class="card-title">Pulse Dispatch — Web Console</div>
+          <div class="card-tag mono">UI / UX · Web Console</div>
+          <div class="card-title">Pulse Dispatch: Web Console</div>
           <div class="card-desc">Companion web interface for emergency dispatch teams: streamlined call intake,
-            live AI-assisted transcripts, and a map view coordinating nearby volunteer responders in real time.</div>
+            live AI assisted transcripts, and a map view coordinating nearby volunteer responders in real time.</div>
           <div class="spec-line mono">
             <span>YEAR <b>2021</b></span>
             <span>PLATFORM <b>Web (Desktop)</b></span>
@@ -619,21 +570,25 @@
         </div>
       </div>
 
-      <div class="card" data-cat="uiux">
+      <a class="card" data-cat="uiux" href="soulsnap.html">
         <div class="card-thumb">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-          <span class="ph-label mono">PROJECT IMAGE<br>06 / REPLACE</span>
+          <img src="soulsnap/herosoulsnap.png" alt="Hands holding a phone showing the SoulSnap app home screen, with a weekly emotion bubble chart and the wrist wearing the SoulBand sensor">
         </div>
         <div class="card-info">
-          <div class="card-tag mono">UI / UX</div>
-          <div class="card-title">Project Title Six</div>
+          <div class="card-tag mono">UI / UX · Exploratory Project</div>
+          <div class="card-title">SoulSnap: Emotion Tagged Memories</div>
+          <div class="card-desc">An exploratory thesis project pairing photos with the emotions felt
+            at the moment they were taken, captured through a wearable GSR and pulse sensor and
+            turned into a data visualization.</div>
           <div class="spec-line mono">
-            <span>YEAR <b>2023</b></span>
-            <span>PLATFORM <b>Mobile App</b></span>
-            <span>ROLE <b>Product Designer</b></span>
+            <span>YEAR <b>[ YEAR ]</b></span>
+            <span>PLATFORM <b>Mobile App + Wearable</b></span>
+            <span>ROLE <b>[ ROLE ]</b></span>
           </div>
+          <div class="view-case mono">View case study →</div>
         </div>
-      </div>
+      </a>
 
     </div>
   </section>
@@ -646,7 +601,7 @@
     <div class="about">
       <div>
         <p>
-          Replace this with your own bio — a short paragraph on your background, how you moved
+          Replace this with your own bio. A short paragraph on your background, how you moved
           between physical and digital design, and what kind of problems you like to solve.
         </p>
         <p>
@@ -675,13 +630,13 @@
       <span class="idx mono">GET IN TOUCH</span>
     </div>
     <div class="contact">
-      <h2>Let's build<br>something.</h2>
+      <h2>Time to build<br>something.</h2>
       <div class="contact-row">
         <a href="mailto:hello@yourname.com" class="contact-email">hello@yourname.com</a>
         <div class="socials mono">
           <a href="#">LINKEDIN</a>
           <a href="#">INSTAGRAM</a>
-          <a href="#">RESUME ↓</a>
+          <a href="Resume - David.pdf" target="_blank" rel="noopener">RESUME ↓</a>
         </div>
       </div>
     </div>
@@ -695,24 +650,6 @@
 </div>
 
 <script>
-  // ruler ticks
-  const rticks = document.getElementById('rticks');
-  const count = 24;
-  for(let i=0;i<=count;i++){
-    const t = document.createElement('div');
-    t.className = 'tick' + (i % 4 === 0 ? ' major' : '');
-    t.style.top = (i/count*100) + '%';
-    rticks.appendChild(t);
-  }
-
-  // scroll progress
-  const progress = document.getElementById('railProgress');
-  window.addEventListener('scroll', () => {
-    const h = document.documentElement;
-    const scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
-    progress.style.height = scrolled + '%';
-  });
-
   // filters
   const buttons = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('.card');
