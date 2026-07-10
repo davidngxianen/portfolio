@@ -42,7 +42,7 @@
 
   section{
     padding:0 6vw;
-    max-width:1400px;
+    max-width:2200px;
   }
 
   /* ---------- nav ---------- */
@@ -85,6 +85,25 @@
     padding-top:14vh;
     padding-bottom:10vh;
     position:relative;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:60px;
+  }
+  .hero-main{ flex:1; min-width:0; }
+  .hero-awards{
+    display:flex;
+    flex-direction:row;
+    flex-shrink:0;
+    justify-content:flex-end;
+    gap:24px;
+    width:440px;
+    margin-top:0;
+  }
+  .hero-awards img{ width:92px; height:auto; display:block; object-fit:contain; }
+  @media (max-width:600px){
+    .hero-awards{ flex-wrap:wrap; gap:24px; }
+    .hero-awards img{ width:calc(50% - 12px); }
   }
   .hero-eyebrow{
     display:flex;
@@ -103,20 +122,36 @@
     font-size:clamp(2.6rem, 7vw, 6.2rem);
     line-height:0.98;
     font-weight:600;
-    max-width:16ch;
+    max-width:100%;
+  }
+  .hero-intro-row{
+    display:flex;
+    justify-content:space-between;
+    gap:60px;
+    align-items:flex-start;
+    margin-top:72px;
   }
   .hero-sub{
-    margin-top:32px;
     max-width:52ch;
     font-size:17px;
     line-height:1.6;
     color:var(--ink-soft);
   }
   .hero-sub p + p{ margin-top:16px; }
+  .hero-skills{ flex-shrink:0; width:440px; display:flex; flex-direction:column; gap:0; }
+  @media (max-width:900px){ .hero-intro-row{ flex-direction:column; gap:32px; } .hero-skills{ width:100%; } }
+  .hero-bottom-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:60px;
+    margin-top:6px;
+  }
+  @media (max-width:900px){ .hero-bottom-row{ flex-direction:column; align-items:flex-start; gap:32px; } }
   .hero-meta{
     display:flex;
     gap:48px;
-    margin-top:56px;
+    margin-top:0;
     flex-wrap:wrap;
   }
   .hero-meta div{font-size:12px;color:var(--ink-soft);}
@@ -248,6 +283,28 @@
     object-fit:contain;
     box-shadow:0 18px 34px -10px rgba(21,23,26,0.32), 0 4px 10px rgba(21,23,26,0.14);
   }
+  .card-thumb.thumb-contain.thumb-bottom{
+    align-items:flex-end;
+    background:#FFFFFF;
+  }
+  .card-thumb.thumb-contain.thumb-bottom img{
+    max-width:100%;
+    max-height:100%;
+    box-shadow:none;
+  }
+  .card-thumb.thumb-contain.thumb-sk620{
+    background:#E8ECEF;
+  }
+  .card-thumb.thumb-contain.thumb-sk620 img{
+    max-width:96%;
+    max-height:96%;
+    box-shadow:none;
+  }
+  .card-thumb.thumb-contain.thumb-rounded img{
+    border-radius:10px;
+    max-width:72%;
+    max-height:72%;
+  }
   .card-thumb .corner{
     position:absolute;
     width:14px;height:14px;
@@ -347,23 +404,59 @@
     font-family:'Space Grotesk',sans-serif;
   }
 
-  /* ---------- about ---------- */
-  .about{
+  /* ---------- confidential ---------- */
+  .confidential-gate{
     padding-top:90px;
     padding-bottom:100px;
-    display:grid;
-    grid-template-columns:1fr 1.4fr;
-    gap:60px;
   }
-  @media (max-width:800px){ .about{grid-template-columns:1fr;} }
-  .about h2{ font-size:clamp(1.6rem,3vw,2.4rem); font-weight:600; margin-bottom:24px; }
-  .about p{
+  .confidential-gate p{
     font-size:16px;
     line-height:1.75;
     color:var(--ink-soft);
     max-width:56ch;
+    margin-bottom:28px;
   }
-  .about p + p{ margin-top:18px; }
+  .gate-form{ display:flex; gap:12px; max-width:400px; }
+  .gate-form input{
+    flex:1;
+    padding:12px 14px;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--paper-dim);
+    color:var(--ink);
+    font-family:'IBM Plex Mono',monospace;
+    font-size:13px;
+  }
+  .gate-form input:focus{ outline:none; border-color:var(--signal); }
+  .gate-form button{
+    padding:12px 22px;
+    border:1px solid var(--ink);
+    border-radius:var(--radius);
+    background:var(--ink);
+    color:var(--paper);
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .gate-form button:hover{ background:var(--signal); border-color:var(--signal); }
+  .gate-error{
+    display:none;
+    font-size:12px;
+    color:var(--signal);
+    margin-top:14px;
+  }
+  .gate-error.show{ display:block; }
+  .gate-link{
+    display:none;
+    margin-top:20px;
+    font-size:14px;
+    color:var(--signal);
+    border-bottom:1px solid var(--signal);
+    padding-bottom:2px;
+  }
+  .gate-link.show{ display:inline-block; }
 
   .skills-list{ display:flex; flex-direction:column; gap:0; }
   .skill-row{
@@ -439,7 +532,7 @@
       <nav>
         <ul>
           <li><a href="#work">Work</a></li>
-          <li><a href="#about">About</a></li>
+          <li><a href="#confidential">Confidential</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="Resume - David.pdf" target="_blank" rel="noopener">Resume</a></li>
         </ul>
@@ -449,59 +542,60 @@
 
   <section class="hero">
     <div class="crosshair"></div>
-    <div class="hero-eyebrow mono">
-      <span class="dot"></span> AVAILABLE FOR NEW PROJECTS OR WORK · 2026
-    </div>
-    <h1>Objects, interfaces,<br>and the systems<br>between them.</h1>
-    <div class="hero-sub">
-      <p>Hi, I am David, an Industrial Designer from Singapore.</p>
-      <p>I design products across both the physical and digital world. From injection moulded
-        hardware to the interfaces that power them.</p>
-      <p>This portfolio documents nearly a decade of my design journey, bringing together selected
-        academic and professional work for clients and companies. It reflects my curiosity,
-        multidisciplinary approach, and passion for creating thoughtful, user centred
-        experiences.</p>
-    </div>
-    <div class="hero-meta">
-      <div>ROLE <strong>Industrial &amp; Product Designer</strong></div>
-      <div>BASED <strong>Singapore</strong></div>
-      <div>DISCIPLINES <strong>UI/UX · Industrial Design</strong></div>
+    <div class="hero-main">
+      <div class="hero-eyebrow mono">
+        <span class="dot"></span> AVAILABLE FOR NEW PROJECTS OR WORK · 2026
+      </div>
+      <h1>Hi, I am David, <br>a Product &amp; <br>Industrial Designer.</h1>
+      <div class="hero-intro-row">
+        <div class="hero-sub">
+          <p>I design products across the physical and digital world, from injection moulded
+            hardware to the interfaces that power them, drawing on nearly a decade of academic and
+            professional work for clients and companies.</p>
+          <p>Core skills span user research, journey mapping, usability testing, 3D modeling in
+            Rhino and rendering, and translating pain points into intuitive interfaces, backed by
+            Figma, front end coding, and rapid prototyping, with a proven track record leading
+            projects from concept to launch across cross functional and cross border teams.</p>
+        </div>
+        <div class="hero-skills skills-list">
+          <div class="skill-row"><span class="label">CAD &amp; Modeling</span><span class="val">Creo, Rhino</span></div>
+          <div class="skill-row"><span class="label">Prototyping</span><span class="val">3D Printing, CNC, Foam</span></div>
+          <div class="skill-row"><span class="label">UI/UX Tools</span><span class="val">Figma, Framer, Principle</span></div>
+          <div class="skill-row"><span class="label">Rendering</span><span class="val">KeyShot, Blender, Twinmotion</span></div>
+          <div class="skill-row"><span class="label">Development</span><span class="val">Claude Code, HTML, CSS, JS, Arduino</span></div>
+          <div class="skill-row"><span class="label">Education</span><span class="val">National University of Singapore, B.A. Industrial Design<br>High Distinction</span></div>
+          <div class="skill-row"><span class="label">Experience</span><span class="val">10 Years, Academic + Professional</span></div>
+        </div>
+      </div>
+      <div class="hero-bottom-row">
+        <div class="hero-meta">
+          <div>ROLE <strong>Industrial &amp; Product Designer</strong></div>
+          <div>BASED <strong>Singapore</strong></div>
+          <div>DISCIPLINES <strong>UI/UX · Industrial Design</strong></div>
+        </div>
+        <div class="hero-awards">
+          <img src="PD2026_RD.png" alt="Red Dot Winner 2026">
+          <img src="RD2021_01.png" alt="Red Dot Winner 2021">
+          <img src="ifdesign.jpg" alt="iF Design Award 2026">
+          <img src="motorola.svg" alt="Motorola">
+        </div>
+      </div>
     </div>
   </section>
 
   <section id="work">
     <div class="section-head">
       <h2>Selected Work</h2>
-      <span class="idx mono">06 PROJECTS</span>
+      <span class="idx mono">08 PROJECTS</span>
     </div>
 
     <div class="filters">
       <button class="filter-btn active" data-filter="all">All</button>
-      <button class="filter-btn" data-filter="industrial">Industrial Design</button>
       <button class="filter-btn" data-filter="uiux">UI/UX</button>
+      <button class="filter-btn" data-filter="industrial">Industrial Design</button>
     </div>
 
     <div class="grid" id="grid">
-
-      <a class="card" data-cat="industrial" href="eclipur.html">
-        <div class="card-thumb">
-          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-          <img src="eclipur/eclipurhero.jpg" alt="Eclipur lamp on a dark nightstand, its half sphere lid rotated open to a warm crescent of light, essential oil mist rising from the base">
-        </div>
-        <div class="card-info">
-          <div class="card-tag mono">Industrial Design · Red Dot Award 2021</div>
-          <div class="card-title">Eclipur: Sleep Wellness Lamp</div>
-          <div class="card-desc">A bedside lamp that folds shut like a lunar eclipse, pairing warm
-            light, an inbuilt essential oil diffuser, and a built in speaker into one wind down
-            ritual.</div>
-          <div class="spec-line mono">
-            <span>YEAR <b>2021</b></span>
-            <span>MATERIAL <b>ABS, Aluminum</b></span>
-            <span>ROLE <b>Industrial Designer</b></span>
-          </div>
-          <div class="view-case mono">View case study →</div>
-        </div>
-      </a>
 
       <a class="card" data-cat="uiux" href="pulse-app.html">
         <div class="card-thumb">
@@ -523,22 +617,6 @@
         </div>
       </a>
 
-      <div class="card" data-cat="industrial">
-        <div class="card-thumb">
-          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-          <span class="ph-label mono">PROJECT IMAGE<br>03 / REPLACE</span>
-        </div>
-        <div class="card-info">
-          <div class="card-tag mono">Industrial Design</div>
-          <div class="card-title">Project Title Three</div>
-          <div class="spec-line mono">
-            <span>YEAR <b>2024</b></span>
-            <span>MATERIAL <b>Oak, Steel</b></span>
-            <span>ROLE <b>Designer</b></span>
-          </div>
-        </div>
-      </div>
-
       <a class="card" data-cat="uiux" href="pulse-dispatch.html">
         <div class="card-thumb thumb-contain">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
@@ -553,6 +631,106 @@
             <span>YEAR <b>2021</b></span>
             <span>PLATFORM <b>Web (Desktop)</b></span>
             <span>ROLE <b>UI/UX Designer</b></span>
+          </div>
+          <div class="view-case mono">View case study →</div>
+        </div>
+      </a>
+
+      <a class="card" data-cat="uiux" href="soulsnap.html">
+        <div class="card-thumb">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <img src="soulsnap/herosoulsnap.png" alt="Hands holding a phone showing the SoulSnap app home screen, with a weekly emotion bubble chart and the wrist wearing the SoulBand sensor">
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">UI / UX · Exploratory Project</div>
+          <div class="card-title">SoulSnap: Emotion Tagged Memories</div>
+          <div class="card-desc">An exploratory thesis project pairing photos with the emotions felt
+            at the moment they were taken, captured through a wearable GSR and pulse sensor and
+            turned into a data visualization.</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2023</b></span>
+            <span>PLATFORM <b>Mobile App + Wearable</b></span>
+            <span>ROLE <b>UI/UX Designer</b></span>
+          </div>
+          <div class="view-case mono">View case study →</div>
+        </div>
+      </a>
+
+      <a class="card" data-cat="uiux" href="nusshortcourses.html">
+        <div class="card-thumb thumb-contain thumb-rounded">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <img src="nusshortcourses/heroshortcoursespage.svg" alt="Redesigned NUS CDE short course landing page, showing the course title, a bulleted list of objectives, and a contextual photo of an engineer at an energy plant">
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">UI / UX · Web Redesign</div>
+          <div class="card-title">NUS CDE Short Courses: Landing Page Redesign</div>
+          <div class="card-desc">A work project for NUS College of Design &amp; Engineering,
+            redesigning the shared page template every short course on the CET catalogue is
+            built from.</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2023</b></span>
+            <span>PLATFORM <b>Web (Desktop)</b></span>
+            <span>ROLE <b>UI/UX Designer</b></span>
+          </div>
+          <div class="view-case mono">View case study →</div>
+        </div>
+      </a>
+
+      <a class="card" data-cat="industrial" href="eclipur.html">
+        <div class="card-thumb">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <img src="eclipur/eclipurhero.jpg" alt="Eclipur lamp on a dark nightstand, its half sphere lid rotated open to a warm crescent of light, essential oil mist rising from the base">
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">Industrial Design · Red Dot Award 2021</div>
+          <div class="card-title">Eclipur: Sleep Wellness Lamp</div>
+          <div class="card-desc">A bedside lamp that folds shut like a lunar eclipse, pairing warm
+            light, an inbuilt essential oil diffuser, and a built in speaker into one wind down
+            ritual.</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2021</b></span>
+            <span>MATERIAL <b>ABS, Aluminum</b></span>
+            <span>ROLE <b>Industrial Designer</b></span>
+          </div>
+          <div class="view-case mono">View case study →</div>
+        </div>
+      </a>
+
+      <a class="card" data-cat="industrial" href="slidepal.html">
+        <div class="card-thumb thumb-contain thumb-bottom">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <img src="slidepal/heroslidepal.svg" alt="Slidepal remote control with its sliding cover exposing the SMART TV / AV button set">
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">Industrial Design · 1st Runner Up, Omni Remotes</div>
+          <div class="card-title">Slidepal: Sliding Cover Remote Control</div>
+          <div class="card-desc">A remote control that lets users physically slide away the
+            buttons they do not need, exposing only the controls relevant to the TV mode they are
+            currently in.</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2017</b></span>
+            <span>MATERIAL <b>ABS, PC</b></span>
+            <span>ROLE <b>Industrial Designer</b></span>
+          </div>
+          <div class="view-case mono">View case study →</div>
+        </div>
+      </a>
+
+      <a class="card" data-cat="industrial" href="sk620.html">
+        <div class="card-thumb thumb-contain thumb-sk620">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <img src="sk620/skhero.png" alt="Sudokoo SK620 air cooler in white and SK700 air cooler in black, side by side, each with a digital screen showing live system stats">
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">Industrial Design · Red Dot &amp; iF Design Award 2026</div>
+          <div class="card-title">SK620 &amp; SK700: CPU Air Coolers</div>
+          <div class="card-desc">Sudokoo's flagship dual tower air coolers, reimagining CPU
+            cooling with a geometric design, a live stats display, and a tool free rail lock fan
+            mount.</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2024 / 2025</b></span>
+            <span>MATERIAL <b>Aluminum, ABS</b></span>
+            <span>ROLE <b>Lead Industrial Designer</b></span>
           </div>
           <div class="view-case mono">View case study →</div>
         </div>
@@ -574,60 +752,23 @@
         </div>
       </div>
 
-      <a class="card" data-cat="uiux" href="soulsnap.html">
-        <div class="card-thumb">
-          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-          <img src="soulsnap/herosoulsnap.png" alt="Hands holding a phone showing the SoulSnap app home screen, with a weekly emotion bubble chart and the wrist wearing the SoulBand sensor">
-        </div>
-        <div class="card-info">
-          <div class="card-tag mono">UI / UX · Exploratory Project</div>
-          <div class="card-title">SoulSnap: Emotion Tagged Memories</div>
-          <div class="card-desc">An exploratory thesis project pairing photos with the emotions felt
-            at the moment they were taken, captured through a wearable GSR and pulse sensor and
-            turned into a data visualization.</div>
-          <div class="spec-line mono">
-            <span>YEAR <b>[ YEAR ]</b></span>
-            <span>PLATFORM <b>Mobile App + Wearable</b></span>
-            <span>ROLE <b>[ ROLE ]</b></span>
-          </div>
-          <div class="view-case mono">View case study →</div>
-        </div>
-      </a>
-
     </div>
   </section>
 
-  <section id="about">
+  <section id="confidential">
     <div class="section-head">
-      <h2>About</h2>
-      <span class="idx mono">PROFILE</span>
+      <h2>Confidential Work</h2>
+      <span class="idx mono">PASSCODE PROTECTED</span>
     </div>
-    <div class="about">
-      <div>
-        <p>
-          Award winning (iF Design Award, Red Dot x2) with a foundation in industrial design and
-          hands on UI/UX experience across web and app projects.
-        </p>
-        <p>
-          Skilled in user research, journey mapping, usability testing, and translating pain
-          points into intuitive interfaces, backed by Figma, front end coding, and rapid
-          prototyping. Proven track record leading design projects from concept to launch with
-          cross functional &amp; cross border teams.
-        </p>
-        <div class="note mono">
-          BUILT SOLO: Every page on this site, design, layout, and content, was built and
-          designed by me through vibe coding with the help of Claude Code.
-        </div>
+    <div class="confidential-gate">
+      <p>Some of my professional work is covered by NDA and is not shown publicly on this site.
+        If you have been given the passcode, enter it below to view the portfolio.</p>
+      <div class="gate-form" id="gateForm">
+        <input type="password" id="passcodeInput" class="mono" placeholder="Enter passcode">
+        <button type="button" id="passcodeSubmit" class="mono">Unlock</button>
       </div>
-      <div class="skills-list">
-        <div class="skill-row"><span class="label">CAD &amp; Modeling</span><span class="val">Creo, Rhino</span></div>
-        <div class="skill-row"><span class="label">Prototyping</span><span class="val">3D Printing, CNC, Foam</span></div>
-        <div class="skill-row"><span class="label">UI/UX Tools</span><span class="val">Figma, Framer, Principle</span></div>
-        <div class="skill-row"><span class="label">Rendering</span><span class="val">KeyShot, Blender, Twinmotion</span></div>
-        <div class="skill-row"><span class="label">Development</span><span class="val">Claude Code, HTML, CSS, JS, Arduino</span></div>
-        <div class="skill-row"><span class="label">Education</span><span class="val">National University of Singapore, B.A. Industrial Design, High Distinction</span></div>
-        <div class="skill-row"><span class="label">Experience</span><span class="val">10 Years, Academic + Professional</span></div>
-      </div>
+      <p class="gate-error mono" id="gateError">Incorrect passcode. Please try again.</p>
+      <a href="Work Portfolio David.pdf" target="_blank" rel="noopener" class="gate-link mono" id="gateLink">View Confidential Portfolio →</a>
     </div>
   </section>
 
@@ -637,12 +778,10 @@
       <span class="idx mono">GET IN TOUCH</span>
     </div>
     <div class="contact">
-      <h2>Time to build<br>something.</h2>
       <div class="contact-row">
-        <a href="mailto:hello@yourname.com" class="contact-email">hello@yourname.com</a>
+        <a href="mailto:davidng98@gmail.com" class="contact-email">davidng98@gmail.com</a>
         <div class="socials mono">
-          <a href="#">LINKEDIN</a>
-          <a href="#">INSTAGRAM</a>
+          <a href="https://www.linkedin.com/in/davidngxe" target="_blank" rel="noopener">LINKEDIN</a>
           <a href="Resume - David.pdf" target="_blank" rel="noopener">RESUME ↓</a>
         </div>
       </div>
@@ -651,7 +790,7 @@
 
   <footer>
     <span class="mono">© 2026 DAVID NG</span>
-    <span class="mono">DESIGNED &amp; BUILT AS A PORTFOLIO TEMPLATE</span>
+    <span class="mono">DESIGNED &amp; BUILT BY DAVID NG</span>
   </footer>
 
 </div>
@@ -673,6 +812,28 @@
         }
       });
     });
+  });
+
+  // confidential work passcode gate
+  const passcodeInput = document.getElementById('passcodeInput');
+  const passcodeSubmit = document.getElementById('passcodeSubmit');
+  const gateForm = document.getElementById('gateForm');
+  const gateError = document.getElementById('gateError');
+  const gateLink = document.getElementById('gateLink');
+  const PASSCODE = 'workfolio26';
+
+  function tryUnlock(){
+    if(passcodeInput.value === PASSCODE){
+      gateForm.style.display = 'none';
+      gateError.classList.remove('show');
+      gateLink.classList.add('show');
+    } else {
+      gateError.classList.add('show');
+    }
+  }
+  passcodeSubmit.addEventListener('click', tryUnlock);
+  passcodeInput.addEventListener('keydown', (e) => {
+    if(e.key === 'Enter') tryUnlock();
   });
 </script>
 

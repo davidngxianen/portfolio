@@ -62,9 +62,13 @@
     max-width:20ch; margin-bottom:24px;
   }
   .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
-  .cs-meta{ display:flex; gap:48px; margin-top:44px; flex-wrap:wrap; }
+  .cs-meta{ display:flex; gap:32px; margin-top:44px; flex-wrap:nowrap; overflow-x:auto; padding-bottom:4px; }
+  .cs-meta > div{ flex-shrink:0; }
   .cs-meta div{ font-size:12px; color:var(--ink-soft); }
   .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+  .cs-meta{ position:relative; }
+  .cs-meta-subtle{ color:var(--ink-soft); }
+  .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
 
   /* image placeholder */
   .ph{
@@ -133,15 +137,22 @@
   .render-grid{ display:grid; gap:24px; margin-top:28px; }
   .render-grid.cols-2{ grid-template-columns:1fr 1fr; }
   .render-grid.cols-3{ grid-template-columns:repeat(3,1fr); }
-  .render-grid img{ width:100%; display:block; border-radius:10px; box-shadow:0 20px 40px -20px rgba(21,23,26,0.35); background:var(--paper-dim); }
+  .render-grid img{ width:100%; display:block; border-radius:10px; background:var(--paper-dim); }
   .render-grid-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:14px; }
+
+  /* match-height variant: images share a fixed height, width scales with each image's own ratio */
+  .render-grid.match-height{ align-items:center; }
+  .render-grid.match-height > div{ display:flex; align-items:center; justify-content:center; height:300px; }
+  .render-grid.match-height img{ width:auto; max-width:100%; height:100%; object-fit:contain; }
+  .render-grid.match-height.align-left{ display:flex; justify-content:space-between; }
+  .render-grid.match-height.align-left > div{ flex:0 0 auto; width:auto; }
   .render-grid-caption strong{ color:var(--ink); font-family:'Space Grotesk',sans-serif; font-weight:600; }
   @media (max-width:700px){
     .render-grid.cols-2,.render-grid.cols-3{ grid-template-columns:1fr; max-width:400px; margin-left:auto; margin-right:auto; }
   }
 
   .outcome-box{ display:flex; flex-direction:column; gap:18px; }
-  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; }
+  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; text-wrap:pretty; }
   .sub-heading{ font-size:16px; font-weight:600; margin:0 0 14px; }
 
   .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
@@ -177,9 +188,11 @@
       sequence.</p>
     <div class="cs-meta">
       <div>YEAR <strong>2021</strong></div>
-      <div>MATERIAL <strong>ABS, Aluminum, Perspex</strong></div>
       <div>ROLE <strong>Industrial Designer</strong></div>
+      <div>TOOLS <strong>KeyShot, Rhino, Photoshop, Premiere Pro, Figma</strong></div>
+      <div>TIMELINE <strong>10 weeks</strong></div>
       <div>RECOGNITION <strong>Red Dot Award 2021</strong></div>
+      <div class="cs-meta-subtle">LAST REVISED <strong>2022</strong></div>
     </div>
   </section>
 
@@ -330,12 +343,15 @@
       <p>The speaker sits inside the sphere itself, angled so sound projects outward through the
         shell rather than being muffled inside a sealed body.</p>
     </div>
-    <div class="render-grid cols-2">
+    <div class="render-grid cols-3 match-height align-left">
       <div>
         <img src="eclipur/image 48.svg" alt="Transparent render of the Eclipur sphere revealing the internal speaker driver">
       </div>
       <div>
         <img src="eclipur/image 43.svg" alt="Cutaway renders showing the speaker positioned near the base of the sphere, close to where the stand meets the body">
+      </div>
+      <div>
+        <img src="eclipur/image 45.svg" alt="Additional render detailing the speaker installation inside the Eclipur sphere">
       </div>
     </div>
 
@@ -344,7 +360,7 @@
       <p>A nebulizer diffuser sits inside the stand rather than the sphere, keeping the scent
         cartridge easy to reach and swap without disturbing the light or the speaker above it.</p>
     </div>
-    <div class="render-grid cols-2">
+    <div class="render-grid cols-2 match-height">
       <div>
         <img src="eclipur/image 40.svg" alt="Cutaway of the lamp's stand showing the essential oil cartridge slotted inside, next to a diagram explaining how a nebulizer diffuser works">
       </div>
@@ -359,7 +375,7 @@
         electronics housing, and the weighted base, tying back to the exploded structure and the
         materials chosen for each piece.</p>
     </div>
-    <div class="render-grid cols-3">
+    <div class="render-grid cols-3 match-height">
       <div>
         <img src="eclipur/image 52.svg" alt="Exploded view of the Eclipur lamp separating into its dome, body, and base components">
       </div>
@@ -379,8 +395,8 @@
     <p class="lede">One object, three senses, each one tied back to the research at the start of
       this project.</p>
 
-    <div class="figure-img figure-img-xl">
-      <img src="eclipur/heroshot in context.jpg" alt="Eclipur lamp glowing warmly on a bedroom nightstand beside a bed, essential oil mist rising from its base">
+    <div style="width:100%;">
+      <img src="eclipur/heroshot in context.jpg" alt="Eclipur lamp glowing warmly on a bedroom nightstand beside a bed, essential oil mist rising from its base" style="width:100%; display:block; border-radius:6px;">
     </div>
 
     <div class="render-grid cols-3" style="margin-top:44px;">
@@ -432,7 +448,7 @@
         that gives someone a reason to put the phone down instead. Sight, smell, and sound each
         had their own research and their own engineering problem to solve, a rotating shell, a
         nebulizer small enough to hide in a stand, a speaker angled to project through a solid
-        surface, but all three had to close into one motion for the ritual to actually work.</p>
+        surface, but all three had to close into one motion for the ritual to actually&nbsp;work.</p>
     </div>
   </section>
 

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slidepal: Sliding Cover Remote Control Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FDFDFC;
+    --paper-dim:#F3F3F1;
+    --ink:#15171A;
+    --ink-soft:#565A5F;
+    --line:#E2E1DC;
+    --signal:#D2491E;
+    --signal-soft:#F0DCD2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--signal);color:var(--paper);}
+  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(253,253,252,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    padding:18px 6vw;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .back-link{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
+    transition:color .15s;
+  }
+  .back-link:hover{ color:var(--ink); }
+  .logo{ font-weight:600; font-size:15px; }
+  .logo span{ color:var(--signal); }
+
+  main{ max-width:1600px; margin:0 auto; padding:0 6vw; }
+
+  /* hero */
+  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
+  .cs-eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:22px;
+  }
+  .cs-hero h1{
+    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
+    max-width:20ch; margin-bottom:24px;
+  }
+  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
+  .cs-meta{ display:flex; gap:32px; margin-top:44px; flex-wrap:wrap; }
+  .cs-meta > div{ flex-shrink:0; }
+  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
+  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+  .cs-meta{ position:relative; }
+  .cs-meta-subtle{ color:var(--ink-soft); }
+  .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
+
+  /* image placeholder / hero */
+  .ph{
+    background:
+      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
+      var(--paper-dim);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .ph span{ font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.7; padding:20px; }
+  .ph .corner{ position:absolute; width:14px; height:14px; opacity:0.5; }
+  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .ph-hero{ aspect-ratio:16/8; margin-top:0; background:#F3F3F1; border:none; }
+  .ph-hero img{ width:100%; height:100%; object-fit:cover; object-position:top; display:block; }
+
+  /* section shell */
+  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .cs-section:last-of-type{ border-bottom:none; }
+  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
+  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:24ch; }
+  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; margin-bottom:36px; }
+
+  /* findings */
+  .finding-block{ margin-top:40px; }
+  .finding-block:first-of-type{ margin-top:0; }
+  .finding-block h3{ font-size:18px; font-weight:600; margin-bottom:10px; }
+  .finding-block p{ font-size:14.5px; line-height:1.75; color:var(--ink-soft); max-width:70ch; }
+
+  .research-inputs{ border:1px solid var(--line); padding:26px; display:flex; flex-direction:column; gap:16px; margin-top:28px; }
+  .ri-item{ display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--line); padding-bottom:16px; }
+  .ri-item:last-child{ border-bottom:none; padding-bottom:0; }
+  .ri-item strong{ font-family:'Space Grotesk',sans-serif; font-size:16px; color:var(--signal); min-width:70px; flex-shrink:0; }
+  .ri-item span{ font-size:12px; color:var(--ink-soft); line-height:1.5; }
+
+  /* callout */
+  .callout{ background:var(--signal-soft); border:1px dashed var(--signal); padding:22px 26px; border-radius:3px; margin-top:28px; }
+  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
+  .key-decisions{ list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:4px; }
+  .key-decisions li{ font-size:13.5px; line-height:1.6; color:var(--ink); padding-left:16px; position:relative; }
+  .key-decisions li::before{ content:'—'; position:absolute; left:0; color:var(--signal); }
+
+  /* single figure image */
+  .figure-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:60ch; margin-top:20px; margin-bottom:16px; font-style:italic; }
+  .figure-img{ max-width:360px; }
+  .figure-img-lg{ max-width:460px; }
+  .figure-img-xl{ max-width:640px; }
+  .figure-img img{ width:100%; display:block; border-radius:6px; }
+
+  /* render grid */
+  .render-grid{ display:grid; gap:24px; margin-top:28px; }
+  .render-grid.cols-1{ grid-template-columns:1fr; }
+  .render-grid.cols-2{ grid-template-columns:1fr 1fr; }
+  .render-grid.cols-3{ grid-template-columns:repeat(3,1fr); }
+  .render-grid img{ width:100%; display:block; border-radius:10px; background:var(--paper-dim); }
+  .render-grid-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:14px; }
+  .render-grid-caption strong{ color:var(--ink); font-family:'Space Grotesk',sans-serif; font-weight:600; }
+  @media (max-width:700px){
+    .render-grid.cols-2,.render-grid.cols-3{ grid-template-columns:1fr; max-width:400px; margin-left:auto; margin-right:auto; }
+  }
+
+  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
+  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; }
+  .sub-heading{ font-size:16px; font-weight:600; margin:0 0 14px; }
+
+  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .next-project{ font-size:13px; color:var(--ink-soft); }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project:hover strong{ color:var(--signal); }
+
+  footer.site-footer{
+    border-top:1px solid var(--line);
+    padding:24px 6vw;
+    display:flex; justify-content:space-between;
+    font-size:11px; color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="back-link mono">← Back to work</a>
+    <div class="logo mono">DAVID NG<span>.</span></div>
+  </div>
+</header>
+
+<main>
+
+  <section class="cs-hero">
+    <div class="cs-eyebrow mono"><span>●</span> Industrial Design · 1st Runner Up, Omni Remotes</div>
+    <h1>Slidepal: A Remote That Hides What You Do Not Need</h1>
+    <p>Slidepal is a remote control with a sliding cover that physically hides whichever buttons
+      are not relevant to the current TV mode, so the only buttons left in view are the ones
+      actually worth pressing.</p>
+    <div class="cs-meta">
+      <div>YEAR <strong>2017</strong></div>
+      <div>ROLE <strong>Industrial Designer</strong></div>
+      <div>TOOLS <strong>KeyShot, Photoshop, Creo 2.0</strong></div>
+      <div>TIMELINE <strong>10 weeks</strong></div>
+      <div>RECOGNITION <strong>1st Runner Up, Omni Remotes</strong></div>
+      <div class="cs-meta-subtle">LAST REVISED <strong>2026</strong></div>
+    </div>
+  </section>
+
+  <div class="ph ph-hero">
+    <img src="slidepal/Group 20.png" alt="Hand holding the Slidepal remote control in TV mode, with the Omni Remotes award winning project badge">
+  </div>
+
+  <!-- 01 OVERVIEW -->
+  <section class="cs-section">
+    <div class="cs-num mono">01 / OVERVIEW</div>
+    <h2>A school project that led to a factory floor in Suzhou</h2>
+    <p class="lede">This school project was developed in collaboration with Omni Remotes. With
+      the company's full support covering accommodation, the project was selected for a pitch to
+      Omni Remotes' team in Suzhou, China, followed by a factory visit to observe how the company
+      manufactures and stress tests its remote controls. The visit led to an internship offer as
+      a designer at the company.</p>
+
+    <div class="callout">
+      <div class="label mono">The Brief</div>
+      <p style="font-style:italic;">Investigate the usability challenges of conventional remote
+        controls and develop a more intuitive user experience without the use of a screen.
+        Through user research and pain point analysis, the project explored how interaction
+        design, button hierarchy, and tactile feedback could simplify navigation and improve
+        accessibility.</p>
+    </div>
+  </section>
+
+  <!-- 02 RESEARCH -->
+  <section class="cs-section">
+    <div class="cs-num mono">02 / RESEARCH</div>
+    <h2>Watching how people actually use a remote</h2>
+    <p class="lede">Before sketching any solution, the research looked at how people actually
+      hold, scan, and press buttons on a conventional remote control.</p>
+
+    <div class="finding-block">
+      <h3>Remote control observation</h3>
+      <p>Observation sessions traced how people actually search for a button mid task, often
+        without looking away from the screen.</p>
+    </div>
+    <div class="render-grid cols-2">
+      <div><img src="slidepal/diagram 1.svg" alt="Diagram of remote control observation findings, part one"></div>
+      <div><img src="slidepal/diagram 2.svg" alt="Diagram of remote control observation findings, part two"></div>
+    </div>
+
+    <div class="finding-block">
+      <h3>Identified pain points</h3>
+      <p>Users struggle to quickly locate and identify the correct button on a remote control due
+        to dense layouts, inconsistent button hierarchy, and an overload of non essential
+        functions. This leads to cognitive overload, frequent incorrect button presses, and
+        reliance on visual confirmation from the screen, especially when switching between
+        different TV modes or functions.</p>
+    </div>
+    <div class="figure-img figure-img-lg">
+      <img src="slidepal/remotes.svg" alt="Diagram comparing dense conventional remote control layouts against a simplified alternative">
+    </div>
+
+    <div class="callout">
+      <div class="label mono">Design Challenge</div>
+      <p>How might we make it easier for users to locate the right button on a remote control
+        without relying on a screen?</p>
+    </div>
+
+    <div class="finding-block">
+      <h3>Key solutions</h3>
+      <ul class="key-decisions">
+        <li>Reduce cognitive load by displaying only the essential controls required for common
+          tasks.</li>
+        <li>Contextualize interactions by revealing only the buttons relevant to the current TV
+          mode (TV, streaming, media playback), minimizing unnecessary choices.</li>
+        <li>Prioritize information hierarchy so users process fewer options at once, enabling
+          faster and more intuitive navigation.</li>
+        <li>Improve discoverability through clear button grouping, consistent layouts, and
+          tactile differentiation, letting users identify controls quickly by sight or touch.</li>
+        <li>Use visual cues to reinforce which mode the remote is currently in, at a glance.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 03 CONCEPT GENERATION -->
+  <section class="cs-section">
+    <div class="cs-num mono">03 / CONCEPT GENERATION</div>
+    <h2>From sketch to shortlist</h2>
+    <p class="lede">Early concept work explored several different mechanisms for hiding and
+      revealing buttons before the sliding cover direction was chosen.</p>
+    <div class="render-grid cols-1">
+      <div><img src="slidepal/image 271.svg" alt="Early Slidepal concept sketch, exploring how buttons could be hidden and revealed"></div>
+      <div><img src="slidepal/image 272.svg" alt="Early Slidepal concept sketch, exploring a different button hiding mechanism"></div>
+      <div><img src="slidepal/image 274.svg" alt="Early Slidepal concept sketch, refining the sliding cover direction"></div>
+    </div>
+  </section>
+
+  <!-- 04 MATERIAL & FORM FINDING -->
+  <section class="cs-section">
+    <div class="cs-num mono">04 / MATERIAL &amp; FORM FINDING</div>
+    <h2>Sizing the remote to the hand</h2>
+    <p class="lede">With the mechanism settled, the next question was simple: what dimensions and
+      materials would actually feel right in someone's hand.</p>
+
+    <div class="finding-block">
+      <h3>Anthropometry data</h3>
+      <p>With reference to anthropometry data, it was concluded that the remote control
+        dimensions would be 15mm x 170mm x 58.6mm.</p>
+    </div>
+    <div class="figure-img figure-img-lg">
+      <img src="slidepal/anthropometry data.svg" alt="Anthropometry data reference used to size the Slidepal remote control">
+    </div>
+
+    <div class="finding-block">
+      <h3>Form finding through prototyping</h3>
+      <p>The width of the remote control is inspired by the width of an iPhone 5. Research has
+        shown that the iPhone 5 feels best in the hands of most individuals, so its width was
+        used as a reference point and tested through a series of 3D printed prototypes.</p>
+    </div>
+    <div class="figure-img figure-img-lg">
+      <img src="slidepal/prototyping.svg" alt="3D printed prototypes used to test the form and grip of the Slidepal remote control">
+    </div>
+
+    <div class="finding-block">
+      <h3>Exploded view</h3>
+      <p>The final assembly breaks down into the sliding cover, the two button sets underneath
+        it, and the main housing that holds the electronics.</p>
+    </div>
+    <div class="figure-img figure-img-xl">
+      <img src="slidepal/explodedview.svg" alt="Exploded view of the Slidepal remote control showing the sliding cover, button sets, and main housing">
+    </div>
+
+    <div class="finding-block">
+      <h3>Material study</h3>
+      <p>Material tests weighed grip, durability, and manufacturing cost against the finish Omni
+        Remotes would need to produce the design at scale.</p>
+    </div>
+    <div class="figure-img figure-img-xl">
+      <img src="slidepal/material study.svg" alt="Material study exploring finishes and materials for the Slidepal remote control">
+    </div>
+  </section>
+
+  <!-- 05 FINAL CONCEPT -->
+  <section class="cs-section">
+    <div class="cs-num mono">05 / FINAL CONCEPT</div>
+    <h2>The finished mechanism</h2>
+    <p class="lede">Everything from the research and prototyping came together in one sliding
+      shell.</p>
+
+    <div class="finding-block">
+      <h3>Mode switching</h3>
+      <p>By switching between SMART TV/AV mode and TV mode, the slider automatically hides the
+        unnecessary buttons while exposing the common set of buttons, shown here in orange.</p>
+    </div>
+    <div class="figure-img figure-img-xl">
+      <img src="slidepal/detailsonslide.png" alt="Slidepal remote control shown in TV mode on the left and SMART TV / AV mode on the right, with the sliding cover exposing a different button set in each">
+    </div>
+
+    <div class="finding-block">
+      <h3>Cursor navigation</h3>
+      <p>Beyond button presses, the remote also lets the wearer control a cursor on screen by
+        maneuvering the remote control itself.</p>
+    </div>
+    <div class="figure-img figure-img-xl">
+      <img src="slidepal/navigatorcursor.png" alt="Illustration of a user tilting the Slidepal remote control to steer an on screen cursor">
+    </div>
+
+    <div class="finding-block">
+      <h3>Charging and find my remote</h3>
+      <p>A dedicated charging dock keeps the remote topped up, and doubles as a find my remote
+        base, lighting up to help locate a misplaced remote.</p>
+    </div>
+    <div class="figure-img figure-img-xl">
+      <img src="slidepal/chargingupdated.png" alt="Slidepal remote control resting in its charging dock, with a glowing ring indicating its find my remote feature">
+    </div>
+
+    <div class="finding-block">
+      <h3>Aesthetics</h3>
+      <p>The final shell keeps the sliding seam and button grid as the only visible break in an
+        otherwise smooth, minimal body, with the microphone and speaker tucked into the base of
+        the housing.</p>
+    </div>
+    <div class="render-grid cols-2">
+      <div><img src="slidepal/coverslide.png" alt="Close up render of the Slidepal sliding cover mechanism"></div>
+      <div><img src="slidepal/featuringmicrophoneandspeaker.png" alt="Close up render of the microphone and speaker grille at the base of the Slidepal remote control"></div>
+    </div>
+  </section>
+
+  <!-- 06 CONCLUSION -->
+  <section class="cs-section">
+    <div class="cs-num mono">06 / CONCLUSION</div>
+    <h2>What this project made possible</h2>
+    <div class="outcome-box">
+      <p>Slidepal turned a familiar frustration, hunting for the right button on a cluttered
+        remote, into a single physical gesture: slide the cover, and only the relevant buttons
+        are left in view. The project placed 1st runner up in Omni Remotes' competition, and the
+        pitch in Suzhou led to a factory visit and an internship offer as a designer at the
+        company, a direct result of research and prototyping work translating into something a
+        manufacturing partner wanted to build.</p>
+    </div>
+  </section>
+
+  <div class="cs-footer">
+    <a href="index.html" class="back-link mono">← Back to all work</a>
+    <a href="eclipur.html" class="next-project mono">
+      MORE WORK
+      <strong>Eclipur: Sleep Wellness Lamp →</strong>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span class="mono">© 2026 DAVID NG</span>
+  <span class="mono">CASE STUDY · SLIDEPAL</span>
+</footer>
+
+</body>
+</html>

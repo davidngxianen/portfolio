@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SK620 &amp; SK700: CPU Air Coolers Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FDFDFC;
+    --paper-dim:#F3F3F1;
+    --ink:#15171A;
+    --ink-soft:#565A5F;
+    --line:#E2E1DC;
+    --signal:#D2491E;
+    --signal-soft:#F0DCD2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--signal);color:var(--paper);}
+  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(253,253,252,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    padding:18px 6vw;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .back-link{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
+    transition:color .15s;
+  }
+  .back-link:hover{ color:var(--ink); }
+  .logo{ font-weight:600; font-size:15px; }
+  .logo span{ color:var(--signal); }
+
+  main{ max-width:1600px; margin:0 auto; padding:0 6vw; }
+
+  /* hero */
+  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
+  .cs-eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:22px;
+  }
+  .cs-hero h1{
+    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
+    max-width:22ch; margin-bottom:24px;
+  }
+  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
+  .cs-meta{ display:flex; gap:32px; margin-top:44px; flex-wrap:wrap; }
+  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
+  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+  .cs-meta-subtle{ color:var(--ink-soft); }
+  .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
+
+  /* image placeholder / hero */
+  .ph{
+    background:
+      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
+      var(--paper-dim);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .ph span{ font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.7; padding:20px; }
+  .ph .corner{ position:absolute; width:14px; height:14px; opacity:0.5; }
+  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .ph-hero{ aspect-ratio:16/9; margin-top:0; background:#0B0B0C; border:none; }
+  .ph-hero img{ width:100%; height:100%; object-fit:contain; object-position:center; display:block; }
+
+  /* section shell */
+  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .cs-section:last-of-type{ border-bottom:none; }
+  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
+  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:26ch; }
+  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:66ch; margin-bottom:36px; text-wrap:pretty; }
+
+  /* findings */
+  .finding-block{ margin-top:40px; }
+  .finding-block:first-of-type{ margin-top:0; }
+  .finding-block h3{ font-size:18px; font-weight:600; margin-bottom:10px; }
+  .finding-block p{ font-size:14.5px; line-height:1.75; color:var(--ink-soft); max-width:70ch; text-wrap:pretty; }
+
+  /* callout */
+  .callout{ background:var(--signal-soft); border:1px dashed var(--signal); padding:22px 26px; border-radius:3px; margin-top:28px; }
+  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
+  .callout a{ border-bottom:1px solid var(--ink); }
+
+  /* single figure image */
+  .figure-img{ max-width:360px; margin-top:32px; }
+  .figure-img-lg{ max-width:460px; }
+  .figure-img-xl{ max-width:640px; }
+  .figure-img-full{ max-width:100%; }
+  .figure-img img{ width:100%; display:block; border-radius:6px; }
+  .figure-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:60ch; margin-top:16px; }
+
+  /* render grid */
+  .render-grid{ display:grid; gap:24px; margin-top:28px; }
+  .render-grid.cols-2{ grid-template-columns:1fr 1fr; }
+  .render-grid.tight{ gap:6px; }
+  .render-grid img{ width:100%; display:block; border-radius:10px; background:var(--paper-dim); }
+  .render-grid-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:14px; }
+  .render-grid-caption strong{ color:var(--ink); font-family:'Space Grotesk',sans-serif; font-weight:600; }
+  @media (max-width:700px){
+    .render-grid.cols-2{ grid-template-columns:1fr; max-width:480px; margin-left:auto; margin-right:auto; }
+  }
+
+  /* match-height variant: images share a fixed height, width scales with each image's own ratio */
+  .render-grid.match-height{ align-items:center; }
+  .render-grid.match-height > div{ display:flex; align-items:center; justify-content:center; height:320px; }
+  .render-grid.match-height img{ width:auto; max-width:100%; height:100%; object-fit:contain; }
+  .render-grid.match-height.flush-left{ display:flex; }
+  .render-grid.match-height.flush-left > div{ flex:0 0 auto; width:auto; justify-content:flex-start; }
+
+  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
+  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; text-wrap:pretty; }
+
+  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .next-project{ font-size:13px; color:var(--ink-soft); }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project:hover strong{ color:var(--signal); }
+
+  footer.site-footer{
+    border-top:1px solid var(--line);
+    padding:24px 6vw;
+    display:flex; justify-content:space-between;
+    font-size:11px; color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="back-link mono">← Back to work</a>
+    <div class="logo mono">DAVID NG<span>.</span></div>
+  </div>
+</header>
+
+<main>
+
+  <section class="cs-hero">
+    <div class="cs-eyebrow mono"><span>●</span> Industrial Design · Red Dot &amp; iF Design Award 2026</div>
+    <h1>SK620 &amp; SK700: Reimagining the CPU Air Cooler</h1>
+    <p>Designed for Sudokoo, the SK620 and SK700 are dual tower CPU air coolers built around a
+      bold geometric form, a live stats display, and a mounting system engineered to fix the
+      everyday frustrations of building a PC. This is the first flagship product taken from
+      initial concept all the way to shelf.</p>
+    <div class="cs-meta">
+      <div>YEAR <strong>2024 / 2025</strong></div>
+      <div>ROLE <strong>Lead Industrial Designer</strong></div>
+      <div>TOOLS <strong>KeyShot, Rhino, Photoshop, Illustrator</strong></div>
+      <div>TIMELINE <strong>7 months</strong></div>
+      <div>RECOGNITION <strong>Red Dot &amp; iF Design Award 2026</strong></div>
+      <div class="cs-meta-subtle">LAST REVISED <strong>2025</strong></div>
+    </div>
+  </section>
+
+  <div class="ph ph-hero">
+    <img src="sk620/sk620hero.png" alt="Sudokoo SK620 air cooler installed inside a PC build, its digital screen showing live fan speed, load, CPU temperature, and power draw">
+  </div>
+
+  <!-- 01 OVERVIEW -->
+  <section class="cs-section">
+    <div class="cs-num mono">01 / OVERVIEW</div>
+    <h2>A flagship product, built end to end</h2>
+    <p class="lede">The SK620 and SK700 were designed for Sudokoo, the company brand this project
+      was built under. The work ran across roughly seven months, covering the full process end to
+      end: initial draft concepts, pain point research, form and engineering development,
+      design for manufacturing, and liaising directly with engineers in China to bring the design
+      to production. It is the first flagship product designed from the ground up that has since
+      been released to market.</p>
+
+    <div class="callout">
+      <div class="label mono">See it live</div>
+      <p>The SK620 and SK700 are available on the Sudokoo company website:
+        <a href="https://sudokoo.com/products/Cooling/cpuaircoolers/SK620V-AM5-Designated-Dual-Tower-Air-Cooler-with-Digital-Screen/2025/21248.shtml?type=Overview_Products" target="_blank" rel="noopener">view the product page →</a></p>
+    </div>
+  </section>
+
+  <!-- 02 RESEARCH -->
+  <section class="cs-section">
+    <div class="cs-num mono">02 / RESEARCH</div>
+    <h2>What actually goes wrong when building a PC</h2>
+    <p class="lede">Before any form was drawn, the research looked at where people actually get
+      stuck while installing a CPU cooler, not just what a finished cooler should look like.</p>
+
+    <div class="finding-block">
+      <h3>Mounting brackets are fiddly</h3>
+      <p>Fitting a heatsink and fan around a motherboard's mounting bracket is a multi step,
+        fine motor task, tightening spring loaded screws in the right order, engaging wire clips
+        under tension, all while working blind around a tower of fins. Small misalignments here
+        are one of the most common points where a build stalls.</p>
+    </div>
+    <div class="figure-img figure-img-xl">
+      <img src="sk620/cpucoolerpainpoint1.png" alt="Diagram of the preparation and fan clip installation steps for a conventional CPU air cooler, showing the fiddly wire clip retention step">
+    </div>
+
+    <div class="finding-block">
+      <h3>RAM clearance is a physical blocker</h3>
+      <p>Tall air coolers routinely collide with tall RAM heatsinks, especially on the fin closest
+        to the socket. Builders often discover this only after the cooler is already seated,
+        forcing them to remove the fan, swap RAM slots, or abandon their preferred sticks
+        entirely.</p>
+    </div>
+    <div class="figure-img figure-img-xl">
+      <img src="sk620/cpucoolerpainpoint2.png" alt="Diagram showing a CPU air cooler fin physically blocked by tall RAM sticks during installation">
+    </div>
+  </section>
+
+  <!-- 03 THE DESIGN -->
+  <section class="cs-section">
+    <div class="cs-num mono">03 / THE DESIGN</div>
+    <h2>A geometric cooler with a screen of its own</h2>
+    <p class="lede">The Sudokoo SK700 and SK620 are high performance air coolers built for
+      superior thermal efficiency and ultra quiet operation. The SK620 reimagines CPU cooling
+      with a bold, geometric dual tower design, while the SK700 carries the same design language
+      into a single tower form. Both share a sleek full black or white finish and a distinctive
+      digital screen that displays real time system stats.</p>
+    <div class="figure-img figure-img-xl">
+      <img src="sk620/image 215.svg" alt="Sudokoo SK620 dual tower and SK700 single tower CPU air coolers showing the shared geometric design and digital screen displaying real time system stats">
+      <p class="figure-caption">The SK620 (dual tower) and SK700 (single tower) variants, side by side.</p>
+    </div>
+  </section>
+
+  <!-- 04 DESIGN DETAILS -->
+  <section class="cs-section">
+    <div class="cs-num mono">04 / DESIGN DETAILS</div>
+    <h2>Angular surfaces, built for the hand as much as the eye</h2>
+    <p class="lede">The SK700 and SK620 feature angular, mecha inspired surfaces that reflect
+      ambient light for a dynamic, modern look that complements today's custom PC builds. Both
+      models include ergonomic features such as recessed grip zones for easy fan removal and
+      installation.</p>
+    <div class="render-grid cols-2 match-height tight flush-left">
+      <div><img src="sk620/image 214.svg" alt="Close up of the angular, mecha inspired shroud surface on the Sudokoo SK620 and SK700 air coolers"></div>
+      <div><img src="sk620/image 216.svg" alt="Recessed grip zone on the Sudokoo SK620 and SK700 air coolers, designed for easy fan removal and installation"></div>
+    </div>
+  </section>
+
+  <!-- 05 ENGINEERING FEATURES -->
+  <section class="cs-section">
+    <div class="cs-num mono">05 / ENGINEERING FEATURES</div>
+    <h2>Solving mounting and RAM clearance at the source</h2>
+    <p class="lede">The two pain points identified in research, fiddly mounting and blocked RAM,
+      were designed against directly rather than left as tradeoffs.</p>
+
+    <div class="finding-block">
+      <h3>Rail lock fan mount</h3>
+      <p>The innovative rail lock fan mount allows tool free, height adjustable installation,
+        enhancing both usability and RAM compatibility. Instead of wrestling with wire clips, the
+        fan slides into position along a rail and locks in place, with height adjustment built in
+        to clear taller RAM heatsinks.</p>
+    </div>
+    <div class="figure-img figure-img-xl">
+      <img src="sk620/image 217.svg" alt="Rail lock fan mount on the Sudokoo SK620 and SK700 air coolers, allowing tool free, height adjustable fan installation">
+    </div>
+
+    <div class="finding-block">
+      <h3>Side vents on the SK620</h3>
+      <p>On the SK620, side vents are added to enhance air inflow to the central fan, improving
+        thermal performance.</p>
+    </div>
+    <div class="figure-img figure-img-xl">
+      <img src="sk620/image 220.svg" alt="Side vents on the Sudokoo SK620 air cooler, added to enhance air inflow to the central fan">
+    </div>
+  </section>
+
+  <!-- 06 RECOGNITION -->
+  <section class="cs-section">
+    <div class="cs-num mono">06 / RECOGNITION</div>
+    <h2>On the show floor at Computex and CES</h2>
+    <p class="lede">Sudokoo presented the SK620 and SK700 at Computex 2025 and CES 2026, with the
+      design personally presented on the show floor at both events.</p>
+    <div class="render-grid cols-2 match-height tight flush-left">
+      <div><img src="sk620/image 221.svg" alt="Sudokoo SK620 and SK700 air coolers presented at Computex 2025"></div>
+      <div><img src="sk620/image 222.svg" alt="Sudokoo SK620 and SK700 air coolers presented at CES 2026"></div>
+    </div>
+  </section>
+
+  <!-- 07 OUTCOME & REFLECTION -->
+  <section class="cs-section">
+    <div class="cs-num mono">07 / OUTCOME &amp; REFLECTION</div>
+    <h2>What this project made possible</h2>
+    <div class="outcome-box">
+      <p>The SK620 and SK700 turned two everyday PC building frustrations, a fiddly mounting
+        process and RAM clearance conflicts, into the starting point for the entire design,
+        rather than an afterthought solved once the form was already fixed. Carrying the project
+        from early sketches through DFM and production liaison in China, then onto the show floor
+        at Computex and CES, resulted in Sudokoo's first flagship product to reach market, going
+        on to win both a Red Dot and an iF Design Award in 2026.</p>
+    </div>
+  </section>
+
+  <div class="cs-footer">
+    <a href="index.html" class="back-link mono">← Back to all work</a>
+    <a href="eclipur.html" class="next-project mono">
+      MORE WORK
+      <strong>Eclipur: Sleep Wellness Lamp →</strong>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span class="mono">© 2026 DAVID NG</span>
+  <span class="mono">CASE STUDY · SK620 &amp; SK700</span>
+</footer>
+
+</body>
+</html>
