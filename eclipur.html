@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Eclipur: Sleep Wellness Lamp Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FDFDFC;
+    --paper-dim:#F3F3F1;
+    --ink:#15171A;
+    --ink-soft:#565A5F;
+    --line:#E2E1DC;
+    --signal:#D2491E;
+    --signal-soft:#F0DCD2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--signal);color:var(--paper);}
+  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(253,253,252,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    padding:18px 6vw;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .back-link{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
+    transition:color .15s;
+  }
+  .back-link:hover{ color:var(--ink); }
+  .logo{ font-weight:600; font-size:15px; }
+  .logo span{ color:var(--signal); }
+
+  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
+
+  /* hero */
+  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
+  .cs-eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:22px;
+  }
+  .cs-hero h1{
+    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
+    max-width:20ch; margin-bottom:24px;
+  }
+  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
+  .cs-meta{ display:flex; gap:48px; margin-top:44px; flex-wrap:wrap; }
+  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
+  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+
+  /* image placeholder */
+  .ph{
+    background:
+      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
+      var(--paper-dim);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .ph span{ font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.7; padding:20px; }
+  .ph .corner{ position:absolute; width:14px; height:14px; opacity:0.5; }
+  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
+
+  .ph-hero{ aspect-ratio:1561/1115; margin-top:0; background:#E4E4E2; }
+  .ph-hero img{ width:100%; height:100%; object-fit:contain; object-position:center; display:block; }
+
+  /* section shell */
+  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .cs-section:last-of-type{ border-bottom:none; }
+  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
+  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:24ch; }
+  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; margin-bottom:36px; }
+
+  /* research findings */
+  .finding-block{ margin-top:40px; }
+  .finding-block:first-of-type{ margin-top:0; }
+  .finding-block h3{ font-size:18px; font-weight:600; margin-bottom:10px; }
+  .finding-block p{ font-size:14.5px; line-height:1.75; color:var(--ink-soft); max-width:70ch; }
+
+  .research-inputs{ border:1px solid var(--line); padding:26px; display:flex; flex-direction:column; gap:16px; margin-top:28px; }
+  .ri-item{ display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--line); padding-bottom:16px; }
+  .ri-item:last-child{ border-bottom:none; padding-bottom:0; }
+  .ri-item strong{ font-family:'Space Grotesk',sans-serif; font-size:16px; color:var(--signal); min-width:70px; flex-shrink:0; }
+  .ri-item span{ font-size:12px; color:var(--ink-soft); line-height:1.5; }
+
+  /* callout */
+  .callout{
+    background:var(--signal-soft);
+    border:1px dashed var(--signal);
+    padding:22px 26px;
+    border-radius:3px;
+    margin-top:28px;
+  }
+  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
+  .key-decisions{ list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:4px; }
+  .key-decisions li{ font-size:13.5px; line-height:1.6; color:var(--ink); padding-left:16px; position:relative; }
+  .key-decisions li::before{ content:'—'; position:absolute; left:0; color:var(--signal); }
+
+  /* video embed */
+  .video-embed{ position:relative; width:100%; aspect-ratio:16/9; margin-top:28px; background:#000; border-radius:6px; overflow:hidden; box-shadow:0 20px 40px -20px rgba(21,23,26,0.35); }
+  .video-embed iframe{ position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block; }
+
+  /* single figure image */
+  .figure-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:60ch; margin-top:20px; margin-bottom:16px; font-style:italic; }
+  .figure-img{ max-width:360px; }
+  .figure-img-lg{ max-width:460px; }
+  .figure-img-xl{ max-width:640px; }
+  .figure-img img{ width:100%; display:block; border-radius:6px; }
+
+  /* render grid */
+  .render-grid{ display:grid; gap:24px; margin-top:28px; }
+  .render-grid.cols-2{ grid-template-columns:1fr 1fr; }
+  .render-grid.cols-3{ grid-template-columns:repeat(3,1fr); }
+  .render-grid img{ width:100%; display:block; border-radius:10px; box-shadow:0 20px 40px -20px rgba(21,23,26,0.35); background:var(--paper-dim); }
+  .render-grid-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:14px; }
+  .render-grid-caption strong{ color:var(--ink); font-family:'Space Grotesk',sans-serif; font-weight:600; }
+  @media (max-width:700px){
+    .render-grid.cols-2,.render-grid.cols-3{ grid-template-columns:1fr; max-width:400px; margin-left:auto; margin-right:auto; }
+  }
+
+  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
+  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; }
+  .sub-heading{ font-size:16px; font-weight:600; margin:0 0 14px; }
+
+  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .next-project{ font-size:13px; color:var(--ink-soft); }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project:hover strong{ color:var(--signal); }
+
+  footer.site-footer{
+    border-top:1px solid var(--line);
+    padding:24px 6vw;
+    display:flex; justify-content:space-between;
+    font-size:11px; color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="back-link mono">← Back to work</a>
+    <div class="logo mono">DAVID NG<span>.</span></div>
+  </div>
+</header>
+
+<main>
+
+  <section class="cs-hero">
+    <div class="cs-eyebrow mono"><span>●</span> Industrial Design · Red Dot Award 2021</div>
+    <h1>Eclipur: A Lamp That Folds Like an Eclipse</h1>
+    <p>Late night scrolling and overworking are two of the most common habits standing between
+      people and good sleep. Eclipur is a bedside lamp built around one ritual: its lid folds
+      shut like a lunar eclipse, layering warm light, scent, and sound into a single wind down
+      sequence.</p>
+    <div class="cs-meta">
+      <div>YEAR <strong>2021</strong></div>
+      <div>MATERIAL <strong>ABS, Aluminum, Perspex</strong></div>
+      <div>ROLE <strong>Industrial Designer</strong></div>
+      <div>RECOGNITION <strong>Red Dot Award 2021</strong></div>
+    </div>
+  </section>
+
+  <div class="ph ph-hero">
+    <img src="eclipur/eclipurhero.jpg" alt="Eclipur lamp on a dark nightstand, its half sphere lid rotated open to a warm crescent of light, essential oil mist rising from the base, beside a phone charging on the base pad">
+  </div>
+
+  <!-- 01 OVERVIEW -->
+  <section class="cs-section">
+    <div class="cs-num mono">01 / OVERVIEW</div>
+    <h2>A lamp built around a bad bedtime habit</h2>
+    <p class="lede">Before any form was sketched, the project started from a single brief, one
+      question about why sleep quality keeps slipping in the first place.</p>
+
+    <div class="callout">
+      <div class="label mono">The Brief</div>
+      <p style="font-style:italic;">Sleep deprivation is commonly linked to the bad habits we
+        practice before going to bed. This includes using our phone for a long period of time,
+        as well as overworking late at night. With that, how might we create a new sleeping
+        experience that can improve our sleep?</p>
+    </div>
+
+    <div class="video-embed">
+      <iframe src="https://player.vimeo.com/video/544572730?title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" title="Eclipur concept video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- 02 RESEARCH -->
+  <section class="cs-section">
+    <div class="cs-num mono">02 / RESEARCH</div>
+    <h2>What actually helps a person fall asleep</h2>
+    <p class="lede">The research moved in two directions: watching how people actually behave at
+      bedtime, and studying which senses can be designed toward better sleep.</p>
+
+    <div class="finding-block">
+      <h3>Bedtime observation</h3>
+      <p>Observation centered on the key moments a phone actually gets used in bed: flipping it
+        over, lying face down on a pillow with it still lit, fidgeting with it, tucking it away
+        only to pull it back out again. The motivation behind most of it traced back to the same
+        three things, fear of missing out, curiosity, and anticipation, rather than any real
+        need.</p>
+    </div>
+    <div class="figure-img figure-img-lg">
+      <img src="eclipur/bedtime.svg" alt="Illustrated bedtime observation diagram showing key moments of phone usage in bed, flipping, lying sideways, fidgeting, tucked in, and the underlying motivations of FOMO, curiosity, and anticipation">
+    </div>
+
+    <div class="finding-block">
+      <h3>Designing for the senses</h3>
+      <p>Four senses kept surfacing as places a sleep product could actually intervene, each
+        backed by a different mechanism.</p>
+    </div>
+    <div class="research-inputs">
+      <div class="ri-item"><strong>Sight</strong><span>Warm, low toned light supports the body's natural wind down, unlike the cool blue light most screens emit right before bed.</span></div>
+      <div class="ri-item"><strong>Sound</strong><span>White, pink, and brown noise, 432 Hz tones, and ASMR all mask disruptive sound and ease the mind toward rest.</span></div>
+      <div class="ri-item"><strong>Smell</strong><span>Olfactory influence, particularly lavender, measurably reduces heart rate and blood pressure.</span></div>
+      <div class="ri-item"><strong>Visual</strong><span>Awe inspiring imagery triggers relaxation, and appears to expand a person's own capacity to calm down.</span></div>
+    </div>
+  </section>
+
+  <!-- 03 IDEATION -->
+  <section class="cs-section">
+    <div class="cs-num mono">03 / IDEATION</div>
+    <h2>Casting a wide net before narrowing in</h2>
+    <p class="lede">Early ideation moved quickly and broadly, testing many different product types
+      against the same brief before any single direction was chosen.</p>
+
+    <div class="finding-block">
+      <h3>The sketch sheet</h3>
+      <p>The first sketch sheet ranges across nearly a dozen directions: an orbit shaped lamp, a
+        white noise machine, a pillow with a built in speaker, sleep glasses pairing a soft light
+        with sound, a window mounted charger, a rain simulator, even a light that shifts between
+        warm and cool tones through the day. Tucked into the bottom corner is a rough day and
+        night lamp sketch, a small circle eclipsed by a dark crescent, the seed of what eventually
+        became Eclipur.</p>
+    </div>
+    <div class="figure-img figure-img-xl">
+      <img src="eclipur/Group 15.svg" alt="Ideation sketch sheet exploring many sleep product concepts, including an orbit lamp, sleep glasses, a rain simulator, and an early day and night eclipse lamp sketch">
+    </div>
+
+    <div class="finding-block">
+      <h3>Early direction tests</h3>
+      <p>Once the eclipse idea stood out from the rest, early tests checked how it would actually
+        sit in a bedroom, a small glowing crescent on a nightstand at night, alongside quick notes
+        on light color and glow before the final form was locked down.</p>
+    </div>
+    <div class="render-grid cols-2">
+      <div>
+        <img src="eclipur/image 28.svg" alt="Early bedroom mood render showing a small crescent lit sphere lamp glowing on a dark nightstand">
+      </div>
+      <div>
+        <img src="eclipur/image 29.svg" alt="Early exploration sketch annotating the color and glow of the eclipse light against a bedroom render">
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 THE CONCEPT -->
+  <section class="cs-section">
+    <div class="cs-num mono">04 / THE CONCEPT</div>
+    <h2>Folding a lamp like a lunar eclipse</h2>
+    <p class="lede">The chosen direction turned the day and night sketch into an actual mechanism:
+      a half sphere lid that rotates around a full sphere body, closing over the light the way the
+      moon closes over the sun.</p>
+
+    <div class="finding-block">
+      <h3>One motion, three senses</h3>
+      <p>As the lid rotates shut, the warm light fades from a full glow to a thin crescent, then
+        to nothing, giving the visual awe research above an actual physical form instead of just
+        an image on a screen. Two more senses were then built directly into the same sphere: an
+        inbuilt essential oil diffuser for smell, and an inbuilt speaker for sound, so all three
+        senses researched earlier live inside one object instead of three separate ones.</p>
+    </div>
+
+    <div class="finding-block">
+      <h3>The user journey</h3>
+      <p>From late night scrolling at a desk, to walking over to a glowing nightstand, to loading
+        a scent capsule and picking a light and sound mode from the companion app, to finally
+        watching the lid rotate shut beside the bed.</p>
+    </div>
+    <div class="figure-img figure-img-xl">
+      <img src="eclipur/image 49.svg" alt="Storyboard of the Eclipur user journey, from late night phone use, to setting up the lamp and app before bed, to the lid rotating shut beside a sleeping user">
+    </div>
+  </section>
+
+  <!-- 05 ITERATION -->
+  <section class="cs-section">
+    <div class="cs-num mono">05 / ITERATION</div>
+    <h2>Refining the form, then the internals</h2>
+    <p class="lede">Once the eclipse mechanism was set, the work shifted to proportion, then to
+      fitting the diffuser and speaker inside the same shell without disrupting it.</p>
+
+    <div class="finding-block">
+      <h3>Form iteration</h3>
+      <p>Multiple passes tested the ratio between the sphere and its crescent of light, and the
+        weight and footprint of the base needed to keep a top heavy sphere stable on a
+        nightstand.</p>
+    </div>
+    <div class="render-grid cols-2">
+      <div>
+        <img src="eclipur/image 33.svg" alt="Iteration renders of the Eclipur lamp form from three angles, refining the sphere to base proportion">
+      </div>
+      <div>
+        <img src="eclipur/image 34.svg" alt="Further iteration renders refining the sphere, crescent light, and stand proportions">
+      </div>
+    </div>
+
+    <div class="finding-block">
+      <h3>Installing the speaker</h3>
+      <p>The speaker sits inside the sphere itself, angled so sound projects outward through the
+        shell rather than being muffled inside a sealed body.</p>
+    </div>
+    <div class="render-grid cols-2">
+      <div>
+        <img src="eclipur/image 48.svg" alt="Transparent render of the Eclipur sphere revealing the internal speaker driver">
+      </div>
+      <div>
+        <img src="eclipur/image 43.svg" alt="Cutaway renders showing the speaker positioned near the base of the sphere, close to where the stand meets the body">
+      </div>
+    </div>
+
+    <div class="finding-block">
+      <h3>Installing the essential oil diffuser</h3>
+      <p>A nebulizer diffuser sits inside the stand rather than the sphere, keeping the scent
+        cartridge easy to reach and swap without disturbing the light or the speaker above it.</p>
+    </div>
+    <div class="render-grid cols-2">
+      <div>
+        <img src="eclipur/image 40.svg" alt="Cutaway of the lamp's stand showing the essential oil cartridge slotted inside, next to a diagram explaining how a nebulizer diffuser works">
+      </div>
+      <div>
+        <img src="eclipur/image 42.svg" alt="Essential oil cartridge being inserted into the stand, alongside exploded views of the internal oil reservoir">
+      </div>
+    </div>
+
+    <div class="finding-block">
+      <h3>Technical development</h3>
+      <p>The final assembly separates into three parts: the glowing dome, the speaker and
+        electronics housing, and the weighted base, tying back to the exploded structure and the
+        materials chosen for each piece.</p>
+    </div>
+    <div class="render-grid cols-3">
+      <div>
+        <img src="eclipur/image 52.svg" alt="Exploded view of the Eclipur lamp separating into its dome, body, and base components">
+      </div>
+      <div>
+        <img src="eclipur/image 36.svg" alt="Labeled materials diagram of the Eclipur lamp: Perspex dome, ABS plastic body, fiberglass mesh speaker grille, aluminium alloy base, and rubber base pad">
+      </div>
+      <div>
+        <img src="eclipur/image 37.svg" alt="Close up render of the speaker visible through the translucent shell, with light rays illustrating sound direction">
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 FINAL DESIGN -->
+  <section class="cs-section">
+    <div class="cs-num mono">06 / FINAL DESIGN</div>
+    <h2>The finished lamp</h2>
+    <p class="lede">One object, three senses, each one tied back to the research at the start of
+      this project.</p>
+
+    <div class="figure-img figure-img-xl">
+      <img src="eclipur/heroshot in context.jpg" alt="Eclipur lamp glowing warmly on a bedroom nightstand beside a bed, essential oil mist rising from its base">
+    </div>
+
+    <div class="render-grid cols-3" style="margin-top:44px;">
+      <div>
+        <img src="eclipur/light.jpg" alt="Close up of the Eclipur lamp glowing as a warm crescent, like a lunar eclipse at night">
+        <p class="render-grid-caption"><strong>Sight.</strong> At night, the lid slowly wraps
+          around the sphere until only a crescent of warm light remains, an eclipse happening on
+          the nightstand. A 4 7 8 breathing light mode also prompts the user to relax by
+          following their breath with its rhythm.</p>
+      </div>
+      <div>
+        <img src="eclipur/page4.jpg" alt="Mist rising from the base of the Eclipur lamp, showing the nebulizer diffuser in use">
+        <p class="render-grid-caption"><strong>Smell.</strong> Nebulizer diffuser technology
+          disperses essential oil as a fine mist, without needing heat to release the scent.</p>
+      </div>
+      <div>
+        <img src="eclipur/speaker.jpg" alt="Close up of the Eclipur lamp's built in fabric speaker grille set into the sphere">
+        <p class="render-grid-caption"><strong>Hearing.</strong> A built in speaker plays multiple
+          modes of relaxation sound, white noise, ASMR, 432 Hz tones, and more.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 THE APP -->
+  <section class="cs-section">
+    <div class="cs-num mono">07 / THE APP</div>
+    <h2>A simple app to match a simple ritual</h2>
+    <p class="lede">Eclipur also comes with a simple companion app to control the lamp's settings,
+      so the light, scent, and sound modes are one tap away instead of buried behind physical
+      buttons on the object itself.</p>
+
+    <div class="figure-img figure-img-xl">
+      <img src="eclipur/appeclipur.svg" alt="Eclipur companion app user journey, showing the home screen branching into light, scent, and sound setting screens">
+    </div>
+  </section>
+
+  <!-- 08 OUTCOME & REFLECTION -->
+  <section class="cs-section">
+    <div class="cs-num mono">08 / OUTCOME &amp; REFLECTION</div>
+    <h2>What this project makes possible</h2>
+    <div class="outcome-box">
+      <div class="callout" style="margin-top:0;">
+        <div class="label mono">Recognition</div>
+        <p>Eclipur was awarded a Red Dot Award in 2021, recognizing the eclipse mechanism and the
+          way it ties three senses into a single physical ritual.</p>
+      </div>
+      <h3 class="sub-heading" style="margin-top:20px;">Summary</h3>
+      <p>Eclipur started from a habit, phones staying lit in bed, and ended as a single object
+        that gives someone a reason to put the phone down instead. Sight, smell, and sound each
+        had their own research and their own engineering problem to solve, a rotating shell, a
+        nebulizer small enough to hide in a stand, a speaker angled to project through a solid
+        surface, but all three had to close into one motion for the ritual to actually work.</p>
+    </div>
+  </section>
+
+  <div class="cs-footer">
+    <a href="index.html" class="back-link mono">← Back to all work</a>
+    <a href="soulsnap.html" class="next-project mono">
+      MORE WORK
+      <strong>SoulSnap: Emotion Tagged Memories →</strong>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span class="mono">© 2026 DAVID NG</span>
+  <span class="mono">CASE STUDY · ECLIPUR</span>
+</footer>
+
+</body>
+</html>
