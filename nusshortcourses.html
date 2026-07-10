@@ -48,7 +48,7 @@
   .logo{ font-weight:600; font-size:15px; }
   .logo span{ color:var(--signal); }
 
-  main{ max-width:1600px; margin:0 auto; padding:0 6vw; }
+  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
 
   /* hero */
   .cs-hero{ padding:9vh 0 7vh; }
@@ -123,13 +123,10 @@
   .figure-img img{ width:100%; display:block; border-radius:6px; border:1px solid var(--line); box-shadow:0 8px 20px -10px rgba(21,23,26,0.16), 0 2px 6px rgba(21,23,26,0.06); }
   .figure-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:60ch; margin-top:16px; }
 
-  /* split row: text on one side, image on the other */
-  .split-row{ display:flex; gap:48px; align-items:flex-start; margin-top:8px; }
-  .split-row .split-text{ flex:1.1; min-width:0; }
-  .split-row .split-media{ flex:1; min-width:0; align-self:center; }
-  .split-media img{ width:100%; display:block; border-radius:6px; border:1px solid var(--line); box-shadow:0 8px 20px -10px rgba(21,23,26,0.16), 0 2px 6px rgba(21,23,26,0.06); }
-  .split-media .figure-caption{ text-align:center; }
-  @media (max-width:900px){ .split-row{ flex-direction:column; } }
+  /* stack: large image above, findings below */
+  .stack-media{ margin-top:8px; margin-bottom:40px; }
+  .stack-media img{ width:100%; display:block; border-radius:6px; border:1px solid var(--line); box-shadow:0 8px 20px -10px rgba(21,23,26,0.16), 0 2px 6px rgba(21,23,26,0.06); }
+  .stack-media .figure-caption{ text-align:left; }
 
   /* before / after comparison */
   .before-after-row{ display:flex; gap:32px; margin-top:44px; align-items:flex-start; }
@@ -200,38 +197,37 @@
     <div class="cs-num mono">02 / THE OLD DESIGN</div>
     <h2>Where the existing page was working against itself</h2>
 
-    <div class="split-row">
-      <div class="split-media">
-        <img src="nusshortcourses/oldshortcoursespage.svg" alt="Original NUS CDE short course landing page, showing a dense blue hero banner with course code and view count, a crowded orange tab bar, and a sidebar of mismatched icons">
-        <p class="figure-caption">The original course landing page template, before the redesign.</p>
+    <div class="stack-media">
+      <img src="nusshortcourses/oldshortcoursespage.svg" alt="Original NUS CDE short course landing page, showing a dense blue hero banner with course code and view count, a crowded orange tab bar, and a sidebar of mismatched icons">
+      <p class="figure-caption">The original course landing page template, before the redesign.</p>
+    </div>
+
+    <div class="stack-text">
+      <div class="finding-block">
+        <h3>No visual element of the course</h3>
+        <p>The hero banner is a flat block of institutional blue with no photo, icon, or
+          illustration signaling what the course is about. Every course looks identical at a
+          glance, forcing learners to read dense text just to judge relevance.</p>
       </div>
-      <div class="split-text">
-        <div class="finding-block">
-          <h3>No visual element of the course</h3>
-          <p>The hero banner is a flat block of institutional blue with no photo, icon, or
-            illustration signaling what the course is about. Every course looks identical at a
-            glance, forcing learners to read dense text just to judge relevance.</p>
-        </div>
 
-        <div class="finding-block">
-          <h3>Bad layout: an overloaded hero banner</h3>
-          <p>Breadcrumb, title, a long course code, the college tag, a view count, and the
-            enquiry button are all crammed into one dense block with no visual priority, so the
-            course title competes with meaningless metadata like "TGS-2022012322".</p>
-        </div>
+      <div class="finding-block">
+        <h3>Bad layout: an overloaded hero banner</h3>
+        <p>Breadcrumb, title, a long course code, the college tag, a view count, and the
+          enquiry button are all crammed into one dense block with no visual priority, so the
+          course title competes with meaningless metadata like "TGS-2022012322".</p>
+      </div>
 
-        <div class="finding-block">
-          <h3>Bad layout: a crowded tab bar</h3>
-          <p>Seven tabs, Objectives through Nett Fees, sit at equal weight in one tight
-            horizontal strip, forcing learners to scan the whole row just to find the section
-            they need.</p>
-        </div>
+      <div class="finding-block">
+        <h3>Bad layout: a crowded tab bar</h3>
+        <p>Seven tabs, Objectives through Nett Fees, sit at equal weight in one tight
+          horizontal strip, forcing learners to scan the whole row just to find the section
+          they need.</p>
+      </div>
 
-        <div class="finding-block">
-          <h3>Bad layout: a mismatched sidebar</h3>
-          <p>Course dates, delivery mode, course code, and funding type each use a different
-            icon style, reading as unrelated clip art rather than one coherent panel.</p>
-        </div>
+      <div class="finding-block">
+        <h3>Bad layout: a mismatched sidebar</h3>
+        <p>Course dates, delivery mode, course code, and funding type each use a different
+          icon style, reading as unrelated clip art rather than one coherent panel.</p>
       </div>
     </div>
   </section>
@@ -239,47 +235,46 @@
   <!-- 03 THE REDESIGN -->
   <section class="cs-section">
     <div class="cs-num mono">03 / THE REDESIGN</div>
-    <h2>Why the new template works better</h2>
+    <h2 style="max-width:none;">Why the new template works better</h2>
 
-    <div class="split-row">
-      <div class="split-media">
-        <img src="nusshortcourses/heroshortcoursespage.svg" alt="Redesigned NUS CDE short course landing page, showing the course title, a bulleted list of objectives, Download Brochure and Apply Now buttons, and a contextual photo of an engineer at an energy plant">
-        <p class="figure-caption">This is the new design proposed.</p>
+    <div class="stack-media">
+      <img src="nusshortcourses/heroshortcoursespage.svg" alt="Redesigned NUS CDE short course landing page, showing the course title, a bulleted list of objectives, Download Brochure and Apply Now buttons, and a contextual photo of an engineer at an energy plant">
+      <p class="figure-caption">This is the new design proposed.</p>
+    </div>
+
+    <div class="stack-text">
+      <div class="finding-block">
+        <h3>A real photo, not a blue block</h3>
+        <p>A real contextual photo now sits beside the objectives, giving every course an
+          instant visual identity instead of an identical blue block, solving the missing
+          visual element directly.</p>
       </div>
-      <div class="split-text">
-        <div class="finding-block">
-          <h3>A real photo, not a blue block</h3>
-          <p>A real contextual photo now sits beside the objectives, giving every course an
-            instant visual identity instead of an identical blue block, solving the missing
-            visual element directly.</p>
-        </div>
 
-        <div class="finding-block">
-          <h3>Course code and view count removed</h3>
-          <p>The new design eliminates the course code and view count entirely from the primary
-            view, leaving only the title and a true bulleted list of objectives, so the course
-            itself leads instead of competing with administrative metadata.</p>
-        </div>
+      <div class="finding-block">
+        <h3>Course code and view count removed</h3>
+        <p>The new design eliminates the course code and view count entirely from the primary
+          view, leaving only the title and a true bulleted list of objectives, so the course
+          itself leads instead of competing with administrative metadata.</p>
+      </div>
 
-        <div class="finding-block">
-          <h3>Real bullet points</h3>
-          <p>Objectives are set as real bullet points with clear line spacing, replacing the old
-            dash prefixed wall of text, so the page can be scanned in seconds rather than read
-            start to finish.</p>
-        </div>
+      <div class="finding-block">
+        <h3>Real bullet points</h3>
+        <p>Objectives are set as real bullet points with clear line spacing, replacing the old
+          dash prefixed wall of text, so the page can be scanned in seconds rather than read
+          start to finish.</p>
+      </div>
 
-        <div class="finding-block">
-          <h3>Two clearly weighted calls to action</h3>
-          <p>Download Brochure and Apply Now replace the single small enquiry button, giving the
-            page an obvious next step instead of leaving it buried in a dense header.</p>
-        </div>
+      <div class="finding-block">
+        <h3>Two clearly weighted calls to action</h3>
+        <p>Download Brochure and Apply Now replace the single small enquiry button, giving the
+          page an obvious next step instead of leaving it buried in a dense header.</p>
+      </div>
 
-        <div class="finding-block">
-          <h3>A consistent two color system</h3>
-          <p>Navy for content and orange for action replaces the mismatched icon set and heavy
-            solid blue banner, so the whole page reads as one coherent template rather than
-            several different components stitched together.</p>
-        </div>
+      <div class="finding-block">
+        <h3>A consistent two color system</h3>
+        <p>Navy for content and orange for action replaces the mismatched icon set and heavy
+          solid blue banner, so the whole page reads as one coherent template rather than
+          several different components stitched together.</p>
       </div>
     </div>
 
