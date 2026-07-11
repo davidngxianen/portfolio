@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LM360: Liquid Cooler Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FDFDFC;
+    --paper-dim:#F3F3F1;
+    --ink:#15171A;
+    --ink-soft:#565A5F;
+    --line:#E2E1DC;
+    --signal:#D2491E;
+    --signal-soft:#F0DCD2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--signal);color:var(--paper);}
+  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(253,253,252,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    padding:18px 6vw;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .back-link{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
+    transition:color .15s;
+  }
+  .back-link:hover{ color:var(--ink); }
+  .logo{ font-weight:600; font-size:15px; }
+  .logo span{ color:var(--signal); }
+
+  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
+
+  /* hero */
+  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
+  .cs-eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:22px;
+  }
+  .cs-hero h1{
+    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
+    max-width:22ch; margin-bottom:24px;
+  }
+  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
+  .cs-meta{ display:flex; gap:32px; margin-top:44px; flex-wrap:wrap; }
+  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
+  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+  .cs-meta-subtle{ color:var(--ink-soft); }
+  .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
+
+  /* image placeholder / hero */
+  .ph{
+    background:
+      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
+      var(--paper-dim);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .ph-hero{ aspect-ratio:16/9; margin-top:0; background:#0B0B0C; border:none; }
+  .ph-hero img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+
+  /* section shell */
+  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .cs-section:last-of-type{ border-bottom:none; }
+  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
+  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:26ch; }
+  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:66ch; margin-bottom:36px; text-wrap:pretty; }
+
+  /* findings */
+  .finding-block{ margin-top:40px; }
+  .finding-block:first-of-type{ margin-top:0; }
+  .finding-block h3{ font-size:18px; font-weight:600; margin-bottom:10px; }
+  .finding-block p{ font-size:14.5px; line-height:1.75; color:var(--ink-soft); max-width:70ch; text-wrap:pretty; }
+
+  /* callout */
+  .callout{ background:var(--signal-soft); border:1px dashed var(--signal); padding:22px 26px; border-radius:3px; margin-top:28px; }
+  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
+  .callout a{ border-bottom:1px solid var(--ink); }
+
+  /* single figure image */
+  .figure-img{ max-width:360px; margin-top:32px; }
+  .figure-img-lg{ max-width:460px; }
+  .figure-img-xl{ max-width:640px; }
+  .figure-img-full{ max-width:100%; }
+  .figure-img img{ width:100%; display:block; border-radius:6px; }
+  .figure-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:60ch; margin-top:16px; }
+
+  /* render grid */
+  .render-grid{ display:grid; gap:24px; margin-top:28px; }
+  .render-grid.cols-2{ grid-template-columns:1fr 1fr; }
+  .render-grid.cols-1{ grid-template-columns:1fr; max-width:900px; }
+  .render-grid img{ width:100%; display:block; border-radius:10px; background:var(--paper-dim); }
+  .render-grid-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:14px; }
+  .render-grid-caption strong{ color:var(--ink); font-family:'Space Grotesk',sans-serif; font-weight:600; }
+  @media (max-width:700px){
+    .render-grid.cols-2{ grid-template-columns:1fr; max-width:480px; margin-left:auto; margin-right:auto; }
+  }
+
+  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
+  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; text-wrap:pretty; }
+
+  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .next-project{ font-size:13px; color:var(--ink-soft); }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project:hover strong{ color:var(--signal); }
+
+  footer.site-footer{
+    border-top:1px solid var(--line);
+    padding:24px 6vw;
+    display:flex; justify-content:space-between;
+    font-size:11px; color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="back-link mono">← Back to work</a>
+    <div class="logo mono">DAVID NG<span>.</span></div>
+  </div>
+</header>
+
+<main>
+
+  <section class="cs-hero">
+    <div class="cs-eyebrow mono"><span>●</span> Industrial Design</div>
+    <h1>LM360: A Liquid Cooler Built Around Its Display</h1>
+    <p>LM360 is a liquid cooler pump block designed for DeepCool, built around a compact display,
+      using light and screen content, rather than surface detailing alone, to give the pump a
+      sense of presence inside a build.</p>
+    <div class="cs-meta">
+      <div>YEAR <strong>2024/2025</strong></div>
+      <div>ROLE <strong>Lead Industrial Designer</strong></div>
+      <div>TOOLS <strong>KeyShot, Rhino, Photoshop, Illustrator</strong></div>
+      <div>TIMELINE <strong>5 months</strong></div>
+      <div class="cs-meta-subtle">LAST REVISED <strong>2025</strong></div>
+    </div>
+  </section>
+
+  <div class="ph ph-hero">
+    <img src="LM360/Picture1.jpg" alt="LM360 liquid cooler pump installed in a white PC build, its display showing CPU temperature, frequency, and power">
+  </div>
+
+  <!-- 01 OVERVIEW -->
+  <section class="cs-section">
+    <div class="cs-num mono">01 / OVERVIEW</div>
+    <h2>A screen, not just a shroud</h2>
+    <p class="lede">The LM series brings a fresh update to liquid cooling with a compact 2.4 inch
+      IPS display that now supports MP4 video playback for a more dynamic screen experience. Work
+      on LM360 ran across five months, led from the earliest design direction through to design
+      for manufacturing.</p>
+
+    <div class="finding-block">
+      <h3>Built for clarity</h3>
+      <p>A 320 x 240 resolution ensures crisp visuals, while enhanced color accuracy and screen
+        stability deliver consistent clarity throughout. The soft perimeter lighting adds
+        structured contrast to the minimal design.</p>
+    </div>
+    <div class="render-grid cols-1">
+      <div><img src="LM360/Picture2.png" alt="LM360 style display pump block installed in two different PC builds, showing live CPU and GPU stats on screen"></div>
+      <div><img src="LM360/img3.png" alt="Close up of the pump display showing CPU temperature, GPU frequency, and CPU power readouts, with a soft perimeter light bar below"></div>
+    </div>
+  </section>
+
+  <!-- 02 THE POWER SOURCE EFFECT -->
+  <section class="cs-section">
+    <div class="cs-num mono">02 / THE POWER SOURCE EFFECT</div>
+    <h2>Making the pump feel like the source</h2>
+    <p class="lede">Beyond the screen itself, the lighting was treated as part of the product's
+      core identity rather than decoration added on top.</p>
+
+    <div class="finding-block">
+      <p>At the heart of the design is a softly illuminated core that appears to radiate energy
+        outward through the layered structure. This lighting effect creates the impression that
+        the pump is the power source of the cooling system, giving the product a sense of motion
+        and vitality while maintaining a clean, sophisticated aesthetic.</p>
+    </div>
+    <div class="figure-img figure-img-xl">
+      <img src="LM360/Picture10.png" alt="Close up of the illuminated pump core installed between RGB fans and RAM, its perimeter light glowing outward from the display housing">
+    </div>
+  </section>
+
+  <!-- 03 CONCEPT GENERATION -->
+  <section class="cs-section">
+    <div class="cs-num mono">03 / CONCEPT GENERATION</div>
+    <h2>From an ambitious first pass to something buildable</h2>
+    <p class="lede">The following concept represents the initial design direction for the LM360
+      series.</p>
+
+    <div class="finding-block">
+      <p>The original proposal explored a more premium and futuristic aesthetic, featuring
+        layered geometries and intricate surface details that created a bold visual identity and
+        a strong sense of depth. However, to better align with the target market, the concept was
+        simplified to reduce production costs, improve manufacturability, and streamline assembly
+        while preserving the core design language. This iterative process demonstrates the
+        balance between ambitious design vision and the practical realities of mass
+        production.</p>
+    </div>
+    <div class="render-grid cols-1">
+      <div><img src="LM360/Picture3.png" alt="Early LM360 concept render with layered octagonal geometry and exposed screws, showing a CPU temperature readout of 68 degrees"></div>
+      <div><img src="LM360/picture4.svg" alt="Further early LM360 concept renders exploring the layered housing and perimeter lighting from two angles"></div>
+    </div>
+  </section>
+
+  <!-- 04 OUTCOME & REFLECTION -->
+  <section class="cs-section">
+    <div class="cs-num mono">04 / OUTCOME &amp; REFLECTION</div>
+    <h2>What this project made possible</h2>
+    <div class="outcome-box">
+      <p>LM360 pushed the pump block from a purely functional shroud into the visual centerpiece
+        of a build, using screen content and layered light rather than surface detailing alone to
+        do that work. Leading the project from the first concept through to design for
+        manufacturing meant weighing an ambitious early direction against what could actually be
+        produced, and finding a simplified form that kept the design language intact.</p>
+    </div>
+
+    <div class="callout">
+      <div class="label mono">More work</div>
+      <p>More of this project, including further product developments, archive work, and process
+        documentation, is available in the
+        <a href="index.html#confidential" style="border-bottom:1px solid var(--ink);">confidential work</a>
+        section of this portfolio.</p>
+    </div>
+  </section>
+
+  <div class="cs-footer">
+    <a href="index.html" class="back-link mono">← Back to all work</a>
+    <a href="sk620.html" class="next-project mono">
+      MORE WORK
+      <strong>SK620 &amp; SK700: CPU Air Coolers →</strong>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span class="mono">© 2026 DAVID NG</span>
+  <span class="mono">CASE STUDY · LM360</span>
+</footer>
+
+</body>
+</html>

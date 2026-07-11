@@ -298,7 +298,7 @@
     box-shadow:none;
   }
   .card-thumb.thumb-contain.thumb-sk620{
-    background:#E8ECEF;
+    background:#EDEEEE;
   }
   .card-thumb.thumb-contain.thumb-sk620 img{
     max-width:96%;
@@ -598,11 +598,12 @@
       <button class="filter-btn active" data-filter="all">All</button>
       <button class="filter-btn" data-filter="uiux">UI/UX</button>
       <button class="filter-btn" data-filter="industrial">Industrial Design</button>
+      <button class="filter-btn" data-filter="recent">Most Recent</button>
     </div>
 
     <div class="grid" id="grid">
 
-      <a class="card" data-cat="uiux" href="pulse-app.html">
+      <a class="card" data-cat="uiux" data-year="2021" href="pulse-app.html">
         <div class="card-thumb">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
           <img src="EmergencyNowApp/hero-image.png" alt="Hands holding a phone showing the Pulse app home screen, with a large red SOS call button, current location, and nearby AED and first aid locations">
@@ -622,7 +623,7 @@
         </div>
       </a>
 
-      <a class="card" data-cat="uiux" href="pulse-dispatch.html">
+      <a class="card" data-cat="uiux" data-year="2021" href="pulse-dispatch.html">
         <div class="card-thumb thumb-contain">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
           <img src="EmergencyNowWeb/image 17.png" alt="Pulse Dispatch console showing a task list of active incidents ranked by severity, a live map, and a unit status sidebar">
@@ -641,7 +642,7 @@
         </div>
       </a>
 
-      <a class="card" data-cat="uiux" href="soulsnap.html">
+      <a class="card" data-cat="uiux" data-year="2023" href="soulsnap.html">
         <div class="card-thumb">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
           <img src="soulsnap/herosoulsnap.png" alt="Hands holding a phone showing the SoulSnap app home screen, with a weekly emotion bubble chart and the wrist wearing the SoulBand sensor">
@@ -661,7 +662,7 @@
         </div>
       </a>
 
-      <a class="card" data-cat="uiux" href="nusshortcourses.html">
+      <a class="card" data-cat="uiux" data-year="2023" href="nusshortcourses.html">
         <div class="card-thumb thumb-contain thumb-rounded">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
           <img src="nusshortcourses/heroshortcoursespage.svg" alt="Redesigned NUS CDE short course landing page, showing the course title, a bulleted list of objectives, and a contextual photo of an engineer at an energy plant">
@@ -681,7 +682,7 @@
         </div>
       </a>
 
-      <a class="card" data-cat="industrial" href="eclipur.html">
+      <a class="card" data-cat="industrial" data-year="2021" href="eclipur.html">
         <div class="card-thumb">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
           <img src="eclipur/eclipurhero.jpg" alt="Eclipur lamp on a dark nightstand, its half sphere lid rotated open to a warm crescent of light, essential oil mist rising from the base">
@@ -701,7 +702,7 @@
         </div>
       </a>
 
-      <a class="card" data-cat="industrial" href="slidepal.html">
+      <a class="card" data-cat="industrial" data-year="2017" href="slidepal.html">
         <div class="card-thumb thumb-contain thumb-bottom">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
           <img src="slidepal/heroslidepal.svg" alt="Slidepal remote control with its sliding cover exposing the SMART TV / AV button set">
@@ -721,7 +722,7 @@
         </div>
       </a>
 
-      <a class="card" data-cat="industrial" href="sk620.html">
+      <a class="card" data-cat="industrial" data-year="2025" href="sk620.html">
         <div class="card-thumb thumb-contain thumb-sk620">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
           <img src="sk620/skhero.png" alt="Sudokoo SK620 air cooler in white and SK700 air cooler in black, side by side, each with a digital screen showing live system stats">
@@ -741,21 +742,24 @@
         </div>
       </a>
 
-      <div class="card" data-cat="industrial">
+      <a class="card" data-cat="industrial" data-year="2025" href="lm360.html">
         <div class="card-thumb">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-          <span class="ph-label mono">PROJECT IMAGE<br>05 / REPLACE</span>
+          <img src="LM360/DEEPCOOL-LM360-AIO-LC-4.jpg" alt="LM360 liquid cooler pump installed in a white PC build, its display showing CPU temperature, frequency, and power">
         </div>
         <div class="card-info">
           <div class="card-tag mono">Industrial Design</div>
-          <div class="card-title">Project Title Five</div>
+          <div class="card-title">LM360: Liquid Cooler</div>
+          <div class="card-desc">A liquid cooler pump built around a compact IPS display, with a
+            softly illuminated core that reads as the power source of the whole system.</div>
           <div class="spec-line mono">
-            <span>YEAR <b>2023</b></span>
-            <span>MATERIAL <b>PC, Silicone</b></span>
-            <span>ROLE <b>Lead Designer</b></span>
+            <span>YEAR <b>2024/2025</b></span>
+            <span>CATEGORY <b>Liquid Cooler</b></span>
+            <span>ROLE <b>Lead Industrial Designer</b></span>
           </div>
+          <div class="view-case mono">View case study →</div>
         </div>
-      </div>
+      </a>
 
     </div>
   </section>
@@ -809,13 +813,23 @@
       buttons.forEach(b => b.classList.remove('active'));
       btn.classList.add('active');
       const f = btn.dataset.filter;
-      cards.forEach(c => {
-        if(f === 'all' || c.dataset.cat === f){
+
+      if(f === 'recent'){
+        const sorted = Array.from(cards).sort((a, b) => (b.dataset.year || 0) - (a.dataset.year || 0));
+        sorted.forEach((c, i) => {
           c.classList.remove('hidden');
-        } else {
-          c.classList.add('hidden');
-        }
-      });
+          c.style.order = i;
+        });
+      } else {
+        cards.forEach(c => {
+          c.style.order = '';
+          if(f === 'all' || c.dataset.cat === f){
+            c.classList.remove('hidden');
+          } else {
+            c.classList.add('hidden');
+          }
+        });
+      }
     });
   });
 
