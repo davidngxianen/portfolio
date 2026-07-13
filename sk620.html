@@ -131,8 +131,10 @@
   .render-grid.match-height img{ width:auto; max-width:100%; height:100%; object-fit:contain; }
   .render-grid.match-height.flush-left{ display:flex; }
   .render-grid.match-height.flush-left > div{ flex:0 0 auto; width:auto; justify-content:flex-start; }
+  .render-grid.match-height.lg > div{ height:420px; }
   @media (max-width:700px){
     .render-grid.match-height > div{ height:220px; }
+    .render-grid.match-height.lg > div{ height:260px; }
     .render-grid.match-height.flush-left{ flex-wrap:wrap; gap:20px; }
     .render-grid.match-height.flush-left > div{ flex:0 1 auto; max-width:100%; }
   }
@@ -260,7 +262,7 @@
       ambient light for a dynamic, modern look that complements today's custom PC builds. Both
       models include ergonomic features such as recessed grip zones for easy fan removal and
       installation.</p>
-    <div class="render-grid cols-2 match-height tight flush-left">
+    <div class="render-grid cols-2 match-height tight flush-left lg">
       <div><img src="sk620/image 214.svg" alt="Close up of the angular, mecha inspired shroud surface on the Sudokoo SK620 and SK700 air coolers"></div>
       <div><img src="sk620/image 216.svg" alt="Recessed grip zone on the Sudokoo SK620 and SK700 air coolers, designed for easy fan removal and installation"></div>
     </div>
@@ -289,7 +291,7 @@
       <p>On the SK620, side vents are added to enhance air inflow to the central fan, improving
         thermal performance.</p>
     </div>
-    <div class="figure-img figure-img-xl">
+    <div class="figure-img figure-img-2xl">
       <img src="sk620/Picture7.png" alt="Sudokoo SK620 shown with the fan removed, revealing the side vents added to enhance air inflow to the central fan">
     </div>
   </section>

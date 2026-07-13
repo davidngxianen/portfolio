@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DUO: Headphones &amp; Speaker Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FDFDFC;
+    --paper-dim:#F3F3F1;
+    --ink:#15171A;
+    --ink-soft:#565A5F;
+    --line:#E2E1DC;
+    --signal:#D2491E;
+    --signal-soft:#F0DCD2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--signal);color:var(--paper);}
+  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(253,253,252,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    padding:18px 6vw;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .back-link{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
+    transition:color .15s;
+  }
+  .back-link:hover{ color:var(--ink); }
+  .logo{ font-weight:600; font-size:15px; }
+  .logo span{ color:var(--signal); }
+
+  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
+
+  /* hero */
+  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
+  .cs-eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:22px;
+  }
+  .cs-hero h1{
+    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
+    max-width:20ch; margin-bottom:24px;
+  }
+  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
+  .cs-meta{ display:flex; gap:32px; margin-top:44px; flex-wrap:wrap; }
+  .cs-meta > div{ flex-shrink:0; }
+  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
+  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+  .cs-meta{ position:relative; }
+  .cs-meta-subtle{ color:var(--ink-soft); }
+  .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
+
+  /* image placeholder / hero */
+  .ph{
+    background:
+      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
+      var(--paper-dim);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .ph span{ font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.7; padding:20px; }
+  .ph .corner{ position:absolute; width:14px; height:14px; opacity:0.5; }
+  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
+  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .ph-hero{ aspect-ratio:16/8; margin-top:0; background:#FFFFFF; border:none; }
+  .ph-hero img{ width:100%; height:100%; object-fit:contain; object-position:center; display:block; }
+
+  /* section shell */
+  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .cs-section:last-of-type{ border-bottom:none; }
+  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
+  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:24ch; }
+  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; margin-bottom:36px; }
+
+  /* findings */
+  .finding-block{ margin-top:40px; }
+  .finding-block:first-of-type{ margin-top:0; }
+  .finding-block h3{ font-size:18px; font-weight:600; margin-bottom:10px; }
+  .finding-block p{ font-size:14.5px; line-height:1.75; color:var(--ink-soft); max-width:70ch; }
+
+  /* callout */
+  .callout{ background:var(--signal-soft); border:1px dashed var(--signal); padding:22px 26px; border-radius:3px; margin-top:28px; }
+  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
+
+  /* video embed */
+  .video-embed{ position:relative; width:100%; aspect-ratio:16/9; margin-top:28px; background:#000; border-radius:6px; overflow:hidden; box-shadow:0 20px 40px -20px rgba(21,23,26,0.35); }
+  .video-embed iframe{ position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block; }
+
+  /* single figure image */
+  .figure-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:60ch; margin-top:20px; margin-bottom:16px; font-style:italic; }
+  .figure-img{ max-width:360px; }
+  .figure-img-lg{ max-width:460px; }
+  .figure-img-xl{ max-width:640px; }
+  .figure-img-2xl{ max-width:900px; }
+  .figure-img img{ width:100%; display:block; border-radius:6px; }
+
+  /* render grid */
+  .render-grid{ display:grid; gap:24px; margin-top:28px; }
+  .render-grid.cols-1{ grid-template-columns:1fr; }
+  .render-grid.cols-2{ grid-template-columns:1fr 1fr; }
+  .render-grid.cols-3{ grid-template-columns:repeat(3,1fr); }
+  .render-grid img{ width:100%; display:block; border-radius:10px; background:var(--paper-dim); }
+  .render-grid-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:14px; }
+  .render-grid-caption strong{ color:var(--ink); font-family:'Space Grotesk',sans-serif; font-weight:600; }
+  @media (max-width:700px){
+    .render-grid.cols-2,.render-grid.cols-3{ grid-template-columns:1fr; max-width:400px; margin-left:auto; margin-right:auto; }
+    .cs-meta{ flex-wrap:wrap; gap:24px; overflow-x:visible; }
+  }
+
+  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
+  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; text-wrap:pretty; }
+
+  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .next-project{ font-size:13px; color:var(--ink-soft); }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project:hover strong{ color:var(--signal); }
+
+  footer.site-footer{
+    border-top:1px solid var(--line);
+    padding:24px 6vw;
+    display:flex; justify-content:space-between;
+    font-size:11px; color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="back-link mono">← Back to work</a>
+    <div class="logo mono">DAVID NG<span>.</span></div>
+  </div>
+</header>
+
+<main>
+
+  <section class="cs-hero">
+    <div class="cs-eyebrow mono"><span>●</span> Industrial Design</div>
+    <h1>DUO: One Set of Headphones, Two Ways to Listen</h1>
+    <p>DUO is a pair of headphones that mounts directly onto a speaker, turning two separate
+      products into one system built for both solo and group listening.</p>
+    <div class="cs-meta">
+      <div>YEAR <strong>2021</strong></div>
+      <div>ROLE <strong>Industrial Designer</strong></div>
+      <div>TOOLS <strong>KeyShot, Rhino, Photoshop, Premiere Pro</strong></div>
+      <div>TIMELINE <strong>10 weeks</strong></div>
+      <div class="cs-meta-subtle">LAST REVISED <strong>2021</strong></div>
+    </div>
+  </section>
+
+  <div class="ph ph-hero">
+    <img src="duo/duohero.png" alt="DUO headphones mounted onto its speaker, viewed head on against a white background">
+  </div>
+
+  <!-- 01 OVERVIEW -->
+  <section class="cs-section">
+    <div class="cs-num mono">01 / OVERVIEW</div>
+    <h2>From two products to one system</h2>
+    <p class="lede">DUO takes the two most common ways people listen to music, alone through
+      headphones and together through a speaker, and builds them into a single product. The
+      headphones mount directly onto the speaker body, drawing power and control from it, and
+      detach just as easily for private listening.</p>
+
+    <div class="callout">
+      <div class="label mono">The Brief</div>
+      <p style="font-style:italic;">The global earphones and headphones market size was valued at
+        USD 25.1 billion in 2019 and is expected to grow at a CAGR of 20.3% from 2020 to 2027,
+        driven by rising consumer preference for enhanced audio experience, a growing music
+        industry, and increasing mobile technology and internet penetration, from casual listening
+        to use by audiophiles and sound professionals in the music and entertainment industry.</p>
+    </div>
+
+    <div class="callout">
+      <div class="label mono">Design Challenge</div>
+      <p>How might we create a system that allows individuals to listen to music individually or
+        in a social group?</p>
+    </div>
+
+    <div class="video-embed">
+      <iframe src="https://player.vimeo.com/video/530058594?title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" title="DUO concept video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </section>
+
+  <!-- 02 INITIAL CONCEPT & FORM STUDIES -->
+  <section class="cs-section">
+    <div class="cs-num mono">02 / INITIAL CONCEPT &amp; FORM STUDIES</div>
+    <h2>Finding the mechanism before the form</h2>
+    <p class="lede">Early work focused less on how DUO should look and more on how the headphones
+      and speaker should physically and electrically connect, testing several mounting and
+      charging mechanisms before a direction was chosen.</p>
+
+    <div class="finding-block">
+      <h3>Form and mechanism sketches</h3>
+      <p>Sketching ran alongside quick 3D studies, exploring how a set of headphones could dock
+        onto a speaker body: where the ear cups would sit, how the headband would clear the
+        speaker, and what would hold the two together.</p>
+    </div>
+    <div class="figure-img figure-img-2xl">
+      <img src="duo/duo initial concepts/image 129.svg" alt="Sketches and a translucent 3D study exploring early DUO form and mechanism directions, labeled Experimental of forms and mechanism">
+    </div>
+
+    <div class="finding-block">
+      <h3>Wireless and contact charging</h3>
+      <p>Several charging approaches were prototyped in parallel: electromagnetic induction, a
+        pogo pin contact connector, and a dedicated charging case. Each aimed to charge the
+        headphones automatically, whether docked onto the speaker or stored away, without a
+        separate cable.</p>
+    </div>
+    <div class="render-grid cols-2">
+      <div><img src="duo/duo initial concepts/image 134.svg" alt="Early DUO concept exploring electromagnetic induction charging between the headphones and speaker"></div>
+      <div><img src="duo/duo initial concepts/image 131.svg" alt="Early DUO concept exploring a pogo pin contact connector between the headphones and speaker"></div>
+      <div><img src="duo/duo initial concepts/image 130.svg" alt="Early DUO concept exploring a dedicated charging case, with the headphones' battery charged by a power supply inside the case"></div>
+      <div><img src="duo/duo initial concepts/image 128.svg" alt="Early DUO concept sketch of the charging case, viewed top down"></div>
+    </div>
+  </section>
+
+  <!-- 03 FINAL DESIGN -->
+  <section class="cs-section">
+    <div class="cs-num mono">03 / FINAL DESIGN</div>
+    <h2>A speaker with headphones built in, or the other way around</h2>
+    <p class="lede">The final design keeps the headphones and speaker as two independent products
+      that happen to share a common attachment point, so the system reads correctly whether it is
+      being used apart or together.</p>
+
+    <div class="figure-img figure-img-2xl">
+      <img src="duo/image 141.svg" alt="DUO headphones and speaker shown together at an angle, labeled Headphone and Speaker">
+      <p class="figure-caption">Apart, DUO works as a standalone speaker and a standalone pair of
+        headphones. Mounted together, the two become one system.</p>
+    </div>
+
+    <div class="finding-block">
+      <h3>Detachable ear cups</h3>
+      <p>The ear cups are detachable, allowing easy replacement over the product's life.</p>
+    </div>
+    <div class="figure-img figure-img-2xl">
+      <img src="duo/TT+OG.375.228.png" alt="Close up profile of the DUO ear cup and speaker body, showing the detachable ear cup">
+    </div>
+
+    <div class="finding-block">
+      <h3>Straightforward assembly</h3>
+      <p>The final assembly is straightforward, breaking down into a small number of parts that
+        fit together directly.</p>
+    </div>
+    <div class="figure-img figure-img-2xl">
+      <img src="duo/TT.372.121.png" alt="Exploded view of the DUO speaker, showing the small number of parts that make up the final assembly">
+    </div>
+
+    <div class="finding-block">
+      <h3>Docking, control, and charging</h3>
+      <p>Attaching the headphones onto the speaker lets the knob on the headphones double as a
+        control for the speaker, adjusting its volume and switching tracks. While attached, the
+        headphones charge from a built in charger inside the speaker.</p>
+    </div>
+    <div class="figure-img figure-img-2xl">
+      <img src="duo/image 145.svg" alt="DUO headphones attached to the speaker, close up on the knob used to control speaker volume and charge the headphones">
+    </div>
+
+    <div class="finding-block">
+      <h3>The hook, at a glance</h3>
+      <p>The hook shaped mount creates a strong visual cue that the knob can be turned,
+        communicating the control before it is ever touched.</p>
+    </div>
+    <div class="figure-img figure-img-2xl">
+      <img src="duo/image 142.svg" alt="Close up of the hook shaped mount on the DUO headphones, showing how it visually cues that the knob can be turned">
+    </div>
+
+    <div class="finding-block">
+      <h3>Compatible with smartphones</h3>
+      <p>DUO pairs directly with a smartphone, shown here through a companion screen that
+        displays the battery levels of both the headphones and the speaker.</p>
+    </div>
+    <div class="figure-img figure-img-2xl">
+      <img src="duo/image 146.svg" alt="Smartphone screen showing the DUO companion pairing screen, displaying battery levels for the headphones and speaker">
+    </div>
+  </section>
+
+  <!-- 04 OUTCOME & REFLECTION -->
+  <section class="cs-section">
+    <div class="cs-num mono">04 / OUTCOME &amp; REFLECTION</div>
+    <h2>What this project made possible</h2>
+    <div class="outcome-box">
+      <p>DUO reframes headphones and a speaker as one modular system rather than two separate
+        purchases, letting the same pair of headphones move between private and shared listening
+        by docking onto the speaker rather than switching devices entirely. Working through the
+        mechanism first, from induction and pogo pin charging experiments to the final hook and
+        knob attachment, meant the eventual form followed directly from how the two parts needed
+        to lock, charge, and communicate.</p>
+    </div>
+  </section>
+
+  <div class="cs-footer">
+    <a href="index.html" class="back-link mono">← Back to all work</a>
+    <a href="sk620.html" class="next-project mono">
+      MORE WORK
+      <strong>SK620 &amp; SK700: CPU Air Coolers →</strong>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span class="mono">© 2026 DAVID NG</span>
+  <span class="mono">CASE STUDY · DUO</span>
+</footer>
+
+</body>
+</html>

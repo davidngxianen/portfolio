@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VitalScan: A Novelty Scanner App, Built by Conversation Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FDFDFC;
+    --paper-dim:#F3F3F1;
+    --ink:#15171A;
+    --ink-soft:#565A5F;
+    --line:#E2E1DC;
+    --signal:#D2491E;
+    --signal-soft:#F0DCD2;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection{background:var(--signal);color:var(--paper);}
+  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(253,253,252,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    padding:18px 6vw;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .back-link{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
+    transition:color .15s;
+  }
+  .back-link:hover{ color:var(--ink); }
+  .logo{ font-weight:600; font-size:15px; }
+  .logo span{ color:var(--signal); }
+
+  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
+
+  /* hero */
+  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
+  .cs-eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:22px;
+  }
+  .cs-hero h1{
+    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
+    max-width:20ch; margin-bottom:24px;
+  }
+  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:64ch; }
+  .cs-hero p + p{ margin-top:14px; }
+  .cs-meta{ display:flex; gap:48px; margin-top:44px; flex-wrap:wrap; }
+  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
+  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+  .cs-meta-subtle{ margin-left:auto; color:var(--ink-soft); }
+  .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
+
+  /* image placeholder */
+  .ph{
+    background:
+      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
+      var(--paper-dim);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .ph span{ font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.7; padding:20px; }
+
+  .shot-frame{ background:#000; border:1px solid var(--line); border-radius:22px; overflow:hidden; box-shadow:0 24px 48px -24px rgba(21,23,26,0.35); }
+  .shot-frame img{ width:100%; display:block; }
+
+  /* section shell */
+  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .cs-section:last-of-type{ border-bottom:none; }
+  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
+  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:26ch; }
+  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:66ch; margin-bottom:36px; }
+  .sub-heading{ font-size:16px; font-weight:600; margin:0 0 14px; }
+
+  /* overview screens */
+  .overview-screens{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:28px; }
+  .overview-screens .shot-frame{ height:100%; }
+  @media (max-width:700px){ .overview-screens{ grid-template-columns:1fr; max-width:340px; margin-left:auto; margin-right:auto; } }
+
+  .overview-caption{ font-size:12px; color:var(--ink-soft); text-align:center; margin-top:12px; }
+
+  /* before/after */
+  .before-after{ display:grid; grid-template-columns:repeat(2,1fr); gap:24px; margin-top:28px; }
+  .before-after-label{ font-size:12px; color:var(--ink-soft); text-align:center; letter-spacing:0.04em; margin-top:14px; }
+  @media (max-width:700px){ .before-after{ grid-template-columns:1fr; max-width:360px; margin-left:auto; margin-right:auto; } }
+
+  .triple{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:28px; }
+  @media (max-width:700px){ .triple{ grid-template-columns:1fr; max-width:340px; margin-left:auto; margin-right:auto; } }
+
+  /* live scan-field demo — the app's actual keyframes, namespaced so they can't collide with this page */
+  .vs-shot-frame{
+    background:var(--paper); border-radius:22px;
+    box-shadow:0 14px 32px -18px rgba(21,23,26,0.28);
+    padding:16px; display:flex; align-items:center; justify-content:center;
+  }
+  .vs-scan-field{
+    position:relative; width:100%; aspect-ratio:3/4; max-width:210px;
+    border:1px solid rgba(21,20,15,.14); border-radius:16px;
+    background:#eae7e1; overflow:hidden;
+  }
+  .vs-grid-base{
+    position:absolute; inset:0; border-radius:16px;
+    background-image:radial-gradient(rgba(21,20,15,.22) 1.4px, transparent 1.6px);
+    background-size:9px 9px;
+  }
+  @property --vs-dot-color{ syntax:'<color>'; inherits:false; initial-value:rgba(21,20,15,.32); }
+  .vs-grid-pulse{
+    --vs-dot-color:rgba(21,20,15,.32);
+    position:absolute; inset:0; border-radius:16px;
+    background-image:radial-gradient(var(--vs-dot-color) 1.4px, transparent 1.6px);
+    background-size:9px 9px;
+  }
+  .vs-scan-field.vs-scanning{ animation:vsFieldBlinkScan 1s ease-in-out infinite; }
+  .vs-scan-field.vs-detected{ animation:vsBgFlickerDetected .7s ease-in-out infinite; }
+  .vs-scan-field.vs-not-detected{ animation:vsBgFlickerNotDetected .7s ease-in-out infinite; }
+  @keyframes vsFieldBlinkScan{ 0%,100%{ background-color:#eae7e1; } 50%{ background-color:rgba(21,20,15,.22); } }
+  @keyframes vsBgFlickerDetected{ 0%,100%{ background-color:rgba(63,122,76,.14); } 50%{ background-color:#eae7e1; } }
+  @keyframes vsBgFlickerNotDetected{ 0%,100%{ background-color:rgba(194,59,44,.14); } 50%{ background-color:#eae7e1; } }
+  .vs-scan-field.vs-scanning .vs-grid-pulse{ animation:vsDotBlinkScan 1s ease-in-out infinite; }
+  .vs-scan-field.vs-detected .vs-grid-pulse{ --vs-dot-color:rgba(107,166,120,.9); }
+  .vs-scan-field.vs-not-detected .vs-grid-pulse{ --vs-dot-color:rgba(214,108,92,.9); }
+  @keyframes vsDotBlinkScan{ 0%,100%{ --vs-dot-color:rgba(21,20,15,.22); } 50%{ --vs-dot-color:#eae7e1; } }
+  .vs-status{ font-size:12px; text-align:center; margin-top:10px; }
+  .vs-status.vs-status-scan{ color:var(--ink-soft); }
+  .vs-status.vs-status-good{ color:#3F7A4C; }
+  .vs-status.vs-status-bad{ color:#C23B2C; }
+
+  /* full phone-frame context, so the grids read the way they actually do in the app */
+  .vs-shot-frame.vs-shot-frame-phone{ padding:16px; }
+  .vs-phone{
+    background:#eae7e1; border-radius:14px; padding:20px 12px 14px;
+    position:relative; display:flex; flex-direction:column; align-items:center;
+    width:100%; aspect-ratio:9/17.5;
+  }
+  .vs-phone-home{
+    position:absolute; top:14px; left:12px; width:26px; height:26px; border-radius:50%;
+    background:rgba(21,20,15,.07); color:rgba(21,20,15,.5);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .vs-phone-status{ margin-top:44px; margin-bottom:8px; height:12px; font-size:9.5px; text-align:center; letter-spacing:.02em; }
+  .vs-phone .vs-scan-field{ flex:1; width:100%; max-width:none; }
+  .vs-phone-btn{
+    margin-top:12px; background:#15140f; color:#fdfdfc;
+    font-size:9.5px; font-weight:600; padding:7px 18px; border-radius:999px;
+    transition:opacity .2s;
+  }
+  .vs-phone-btn.vs-invisible{ opacity:0; }
+
+  /* the removed grey-to-orange ripple, reconstructed from the commit right before it was replaced */
+  .vs-scan-field.vs-scanning-ripple .vs-grid-pulse{
+    opacity:0; clip-path:circle(0% at 50% 50%);
+    animation:vsColorRippleScan 1.2s ease-out infinite;
+  }
+  .vs-scan-field.vs-scanning-ripple .vs-grid-pulse:nth-child(2){ animation-delay:.4s; }
+  .vs-scan-field.vs-scanning-ripple .vs-grid-pulse:nth-child(3){ animation-delay:.8s; }
+  @keyframes vsColorRippleScan{
+    0%{ clip-path:circle(0% at 50% 50%); opacity:.9; --vs-dot-color:rgba(180,178,170,.6); }
+    35%{ clip-path:circle(6% at 50% 50%); }
+    60%{ --vs-dot-color:rgba(255,106,31,.85); opacity:1; }
+    100%{ clip-path:circle(75% at 50% 50%); opacity:0; --vs-dot-color:rgba(255,106,31,.85); }
+  }
+
+  /* finding blocks / callouts / key decisions, same vocabulary as other case studies */
+  .finding-block{ margin-top:40px; }
+  .finding-block:first-of-type{ margin-top:0; }
+  .finding-block h3{ font-size:18px; font-weight:600; margin-bottom:10px; }
+  .finding-block p{ font-size:14.5px; line-height:1.75; color:var(--ink-soft); max-width:70ch; }
+
+  .callout{
+    background:var(--signal-soft);
+    border:1px dashed var(--signal);
+    padding:22px 26px;
+    border-radius:3px;
+    margin-top:28px;
+  }
+  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
+  .key-decisions{ list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:4px; }
+  .key-decisions li{ font-size:13.5px; line-height:1.6; color:var(--ink); padding-left:16px; position:relative; }
+  .key-decisions li::before{ content:'—'; position:absolute; left:0; color:var(--signal); }
+
+  .iteration-block{ margin-top:56px; }
+  .iteration-block:first-of-type{ margin-top:0; }
+  .iteration-tag{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+
+  /* build flow diagram */
+  .stakeholder-diagram{ margin-top:20px; overflow-x:auto; }
+  .stakeholder-diagram svg{ width:100%; min-width:640px; height:auto; display:block; }
+
+  /* stat row */
+  .stat-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:28px; }
+  .stat-cell{ background:var(--paper); padding:22px 20px; }
+  .stat-cell .num{ font-family:'Space Grotesk',sans-serif; font-size:28px; font-weight:600; color:var(--ink); }
+  .stat-cell .lbl{ font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.06em; margin-top:6px; }
+  @media (max-width:700px){ .stat-row{ grid-template-columns:repeat(2,1fr); } }
+
+  /* outcome */
+  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
+  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; }
+
+  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .next-project{ font-size:13px; color:var(--ink-soft); }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project:hover strong{ color:var(--signal); }
+
+  footer.site-footer{
+    border-top:1px solid var(--line);
+    padding:24px 6vw;
+    display:flex; justify-content:space-between;
+    font-size:11px; color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="back-link mono">← Back to work</a>
+    <div class="logo mono">DAVID NG<span>.</span></div>
+  </div>
+</header>
+
+<main>
+
+  <section class="cs-hero">
+    <div class="cs-eyebrow mono"><span>●</span> UI/UX · AI-Paired Development</div>
+    <h1>VitalScan: A Novelty Scanner App, Built by Conversation</h1>
+    <p>VitalScan is a fake "biometric technology detector" for the web: a passcode lock screen, a
+      fingerprint hold-to-scan interaction, a live scanning sequence, and a dashboard that tracks
+      a believable history of "results" — all of it fabricated, none of it measuring anything
+      real. It's a prank app, built to be shown off.</p>
+    <p>What makes it worth a case study isn't the prank. It's the process. Every screen,
+      animation, sound, and interaction below was directed entirely through natural language in
+      Claude Code, iterated live against a running build, screenshot by screenshot, without
+      writing a line of code by hand.</p>
+    <div class="cs-meta">
+      <div>YEAR <strong>2026</strong></div>
+      <div>ROLE <strong>Direction &amp; UI/UX (AI-Paired Build)</strong></div>
+      <div>TOOLS <strong>Claude Code, HTML/CSS/JS, GitHub</strong></div>
+      <div>TIMELINE <strong>Iterative, Multiple Sessions</strong></div>
+      <div>PLATFORM <strong>Web (Mobile-First)</strong></div>
+    </div>
+  </section>
+
+  <!-- 01 OVERVIEW -->
+  <section class="cs-section">
+    <div class="cs-num mono">01 / OVERVIEW</div>
+    <h2>A scanner that scans nothing, dressed to look like it scans everything</h2>
+    <p class="lede">The premise is simple: hold your thumb on the sensor, watch it "scan," and get
+      a result. The passcode only ever unlocks if a hidden gesture is performed first, the scan
+      result is a random number dressed up as data, and the whole thing is styled like a
+      confidential piece of hardware, not a joke. The goal was to make every individual screen
+      feel considered, not just the concept as a whole.</p>
+    <div class="overview-screens">
+      <div>
+        <div class="shot-frame"><img src="thumbscanner/final-login.png" alt="VitalScan login screen in its current light cream theme, orange pulse icon mark, VitalScan wordmark, caution copy, and a black Login button"></div>
+        <div class="overview-caption mono">Login</div>
+      </div>
+      <div>
+        <div class="shot-frame"><img src="thumbscanner/final-home.png" alt="VitalScan home dashboard in its current light theme, showing a New Diagnostic Scan card and a Scan Activity card with an orange line chart, scan count, average result, and accuracy"></div>
+        <div class="overview-caption mono">Home Dashboard</div>
+      </div>
+      <div>
+        <div class="shot-frame"><img src="thumbscanner/final-scan-result.png" alt="VitalScan scan result screen in its current light theme, showing a large number over a green-tinted dot grid after a Detected result"></div>
+        <div class="overview-caption mono">Scan Result</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 THE BUILD PROCESS -->
+  <section class="cs-section">
+    <div class="cs-num mono">02 / THE BUILD PROCESS</div>
+    <h2>Design direction, given entirely in plain language</h2>
+    <p class="lede">There was no Figma file for this project. Every visual decision, from "shift
+      the number pad up a bit" to "make it monochrome, like this moodboard," was written as a
+      prompt against a live, running build. Each round followed the same loop: describe the
+      change, let it implement, watch it get verified against a headless browser with real
+      screenshots, then look at the result and decide what to say next.</p>
+
+    <div class="stakeholder-diagram">
+      <svg viewBox="0 0 1180 160" role="img" aria-label="Flow diagram: a prompt describing a change leads to implementation, which leads to automated browser verification with screenshots, which leads to a git commit, looping back to the next prompt, repeated twenty-four times">
+        <defs>
+          <marker id="bf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-soft)"/>
+          </marker>
+        </defs>
+        <line x1="255" y1="80" x2="291" y2="80" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#bf-arrow)"/>
+        <line x1="545" y1="80" x2="581" y2="80" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#bf-arrow)"/>
+        <line x1="835" y1="80" x2="871" y2="80" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#bf-arrow)"/>
+        <path d="M1100,120 C1100,150 60,150 60,120" stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="4 4" fill="none" marker-end="url(#bf-arrow)"/>
+        <text x="580" y="149" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">repeated 24 times</text>
+        <g>
+          <rect x="20" y="40" width="235" height="80" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="137" y="73" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Prompt</text>
+          <text x="137" y="90" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Plain language direction,</text>
+          <text x="137" y="103" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">e.g. "make the grid pulse red"</text>
+        </g>
+        <g>
+          <rect x="295" y="40" width="250" height="80" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="420" y="73" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Claude Code Implements</text>
+          <text x="420" y="90" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Edits HTML / CSS / JS directly,</text>
+          <text x="420" y="103" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">no build step, no framework</text>
+        </g>
+        <g>
+          <rect x="585" y="40" width="250" height="80" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
+          <text x="710" y="73" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Automated Verification</text>
+          <text x="710" y="90" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Headless browser drives the flow,</text>
+          <text x="710" y="103" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">screenshots confirm the result</text>
+        </g>
+        <g>
+          <rect x="875" y="40" width="225" height="80" rx="4" fill="var(--paper-dim)" stroke="var(--ink)" stroke-width="1.2"/>
+          <text x="987" y="73" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Commit</text>
+          <text x="987" y="90" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">One change, one commit,</text>
+          <text x="987" y="103" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">a clean history of decisions</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="stat-row">
+      <div class="stat-cell"><div class="num mono">24</div><div class="lbl">Commits / Iterations</div></div>
+      <div class="stat-cell"><div class="num mono">2</div><div class="lbl">Full Visual Redesigns</div></div>
+      <div class="stat-cell"><div class="num mono">3</div><div class="lbl">Files, No Framework</div></div>
+      <div class="stat-cell"><div class="num mono">0</div><div class="lbl">Lines Hand-Typed</div></div>
+    </div>
+
+    <div class="finding-block" style="margin-top:44px;">
+      <h3>Verification, not vibes</h3>
+      <p>Every change was checked before it was called done: a headless browser actually clicked
+        through the passcode, held the fingerprint sensor for the full three seconds, and read
+        back computed styles and audio node counts, not just a glance at a screenshot. That
+        discipline is what made twenty-four rounds of rapid changes possible without the build
+        slowly rotting underneath the polish — including two full visual identity swaps that
+        touched nearly every screen without anything quietly breaking underneath.</p>
+    </div>
+  </section>
+
+  <!-- 03 KEY ITERATIONS -->
+  <section class="cs-section">
+    <div class="cs-num mono">03 / KEY ITERATIONS</div>
+    <h2>What changed, round by round</h2>
+    <p class="lede">A selection of the iterations that shaped VitalScan the most, each one a
+      direct response to looking at the running build and deciding it wasn't right yet.</p>
+
+    <div class="iteration-block">
+      <div class="iteration-tag mono">Visual identity</div>
+      <div class="finding-block">
+        <h3>From a clinical light theme to a monochrome moodboard</h3>
+        <p>The first working version used a light, soft-blue "medical app" palette. Shown a
+          reference moodboard of a black, dot-matrix, Nothing-OS-style interface, the entire
+          visual system was rebuilt in one pass: pure black surfaces, thin white borders instead
+          of drop shadows, a pixel display font for numerals, and status color reserved
+          specifically for green and red states rather than used decoratively.</p>
+      </div>
+      <div class="before-after">
+        <div>
+          <div class="shot-frame"><img src="thumbscanner/before-home-light.png" alt="Earlier VitalScan home screen using a light blue-grey background with white cards and a blue accent color"></div>
+          <p class="before-after-label mono">Initial Build — Light Theme</p>
+        </div>
+        <div>
+          <div class="shot-frame"><img src="thumbscanner/home.png" alt="Second-pass VitalScan home screen using a pure black background, thin white bordered cards, and a dot-matrix font for numbers"></div>
+          <p class="before-after-label mono">Second Pass — Monochrome Theme</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="iteration-block">
+      <div class="iteration-tag mono">Visual identity, again</div>
+      <div class="finding-block">
+        <h3>Trading pure black for a warmer, considered light system</h3>
+        <p>The monochrome look read as striking in isolation but flat and cold as a full app to
+          actually use for a few minutes. The identity was rebuilt a second time, into the system
+          running today: a warm cream paper background, a single confident orange accent used
+          sparingly, Space Grotesk for numerals in place of the dot-matrix font, and thin
+          low-opacity borders instead of stark white hairlines. It's the same discipline as the
+          first redesign, applied against the lesson learned from living with it — high contrast
+          reads as "technical," but it isn't automatically the most usable choice for a screen
+          someone actually has to look at repeatedly.</p>
+      </div>
+      <div class="before-after">
+        <div>
+          <div class="shot-frame"><img src="thumbscanner/home.png" alt="Second-pass VitalScan home screen using a pure black background and monochrome dot-matrix numerals"></div>
+          <p class="before-after-label mono">Second Pass — Monochrome Theme</p>
+        </div>
+        <div>
+          <div class="shot-frame"><img src="thumbscanner/final-home.png" alt="Current VitalScan home screen using a warm cream background, an orange accent, and Space Grotesk numerals"></div>
+          <p class="before-after-label mono">Current — Light Geometric Theme</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="iteration-block">
+      <div class="iteration-tag mono">Data visualization</div>
+      <div class="finding-block">
+        <h3>From a bar chart to a connected line</h3>
+        <p>The home dashboard's "Scan Activity" card started as a simple bar chart of past
+          results. Asked directly to make it a line graph, the chart was rebuilt as a connected
+          SVG path with individually colored points, so a glance can separate a genuine detection
+          from one a user has personally flagged as wrong.</p>
+      </div>
+      <div class="before-after">
+        <div>
+          <div class="shot-frame"><img src="thumbscanner/before-chart-bar.png" alt="Earlier version of the Scan Activity card using blue vertical bars to represent past scan results"></div>
+          <p class="before-after-label mono">Initial Draft — Bar Chart</p>
+        </div>
+        <div>
+          <div class="shot-frame"><img src="thumbscanner/final-home.png" alt="Current Scan Activity card using an orange connected line chart with points colored green for correct, red for flagged, and outlined for pending review"></div>
+          <p class="before-after-label mono">Current — Line Chart</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="iteration-block">
+      <div class="iteration-tag mono">Onboarding flow</div>
+      <div class="finding-block">
+        <h3>Cutting a screen that had already earned its place</h3>
+        <p>A splash screen with a four second auto-advancing timer was added early on, then
+          replaced by a dedicated login screen with its own explicit button. A few rounds later,
+          asked to "remove the loading page" outright, the splash was deleted entirely — the app
+          now opens directly on login. Not every screen added earlier survives once a flow gets
+          used a few more times.</p>
+      </div>
+      <div class="before-after">
+        <div>
+          <div class="shot-frame"><img src="thumbscanner/before-loading-screen.png" alt="Earlier VitalScan splash screen with a pulse icon, VitalScan wordmark, caution text, and a pulsing loading-dot indicator"></div>
+          <p class="before-after-label mono">Removed — Loading Splash</p>
+        </div>
+        <div>
+          <div class="shot-frame"><img src="thumbscanner/final-login.png" alt="Current VitalScan login screen, the current light visual identity with an explicit Login button and no loading step"></div>
+          <p class="before-after-label mono">Current — Opens Directly on Login</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="iteration-block">
+      <div class="iteration-tag mono">Live feedback</div>
+      <div class="finding-block">
+        <h3>A scanning grid that reports its own result</h3>
+        <p>This effect went through three different versions before landing on the one running
+          today. It started as a single static dot grid with no color feedback at all. The second
+          pass added a ripple that swept outward from the center in orange, red, or green
+          depending on the mode — visually busy, and it made "Detected" and "Not Detected" harder
+          to tell apart at a glance than the status text next to them. The current version is
+          quieter and reads faster: the scan field's own background flickers between neutral and
+          its status color roughly twice a second, while the dot grid's color stays completely
+          static within each mode — a muted orange-grey while scanning, solid green the instant a
+          result reads "Detected," solid red for "Not Detected." The three tiles below are the
+          app's actual CSS running live, not screenshots.</p>
+      </div>
+      <div class="triple">
+        <div>
+          <div class="vs-shot-frame vs-shot-frame-phone">
+            <div class="vs-phone">
+              <div class="vs-phone-home"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3l9-8z"/></svg></div>
+              <div class="vs-phone-status vs-status-scan mono">Scanning...</div>
+              <div class="vs-scan-field vs-scanning"><div class="vs-grid-base"></div><div class="vs-grid-pulse"></div></div>
+              <div class="vs-phone-btn vs-invisible mono">Scan</div>
+            </div>
+          </div>
+          <p class="before-after-label mono">Scanning</p>
+        </div>
+        <div>
+          <div class="vs-shot-frame vs-shot-frame-phone">
+            <div class="vs-phone">
+              <div class="vs-phone-home"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3l9-8z"/></svg></div>
+              <div class="vs-phone-status vs-status-bad mono">Not Detected</div>
+              <div class="vs-scan-field vs-not-detected"><div class="vs-grid-base"></div><div class="vs-grid-pulse"></div></div>
+              <div class="vs-phone-btn mono">Scan</div>
+            </div>
+          </div>
+          <p class="before-after-label mono">Not Detected</p>
+        </div>
+        <div>
+          <div class="vs-shot-frame vs-shot-frame-phone">
+            <div class="vs-phone">
+              <div class="vs-phone-home"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3l9-8z"/></svg></div>
+              <div class="vs-phone-status vs-status-good mono">Detected</div>
+              <div class="vs-scan-field vs-detected"><div class="vs-grid-base"></div><div class="vs-grid-pulse"></div></div>
+              <div class="vs-phone-btn vs-invisible mono">Scan</div>
+            </div>
+          </div>
+          <p class="before-after-label mono">Detected</p>
+        </div>
+      </div>
+      <p class="overview-caption mono" style="margin-top:14px;">Live CSS, not screenshots — running the exact keyframes from style.css, in the actual on-screen context (home button, status text, Scan button included).</p>
+      <div class="callout">
+        <div class="label mono">A bug worth explaining</div>
+        <p>The "scanning" state is never removed from the field once a scan starts — "detected"
+          or "not detected" gets added alongside it, not instead of it. That meant a
+          <span class="mono">:nth-child()</span> selector written for the scanning dots ended up
+          with slightly higher CSS specificity than the plain rule meant to override it for a
+          finished result, so a flash of the old scanning color kept bleeding through after every
+          result came back. The fix was <span class="mono">:where()</span>, which matches the
+          same elements but contributes zero specificity of its own — it let the rules go back to
+          resolving in the order they were written, the way the cascade is supposed to work.</p>
+      </div>
+    </div>
+
+    <div class="iteration-block">
+      <div class="iteration-tag mono">Scanning effect, then vs. now</div>
+      <div class="finding-block">
+        <h3>From a radiating ripple to an inverted blink</h3>
+        <p>The "Scanning" state specifically went through its own redesign, separate from
+          Detected and Not Detected. The version before this one rippled: a burst of color
+          expanded outward from the center of the grid on a 1.2 second loop, the dots shifting
+          from grey to the app's orange accent as the ripple passed over them, three overlapping
+          waves staggered a fraction of a second apart so it never looked fully still. It looked
+          good in isolation, but busy and slightly gimmicky sitting on-screen for the full three
+          seconds of a scan. It was replaced with something calmer: the dot grid stays completely
+          still, and instead the whole field's background flickers between neutral and a dim
+          orange tint about twice a second — the same "flicker the field, not the dots" language
+          already used for Detected and Not Detected, so all three states now read as one
+          consistent system instead of scanning having its own separate visual idea.</p>
+      </div>
+      <div class="before-after">
+        <div>
+          <div class="vs-shot-frame vs-shot-frame-phone">
+            <div class="vs-phone">
+              <div class="vs-phone-home"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3l9-8z"/></svg></div>
+              <div class="vs-phone-status vs-status-scan mono">Scanning...</div>
+              <div class="vs-scan-field vs-scanning-ripple">
+                <div class="vs-grid-base"></div>
+                <div class="vs-grid-pulse"></div>
+                <div class="vs-grid-pulse"></div>
+                <div class="vs-grid-pulse"></div>
+              </div>
+              <div class="vs-phone-btn vs-invisible mono">Scan</div>
+            </div>
+          </div>
+          <p class="before-after-label mono">Removed — Grey → Orange Ripple</p>
+        </div>
+        <div>
+          <div class="vs-shot-frame vs-shot-frame-phone">
+            <div class="vs-phone">
+              <div class="vs-phone-home"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3l9-8z"/></svg></div>
+              <div class="vs-phone-status vs-status-scan mono">Scanning...</div>
+              <div class="vs-scan-field vs-scanning">
+                <div class="vs-grid-base"></div>
+                <div class="vs-grid-pulse"></div>
+              </div>
+              <div class="vs-phone-btn vs-invisible mono">Scan</div>
+            </div>
+          </div>
+          <p class="before-after-label mono">Current — Inverted Blink</p>
+        </div>
+      </div>
+      <p class="overview-caption mono" style="margin-top:14px;">Both live CSS. The ripple is reconstructed from the exact keyframes in the commit right before it was replaced, not a re-creation from memory.</p>
+    </div>
+
+    <div class="iteration-block">
+      <div class="iteration-tag mono">Result reveal</div>
+      <div class="finding-block">
+        <h3>From a hard snap to a number that counts itself up</h3>
+        <p>The result number originally flickered through random digits for a moment, then
+          snapped straight to the real value. It now flickers for three seconds — the
+          "calculating" state — before counting up from zero to the actual result over five
+          seconds, slowing down as it approaches the number, an easing curve chosen specifically
+          so the count feels like it is arriving at an answer rather than just stopping.</p>
+      </div>
+      <div class="callout">
+        <div class="label mono">A detail worth naming</div>
+        <p>The deceleration wasn't just visual. The tick sound that accompanies each digit change
+          during the count-up naturally spaces out as the animation slows, because the sound is
+          triggered by the same value-change event as the visual update. One easing curve, two
+          senses, no separate audio timeline to keep in sync by hand.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 THE HIDDEN MECHANIC -->
+  <section class="cs-section">
+    <div class="cs-num mono">04 / THE HIDDEN MECHANIC</div>
+    <h2>A passcode that isn't really a passcode</h2>
+    <p class="lede">The core trick: the six-digit passcode never validates against a stored code
+      at all. It unlocks only when it ends in a specific pair of digits — currently 1 and 9 —
+      with no visual cue that those two positions mean anything different from the other four.
+      End it with anything else and the dots shake and reset, no matter what came before. The
+      digits that do "pass" aren't wasted either: the first digit sets how many times the scan
+      will read "Not Detected" before it finally succeeds, and the second and third become the
+      two-digit number it reports once it does.</p>
+
+    <div class="finding-block">
+      <h3>Three mechanics, each hidden a different way</h3>
+      <p>The secret gate was rebuilt twice before landing here. It started as an invisible zone on
+        the lock screen that had to be double-tapped before the passcode would validate — first a
+        small, easy-to-miss 110×110 pixel target in the corner, later a full-width band that was
+        easier to stumble into. That was replaced with a single press-and-hold of about two
+        seconds in the same spot, with a small haptic buzz on trigger. Both versions had the same
+        weakness: they were a separate gesture, on top of the passcode, that a curious user could
+        eventually locate by methodically tapping and holding around the screen. Folding the check
+        directly into the passcode's own last two digits removes that surface entirely — there is
+        no hidden zone left to find, because the only "secret" is which digits a normal-looking
+        passcode has to end in.</p>
+    </div>
+
+    <div class="finding-block">
+      <h3>Fixing the parts that weren't the trick</h3>
+      <p>Alongside the mechanic itself, two ordinary usability issues surfaced during testing on
+        actual mobile viewports and needed fixing on their own merit: buttons weren't showing a
+        press state reliably on mobile Safari, since CSS <span class="mono">:active</span> alone
+        doesn't fire consistently on a plain tap, and the bottom of the keypad was getting cropped
+        on shorter phone screens because of how mobile browsers report viewport height.</p>
+    </div>
+
+    <ul class="key-decisions">
+      <li>Replaced CSS <span class="mono">:active</span> styling with a small Pointer Events
+        driven <span class="mono">.pressed</span> class, so every button gets identical tactile
+        feedback on mouse and touch alike.</li>
+      <li>Switched the app's height to <span class="mono">100dvh</span>, the dynamic viewport
+        unit, with a fallback for older browsers, so mobile browser chrome no longer clips content
+        off the bottom of the screen.</li>
+      <li>Tightened the lock screen's vertical spacing so the full keypad, including the 0 and
+        delete keys, stays visible on screens as small as 360×640.</li>
+    </ul>
+  </section>
+
+  <!-- 05 SOUND DESIGN -->
+  <section class="cs-section">
+    <div class="cs-num mono">05 / SOUND DESIGN</div>
+    <h2>Every sound is generated, not recorded</h2>
+    <p class="lede">There isn't a single audio file in the project. Every tone — the scanning
+      pings, the detected and not-detected chimes, the calculating ticks, the decelerating
+      count-up — is synthesized on the fly with the Web Audio API: plain oscillators shaped by
+      short gain envelopes, composed into short chime sequences for the more celebratory moments.</p>
+
+    <div class="finding-block">
+      <h3>Subtracting as much as adding</h3>
+      <p>Sound was added broadly at first, including a continuous rising tone that played for the
+        full three seconds a user held their thumb on the sensor. On review, that tone was pulled
+        entirely — holding the sensor is now silent — while the short completion chime once
+        verification succeeds was kept. Iteration on a build like this isn't only about adding
+        detail; knowing what to remove again is just as much a part of the process.</p>
+    </div>
+
+    <div class="callout">
+      <div class="label mono">Why synthesize instead of use audio files</div>
+      <p>No asset pipeline, no licensing to think about, and no network requests: the entire app,
+        sound included, is three text files that load instantly and work offline. For a small
+        interactive prototype like this, that trade-off was worth more than the extra realism a
+        sampled sound library might have added.</p>
+    </div>
+  </section>
+
+  <!-- 06 OUTCOME & REFLECTION -->
+  <section class="cs-section">
+    <div class="cs-num mono">06 / OUTCOME &amp; REFLECTION</div>
+    <h2>What this project actually demonstrates</h2>
+    <div class="outcome-box">
+      <h3 class="sub-heading">Summary</h3>
+      <p>VitalScan is not a client deliverable, and it doesn't pretend to solve a real problem.
+        What it demonstrates is a working method: the same "look at it, react, adjust" loop used
+        with a physical prototype or a Figma file applies just as directly to a live, running
+        piece of software, when the iteration loop is fast enough to keep up with the reaction.
+        Twenty-four rounds of direction, each one verified for real before it counted as done —
+        including reworking the entire visual identity twice — produced a small app with a
+        genuine identity, its own sound design, and interaction details most prototypes never get
+        far enough to include.</p>
+
+      <h3 class="sub-heading" style="margin-top:20px;">What Comes Next</h3>
+      <ul class="key-decisions">
+        <li>A proper deployment behind a real domain, rather than a local build, so the prank
+          version is actually shareable.</li>
+        <li>Device-level haptics on the hold-to-scan interaction, where the platform supports it,
+          to close the gap between the visual and physical feedback.</li>
+        <li>A richer fake "diagnostic report" behind each result, giving the joke more to say once
+          someone has actually been fooled by it.</li>
+      </ul>
+    </div>
+  </section>
+
+  <div class="cs-footer">
+    <a href="index.html" class="back-link mono">← Back to all work</a>
+    <a href="pulse-app.html" class="next-project mono">
+      MORE WORK
+      <strong>Pulse: Emergency Response App →</strong>
+    </a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span class="mono">© 2026 DAVID NG</span>
+  <span class="mono">CASE STUDY · VITALSCAN</span>
+</footer>
+
+</body>
+</html>

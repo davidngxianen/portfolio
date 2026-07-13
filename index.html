@@ -253,6 +253,21 @@
   }
   .card:hover{ background:var(--paper-dim); }
   .card.hidden{ display:none; }
+  .card-locked{ cursor:default; }
+  .card-locked:hover{ background:var(--paper); }
+  .card-locked:hover .corner{ opacity:0; }
+  .wip-badge{
+    position:absolute;
+    top:14px; left:14px;
+    z-index:2;
+    background:var(--ink);
+    color:var(--paper);
+    font-size:10px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    padding:6px 10px;
+    border-radius:20px;
+  }
 
   .card-thumb{
     aspect-ratio:4/3;
@@ -591,7 +606,7 @@
   <section id="work">
     <div class="section-head">
       <h2>Selected Work</h2>
-      <span class="idx mono">08 PROJECTS</span>
+      <span class="idx mono">10 PROJECTS</span>
     </div>
 
     <div class="filters">
@@ -642,41 +657,41 @@
         </div>
       </a>
 
-      <a class="card" data-cat="uiux" data-year="2023" href="soulsnap.html">
+      <div class="card card-locked" data-cat="uiux" data-year="2026">
         <div class="card-thumb">
+          <span class="wip-badge mono">Work in Progress</span>
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-          <img src="soulsnap/herosoulsnap.png" alt="Hands holding a phone showing the SoulSnap app home screen, with a weekly emotion bubble chart and the wrist wearing the SoulBand sensor">
+          <img src="thumbscanner/heroimagevitalscan.png" alt="VitalScan home dashboard in its current light theme, showing a scan activity line chart with green and red result points">
         </div>
         <div class="card-info">
-          <div class="card-tag mono">UI / UX · Exploratory Project</div>
-          <div class="card-title">SoulSnap: Emotion Tagged Memories</div>
-          <div class="card-desc">An exploratory thesis project pairing photos with the emotions felt
-            at the moment they were taken, captured through a wearable GSR and pulse sensor and
-            turned into a data visualization.</div>
+          <div class="card-tag mono">UI / UX · AI-Paired Development</div>
+          <div class="card-title">VitalScan: A Novelty Scanner App, Built by Conversation</div>
+          <div class="card-desc">A biometric app developed and designed to be a companion app for
+            magicians, creating a different workmanship for an ACAAN routine.</div>
           <div class="spec-line mono">
-            <span>YEAR <b>2023</b></span>
-            <span>PLATFORM <b>Mobile App + Wearable</b></span>
-            <span>ROLE <b>UI/UX Designer</b></span>
+            <span>YEAR <b>2026</b></span>
+            <span>PLATFORM <b>Web (Mobile-First)</b></span>
+            <span>ROLE <b>Direction &amp; UI/UX</b></span>
           </div>
-          <div class="view-case mono">View case study →</div>
+          <div class="view-case mono">Case study in progress, not yet available</div>
         </div>
-      </a>
+      </div>
 
-      <a class="card" data-cat="uiux" data-year="2023" href="nusshortcourses.html">
-        <div class="card-thumb thumb-contain thumb-rounded">
+      <a class="card" data-cat="industrial" data-year="2025" href="sk620.html">
+        <div class="card-thumb thumb-contain thumb-sk620">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-          <img src="nusshortcourses/heroshortcoursespage.svg" alt="Redesigned NUS CDE short course landing page, showing the course title, a bulleted list of objectives, and a contextual photo of an engineer at an energy plant">
+          <img src="sk620/skhero.png" alt="Sudokoo SK620 air cooler in white and SK700 air cooler in black, side by side, each with a digital screen showing live system stats">
         </div>
         <div class="card-info">
-          <div class="card-tag mono">UI / UX · Web Redesign</div>
-          <div class="card-title">NUS CDE Short Courses: Landing Page Redesign</div>
-          <div class="card-desc">A work project for NUS College of Design &amp; Engineering,
-            redesigning the shared page template every short course on the CET catalogue is
-            built from.</div>
+          <div class="card-tag mono">Industrial Design · Red Dot &amp; iF Design Award 2026</div>
+          <div class="card-title">SK620 &amp; SK700: CPU Air Coolers</div>
+          <div class="card-desc">Sudokoo's flagship dual tower air coolers, reimagining CPU
+            cooling with a geometric design, a live stats display, and a tool free rail lock fan
+            mount.</div>
           <div class="spec-line mono">
-            <span>YEAR <b>2023</b></span>
-            <span>PLATFORM <b>Web (Desktop)</b></span>
-            <span>ROLE <b>UI/UX Designer</b></span>
+            <span>YEAR <b>2024 / 2025</b></span>
+            <span>CATEGORY <b>CPU Fan Cooler</b></span>
+            <span>ROLE <b>Lead Industrial Designer</b></span>
           </div>
           <div class="view-case mono">View case study →</div>
         </div>
@@ -702,6 +717,26 @@
         </div>
       </a>
 
+      <a class="card" data-cat="uiux" data-year="2023" href="soulsnap.html">
+        <div class="card-thumb">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <img src="soulsnap/herosoulsnap.png" alt="Hands holding a phone showing the SoulSnap app home screen, with a weekly emotion bubble chart and the wrist wearing the SoulBand sensor">
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">UI / UX · Exploratory Project</div>
+          <div class="card-title">SoulSnap: Emotion Tagged Memories</div>
+          <div class="card-desc">An exploratory thesis project pairing photos with the emotions felt
+            at the moment they were taken, captured through a wearable GSR and pulse sensor and
+            turned into a data visualization.</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2023</b></span>
+            <span>PLATFORM <b>Mobile App + Wearable</b></span>
+            <span>ROLE <b>UI/UX Designer</b></span>
+          </div>
+          <div class="view-case mono">View case study →</div>
+        </div>
+      </a>
+
       <a class="card" data-cat="industrial" data-year="2017" href="slidepal.html">
         <div class="card-thumb thumb-contain thumb-bottom">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
@@ -722,26 +757,6 @@
         </div>
       </a>
 
-      <a class="card" data-cat="industrial" data-year="2025" href="sk620.html">
-        <div class="card-thumb thumb-contain thumb-sk620">
-          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-          <img src="sk620/skhero.png" alt="Sudokoo SK620 air cooler in white and SK700 air cooler in black, side by side, each with a digital screen showing live system stats">
-        </div>
-        <div class="card-info">
-          <div class="card-tag mono">Industrial Design · Red Dot &amp; iF Design Award 2026</div>
-          <div class="card-title">SK620 &amp; SK700: CPU Air Coolers</div>
-          <div class="card-desc">Sudokoo's flagship dual tower air coolers, reimagining CPU
-            cooling with a geometric design, a live stats display, and a tool free rail lock fan
-            mount.</div>
-          <div class="spec-line mono">
-            <span>YEAR <b>2024 / 2025</b></span>
-            <span>CATEGORY <b>CPU Fan Cooler</b></span>
-            <span>ROLE <b>Lead Industrial Designer</b></span>
-          </div>
-          <div class="view-case mono">View case study →</div>
-        </div>
-      </a>
-
       <a class="card" data-cat="industrial" data-year="2025" href="lm360.html">
         <div class="card-thumb">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
@@ -756,6 +771,45 @@
             <span>YEAR <b>2024/2025</b></span>
             <span>CATEGORY <b>Liquid Cooler</b></span>
             <span>ROLE <b>Lead Industrial Designer</b></span>
+          </div>
+          <div class="view-case mono">View case study →</div>
+        </div>
+      </a>
+
+      <a class="card" data-cat="uiux" data-year="2023" href="nusshortcourses.html">
+        <div class="card-thumb thumb-contain thumb-rounded">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <img src="nusshortcourses/heroshortcoursespage.svg" alt="Redesigned NUS CDE short course landing page, showing the course title, a bulleted list of objectives, and a contextual photo of an engineer at an energy plant">
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">UI / UX · Web Redesign</div>
+          <div class="card-title">NUS CDE Short Courses: Landing Page Redesign</div>
+          <div class="card-desc">A work project for NUS College of Design &amp; Engineering,
+            redesigning the shared page template every short course on the CET catalogue is
+            built from.</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2023</b></span>
+            <span>PLATFORM <b>Web (Desktop)</b></span>
+            <span>ROLE <b>UI/UX Designer</b></span>
+          </div>
+          <div class="view-case mono">View case study →</div>
+        </div>
+      </a>
+
+      <a class="card" data-cat="industrial" data-year="2021" href="duo.html">
+        <div class="card-thumb">
+          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
+          <img src="duo/heroimage.jpg" alt="DUO headphones mounted onto its speaker, viewed head on against a white background">
+        </div>
+        <div class="card-info">
+          <div class="card-tag mono">Industrial Design</div>
+          <div class="card-title">DUO: Headphones &amp; Speaker</div>
+          <div class="card-desc">A pair of headphones that mounts directly onto a speaker, turning
+            two separate products into one system for both solo and group listening.</div>
+          <div class="spec-line mono">
+            <span>YEAR <b>2021</b></span>
+            <span>CATEGORY <b>Audio System</b></span>
+            <span>ROLE <b>Industrial Designer</b></span>
           </div>
           <div class="view-case mono">View case study →</div>
         </div>
