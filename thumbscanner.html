@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VitalScan: A Novelty Scanner App, Built by Conversation Case Study</title>
+<title>VitalScan: A Scanning Interface for ACAAN Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -63,7 +63,7 @@
   }
   .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:64ch; }
   .cs-hero p + p{ margin-top:14px; }
-  .cs-meta{ display:flex; gap:48px; margin-top:44px; flex-wrap:wrap; }
+  .cs-meta{ display:flex; gap:32px; margin-top:44px; flex-wrap:wrap; }
   .cs-meta div{ font-size:12px; color:var(--ink-soft); }
   .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
   .cs-meta-subtle{ margin-left:auto; color:var(--ink-soft); }
@@ -81,7 +81,8 @@
   .ph span{ font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.7; padding:20px; }
 
   .shot-frame{ background:#000; border:1px solid var(--line); border-radius:22px; overflow:hidden; box-shadow:0 24px 48px -24px rgba(21,23,26,0.35); }
-  .shot-frame img{ width:100%; display:block; }
+  .shot-frame img, .shot-frame video{ width:100%; display:block; }
+  .video-solo{ max-width:300px; margin-top:28px; }
 
   /* section shell */
   .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
@@ -93,15 +94,35 @@
 
   /* overview screens */
   .overview-screens{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:28px; }
-  .overview-screens .shot-frame{ height:100%; }
+  .overview-screens .shot-frame{ aspect-ratio:9/19.5; }
+  .overview-screens .shot-frame img{ width:100%; height:100%; object-fit:cover; display:block; }
   @media (max-width:700px){ .overview-screens{ grid-template-columns:1fr; max-width:340px; margin-left:auto; margin-right:auto; } }
 
   .overview-caption{ font-size:12px; color:var(--ink-soft); text-align:center; margin-top:12px; }
+  .hero-showcase{ margin-top:28px; border-radius:16px; overflow:hidden; border:1px solid var(--line); }
+  .hero-showcase img{ width:100%; display:block; }
 
   /* before/after */
   .before-after{ display:grid; grid-template-columns:repeat(2,1fr); gap:24px; margin-top:28px; }
   .before-after-label{ font-size:12px; color:var(--ink-soft); text-align:center; letter-spacing:0.04em; margin-top:14px; }
   @media (max-width:700px){ .before-after{ grid-template-columns:1fr; max-width:360px; margin-left:auto; margin-right:auto; } }
+
+  /* draft comparison, with a connecting arrow between the two columns */
+  .draft-compare{ display:grid; grid-template-columns:1fr auto 1fr; gap:20px; align-items:stretch; margin-top:28px; }
+  .draft-compare.two-col{ grid-template-columns:1fr 1fr; }
+  .draft-compare > div{ display:flex; flex-direction:column; }
+  .draft-compare .key-decisions{ flex:1; }
+  .draft-col-label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px; }
+  .draft-col-label.pain{ color:var(--ink-soft); }
+  .draft-col-label.good{ color:var(--signal); }
+  .draft-col-label.status-bad{ color:#C23B2C; }
+  .draft-col-label.status-good{ color:#3F7A4C; }
+  .draft-compare .video-solo{ margin:20px auto 0; }
+  .draft-arrow{ display:flex; align-items:center; justify-content:center; color:var(--ink-soft); padding-top:80px; }
+  @media (max-width:700px){
+    .draft-compare, .draft-compare.two-col{ grid-template-columns:1fr; max-width:300px; margin-left:auto; margin-right:auto; }
+    .draft-arrow{ padding-top:0; margin:4px auto; transform:rotate(90deg); }
+  }
 
   .triple{ display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:28px; }
   @media (max-width:700px){ .triple{ grid-template-columns:1fr; max-width:340px; margin-left:auto; margin-right:auto; } }
@@ -200,14 +221,14 @@
 
   .iteration-block{ margin-top:56px; }
   .iteration-block:first-of-type{ margin-top:0; }
-  .iteration-tag{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .iteration-tag{ display:inline-block; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); background:var(--signal-soft); padding:5px 10px; border-radius:20px; margin-bottom:16px; }
 
   /* build flow diagram */
   .stakeholder-diagram{ margin-top:20px; overflow-x:auto; }
   .stakeholder-diagram svg{ width:100%; min-width:640px; height:auto; display:block; }
 
   /* stat row */
-  .stat-row{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:28px; }
+  .stat-row{ display:grid; grid-template-columns:repeat(2,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:28px; }
   .stat-cell{ background:var(--paper); padding:22px 20px; }
   .stat-cell .num{ font-family:'Space Grotesk',sans-serif; font-size:28px; font-weight:600; color:var(--ink); }
   .stat-cell .lbl{ font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.06em; margin-top:6px; }
@@ -242,446 +263,312 @@
 <main>
 
   <section class="cs-hero">
-    <div class="cs-eyebrow mono"><span>●</span> UI/UX · AI-Paired Development</div>
-    <h1>VitalScan: A Novelty Scanner App, Built by Conversation</h1>
-    <p>VitalScan is a fake "biometric technology detector" for the web: a passcode lock screen, a
-      fingerprint hold-to-scan interaction, a live scanning sequence, and a dashboard that tracks
-      a believable history of "results" — all of it fabricated, none of it measuring anything
-      real. It's a prank app, built to be shown off.</p>
-    <p>What makes it worth a case study isn't the prank. It's the process. Every screen,
-      animation, sound, and interaction below was directed entirely through natural language in
-      Claude Code, iterated live against a running build, screenshot by screenshot, without
-      writing a line of code by hand.</p>
+    <div class="cs-eyebrow mono"><span>●</span> UI/UX · Performance Technology</div>
+    <h1>VitalScan: A Scanning Interface for ACAAN</h1>
+    <p>VitalScan is a mobile web app built for magicians who perform ACAAN, Any Card at Any
+      Number, a routine already established in professional close up and stage magic. In the
+      routine, a spectator names a card and a number, and that card is found to be at exactly
+      that position in the deck.</p>
+
+    <div class="callout" style="margin-top:28px;">
+      <div class="label mono">Live &amp; Functioning</div>
+      <p>Every screen on this page belongs to a fully functioning web app, not a static mockup
+        or a motion study. The passcode, the scan states, and the result reveal are all real,
+        working interactions, running exactly as shown.</p>
+    </div>
+
     <div class="cs-meta">
       <div>YEAR <strong>2026</strong></div>
-      <div>ROLE <strong>Direction &amp; UI/UX (AI-Paired Build)</strong></div>
-      <div>TOOLS <strong>Claude Code, HTML/CSS/JS, GitHub</strong></div>
-      <div>TIMELINE <strong>Iterative, Multiple Sessions</strong></div>
+      <div>ROLE <strong>Direction &amp; UI/UX</strong></div>
+      <div>TOOLS <strong>Figma, Claude Design, Claude Code, HTML/CSS/JS</strong></div>
+      <div>TIMELINE <strong>2 weeks</strong></div>
       <div>PLATFORM <strong>Web (Mobile-First)</strong></div>
+      <div class="cs-meta-subtle">LAST REVISED <strong>2026</strong></div>
     </div>
   </section>
+
+  <div class="hero-showcase">
+    <img src="thumbscanner/heroimagevitalscan.png" alt="Hands holding a phone showing the VitalScan home dashboard, with a Scan Activity chart and a New Diagnostic Scan card">
+  </div>
 
   <!-- 01 OVERVIEW -->
   <section class="cs-section">
     <div class="cs-num mono">01 / OVERVIEW</div>
-    <h2>A scanner that scans nothing, dressed to look like it scans everything</h2>
-    <p class="lede">The premise is simple: hold your thumb on the sensor, watch it "scan," and get
-      a result. The passcode only ever unlocks if a hidden gesture is performed first, the scan
-      result is a random number dressed up as data, and the whole thing is styled like a
-      confidential piece of hardware, not a joke. The goal was to make every individual screen
-      feel considered, not just the concept as a whole.</p>
-    <div class="overview-screens">
-      <div>
-        <div class="shot-frame"><img src="thumbscanner/final-login.png" alt="VitalScan login screen in its current light cream theme, orange pulse icon mark, VitalScan wordmark, caution copy, and a black Login button"></div>
-        <div class="overview-caption mono">Login</div>
-      </div>
-      <div>
-        <div class="shot-frame"><img src="thumbscanner/final-home.png" alt="VitalScan home dashboard in its current light theme, showing a New Diagnostic Scan card and a Scan Activity card with an orange line chart, scan count, average result, and accuracy"></div>
-        <div class="overview-caption mono">Home Dashboard</div>
-      </div>
-      <div>
-        <div class="shot-frame"><img src="thumbscanner/final-scan-result.png" alt="VitalScan scan result screen in its current light theme, showing a large number over a green-tinted dot grid after a Detected result"></div>
-        <div class="overview-caption mono">Scan Result</div>
-      </div>
+    <h2>A technology layer for an already proven routine</h2>
+    <p class="lede">ACAAN is one of the most recognized routines in professional magic: a
+      spectator names any card and any number, and that card is found waiting at exactly that
+      position. VitalScan gives performers a considered piece of technology to carry that
+      moment, styled like a real piece of confidential hardware and built to sit naturally
+      alongside the deck rather than draw attention to itself.</p>
+
+    <div class="finding-block">
+      <h3>What the audience sees</h3>
+      <p>A spectator works through several piles cut from the deck. VitalScan appears to scan
+        each pile for the named card, and once it registers a result, reports how many cards
+        down from the top of that pile the card sits. To an audience, the app appears to be
+        doing all of the work, which is exactly the impression it is designed to give.</p>
+    </div>
+    <div class="hero-showcase">
+      <img src="thumbscanner/scanninginaction.png" alt="Hands holding a phone running VitalScan's scanning animation over four face down piles of cards cut from the deck">
+    </div>
+
+    <div class="finding-block">
+      <h3>An interface built around the performer</h3>
+      <p>VitalScan gives the routine a technology layer. As a spectator works through several
+        piles cut from the deck, VitalScan appears to scan each pile for the named card and,
+        once it registers a result, calculates how many cards down from the top of that pile it
+        sits. On the surface, the app appears to be doing all of the work, reading as
+        considerably more advanced technology than it needs to be. In practice, VitalScan is an
+        interface built around the performer's own skill, designed to support that skill rather
+        than replace it.</p>
     </div>
   </section>
 
   <!-- 02 THE BUILD PROCESS -->
   <section class="cs-section">
-    <div class="cs-num mono">02 / THE BUILD PROCESS</div>
-    <h2>Design direction, given entirely in plain language</h2>
-    <p class="lede">There was no Figma file for this project. Every visual decision, from "shift
-      the number pad up a bit" to "make it monochrome, like this moodboard," was written as a
-      prompt against a live, running build. Each round followed the same loop: describe the
-      change, let it implement, watch it get verified against a headless browser with real
-      screenshots, then look at the result and decide what to say next.</p>
+    <div class="cs-num mono">02 / USER JOURNEY &amp; BUILD PROCESS</div>
+    <h2>A user journey, translated one screen at a time</h2>
+    <p class="lede">The build was directed by a specific flow a performer moves through mid
+      routine: log into the discreet app, have the spectator hold their thumb to the
+      "fingerprint scanner," then work the phone across several piles cut from the deck until a
+      match is found and its position from the top is revealed. That flow, more than any
+      individual screen, was the thing every round of design direction was measured against.</p>
 
     <div class="stakeholder-diagram">
-      <svg viewBox="0 0 1180 160" role="img" aria-label="Flow diagram: a prompt describing a change leads to implementation, which leads to automated browser verification with screenshots, which leads to a git commit, looping back to the next prompt, repeated twenty-four times">
+      <svg viewBox="0 0 1180 195" role="img" aria-label="User journey diagram: the performer logs into the app, the spectator holds their thumb to the fingerprint scanner, the phone is placed on piles cut from the deck to scan for a match, and the position of the card from the top is revealed, looping back to login for the next spectator">
         <defs>
-          <marker id="bf-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <marker id="uj-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-soft)"/>
           </marker>
         </defs>
-        <line x1="255" y1="80" x2="291" y2="80" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#bf-arrow)"/>
-        <line x1="545" y1="80" x2="581" y2="80" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#bf-arrow)"/>
-        <line x1="835" y1="80" x2="871" y2="80" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#bf-arrow)"/>
-        <path d="M1100,120 C1100,150 60,150 60,120" stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="4 4" fill="none" marker-end="url(#bf-arrow)"/>
-        <text x="580" y="149" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">repeated 24 times</text>
+        <line x1="255" y1="80" x2="291" y2="80" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#uj-arrow)"/>
+        <line x1="545" y1="80" x2="581" y2="80" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#uj-arrow)"/>
+        <line x1="835" y1="80" x2="871" y2="80" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#uj-arrow)"/>
+        <path d="M1100,120 C1100,165 60,165 60,120" stroke="var(--ink-soft)" stroke-width="1.2" stroke-dasharray="4 4" fill="none" marker-end="url(#uj-arrow)"/>
+        <text x="580" y="185" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">next spectator</text>
         <g>
           <rect x="20" y="40" width="235" height="80" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="137" y="73" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Prompt</text>
-          <text x="137" y="90" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Plain language direction,</text>
-          <text x="137" y="103" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">e.g. "make the grid pulse red"</text>
+          <text x="137" y="73" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Login</text>
+          <text x="137" y="90" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Performer opens the</text>
+          <text x="137" y="103" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">discreet, unassuming app</text>
         </g>
         <g>
           <rect x="295" y="40" width="250" height="80" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="420" y="73" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Claude Code Implements</text>
-          <text x="420" y="90" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Edits HTML / CSS / JS directly,</text>
-          <text x="420" y="103" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">no build step, no framework</text>
+          <text x="420" y="73" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Fingerprint Scan</text>
+          <text x="420" y="90" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Spectator holds their thumb</text>
+          <text x="420" y="103" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">to the "fingerprint scanner"</text>
         </g>
         <g>
           <rect x="585" y="40" width="250" height="80" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
-          <text x="710" y="73" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Automated Verification</text>
-          <text x="710" y="90" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Headless browser drives the flow,</text>
-          <text x="710" y="103" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">screenshots confirm the result</text>
+          <text x="710" y="73" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Pile Scan</text>
+          <text x="710" y="90" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Phone is placed onto each</text>
+          <text x="710" y="103" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">pile cut from the deck</text>
         </g>
         <g>
           <rect x="875" y="40" width="225" height="80" rx="4" fill="var(--paper-dim)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="987" y="73" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Commit</text>
-          <text x="987" y="90" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">One change, one commit,</text>
-          <text x="987" y="103" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">a clean history of decisions</text>
+          <text x="987" y="73" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Result</text>
+          <text x="987" y="90" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Position of the card from</text>
+          <text x="987" y="103" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">the top of the pile</text>
         </g>
       </svg>
     </div>
 
-    <div class="stat-row">
-      <div class="stat-cell"><div class="num mono">24</div><div class="lbl">Commits / Iterations</div></div>
-      <div class="stat-cell"><div class="num mono">2</div><div class="lbl">Full Visual Redesigns</div></div>
-      <div class="stat-cell"><div class="num mono">3</div><div class="lbl">Files, No Framework</div></div>
-      <div class="stat-cell"><div class="num mono">0</div><div class="lbl">Lines Hand-Typed</div></div>
+    <div class="overview-screens">
+      <div>
+        <div class="shot-frame"><img src="thumbscanner/elements/loginpage.jpg" alt="VitalScan login screen, the app's discreet, unassuming entry point"></div>
+        <div class="overview-caption mono">Login</div>
+      </div>
+      <div>
+        <div class="shot-frame"><img src="thumbscanner/elements/passcodestatic.jpg" alt="VitalScan passcode entry screen with a numeric keypad and a row of six passcode dots"></div>
+        <div class="overview-caption mono">Passcode</div>
+      </div>
+      <div>
+        <div class="shot-frame"><img src="thumbscanner/elements/homepage.jpg" alt="VitalScan home dashboard with a New Diagnostic Scan card and a Scan Activity chart"></div>
+        <div class="overview-caption mono">Home Dashboard</div>
+      </div>
     </div>
 
-    <div class="finding-block" style="margin-top:44px;">
-      <h3>Verification, not vibes</h3>
-      <p>Every change was checked before it was called done: a headless browser actually clicked
-        through the passcode, held the fingerprint sensor for the full three seconds, and read
-        back computed styles and audio node counts, not just a glance at a screenshot. That
-        discipline is what made twenty-four rounds of rapid changes possible without the build
-        slowly rotting underneath the polish — including two full visual identity swaps that
-        touched nearly every screen without anything quietly breaking underneath.</p>
-    </div>
+    <p class="lede" style="margin-top:44px; max-width:none;">Wireframes for each of those moments
+      started in Figma, mapping out the core screens and flow before any visual language was
+      attached. Those wireframes were then refined in Claude Design, sharpening layout and
+      hierarchy ahead of visual direction.</p>
   </section>
 
   <!-- 03 KEY ITERATIONS -->
   <section class="cs-section">
-    <div class="cs-num mono">03 / KEY ITERATIONS</div>
+    <div class="cs-num mono">03 / KEY DECISIONS</div>
     <h2>What changed, round by round</h2>
-    <p class="lede">A selection of the iterations that shaped VitalScan the most, each one a
-      direct response to looking at the running build and deciding it wasn't right yet.</p>
+    <p class="lede">A selection of the iterations that shaped VitalScan's feedback and reveal
+      moments.</p>
 
     <div class="iteration-block">
-      <div class="iteration-tag mono">Visual identity</div>
       <div class="finding-block">
-        <h3>From a clinical light theme to a monochrome moodboard</h3>
-        <p>The first working version used a light, soft-blue "medical app" palette. Shown a
-          reference moodboard of a black, dot-matrix, Nothing-OS-style interface, the entire
-          visual system was rebuilt in one pass: pure black surfaces, thin white borders instead
-          of drop shadows, a pixel display font for numerals, and status color reserved
-          specifically for green and red states rather than used decoratively.</p>
+        <h3>A passcode that responds as you type</h3>
+        <div class="iteration-tag mono">Lock screen feedback</div>
+        <p>Each digit fills its own dot in the passcode indicator as it is entered, giving
+          immediate confirmation that a tap registered. If the six digit code does not match,
+          the dots flash red across the full row before clearing back to empty, an unmistakable
+          signal that reads at a glance rather than requiring anyone to stop and read an error
+          message.</p>
       </div>
-      <div class="before-after">
-        <div>
-          <div class="shot-frame"><img src="thumbscanner/before-home-light.png" alt="Earlier VitalScan home screen using a light blue-grey background with white cards and a blue accent color"></div>
-          <p class="before-after-label mono">Initial Build — Light Theme</p>
-        </div>
-        <div>
-          <div class="shot-frame"><img src="thumbscanner/home.png" alt="Second-pass VitalScan home screen using a pure black background, thin white bordered cards, and a dot-matrix font for numbers"></div>
-          <p class="before-after-label mono">Second Pass — Monochrome Theme</p>
+      <div class="video-solo">
+        <div class="shot-frame">
+          <video src="thumbscanner/elements/passcode.mp4" autoplay muted loop playsinline aria-label="VitalScan passcode screen, digits filling in as they are entered, then flashing red and resetting on an incorrect code"></video>
         </div>
       </div>
     </div>
 
     <div class="iteration-block">
-      <div class="iteration-tag mono">Visual identity, again</div>
       <div class="finding-block">
-        <h3>Trading pure black for a warmer, considered light system</h3>
-        <p>The monochrome look read as striking in isolation but flat and cold as a full app to
-          actually use for a few minutes. The identity was rebuilt a second time, into the system
-          running today: a warm cream paper background, a single confident orange accent used
-          sparingly, Space Grotesk for numerals in place of the dot-matrix font, and thin
-          low-opacity borders instead of stark white hairlines. It's the same discipline as the
-          first redesign, applied against the lesson learned from living with it — high contrast
-          reads as "technical," but it isn't automatically the most usable choice for a screen
-          someone actually has to look at repeatedly.</p>
+        <h3>From a uniform pulse to a directional sweep</h3>
+        <div class="iteration-tag mono">Scanning animation</div>
       </div>
-      <div class="before-after">
+      <div class="draft-compare">
         <div>
-          <div class="shot-frame"><img src="thumbscanner/home.png" alt="Second-pass VitalScan home screen using a pure black background and monochrome dot-matrix numerals"></div>
-          <p class="before-after-label mono">Second Pass — Monochrome Theme</p>
-        </div>
-        <div>
-          <div class="shot-frame"><img src="thumbscanner/final-home.png" alt="Current VitalScan home screen using a warm cream background, an orange accent, and Space Grotesk numerals"></div>
-          <p class="before-after-label mono">Current — Light Geometric Theme</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="iteration-block">
-      <div class="iteration-tag mono">Data visualization</div>
-      <div class="finding-block">
-        <h3>From a bar chart to a connected line</h3>
-        <p>The home dashboard's "Scan Activity" card started as a simple bar chart of past
-          results. Asked directly to make it a line graph, the chart was rebuilt as a connected
-          SVG path with individually colored points, so a glance can separate a genuine detection
-          from one a user has personally flagged as wrong.</p>
-      </div>
-      <div class="before-after">
-        <div>
-          <div class="shot-frame"><img src="thumbscanner/before-chart-bar.png" alt="Earlier version of the Scan Activity card using blue vertical bars to represent past scan results"></div>
-          <p class="before-after-label mono">Initial Draft — Bar Chart</p>
-        </div>
-        <div>
-          <div class="shot-frame"><img src="thumbscanner/final-home.png" alt="Current Scan Activity card using an orange connected line chart with points colored green for correct, red for flagged, and outlined for pending review"></div>
-          <p class="before-after-label mono">Current — Line Chart</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="iteration-block">
-      <div class="iteration-tag mono">Onboarding flow</div>
-      <div class="finding-block">
-        <h3>Cutting a screen that had already earned its place</h3>
-        <p>A splash screen with a four second auto-advancing timer was added early on, then
-          replaced by a dedicated login screen with its own explicit button. A few rounds later,
-          asked to "remove the loading page" outright, the splash was deleted entirely — the app
-          now opens directly on login. Not every screen added earlier survives once a flow gets
-          used a few more times.</p>
-      </div>
-      <div class="before-after">
-        <div>
-          <div class="shot-frame"><img src="thumbscanner/before-loading-screen.png" alt="Earlier VitalScan splash screen with a pulse icon, VitalScan wordmark, caution text, and a pulsing loading-dot indicator"></div>
-          <p class="before-after-label mono">Removed — Loading Splash</p>
-        </div>
-        <div>
-          <div class="shot-frame"><img src="thumbscanner/final-login.png" alt="Current VitalScan login screen, the current light visual identity with an explicit Login button and no loading step"></div>
-          <p class="before-after-label mono">Current — Opens Directly on Login</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="iteration-block">
-      <div class="iteration-tag mono">Live feedback</div>
-      <div class="finding-block">
-        <h3>A scanning grid that reports its own result</h3>
-        <p>This effect went through three different versions before landing on the one running
-          today. It started as a single static dot grid with no color feedback at all. The second
-          pass added a ripple that swept outward from the center in orange, red, or green
-          depending on the mode — visually busy, and it made "Detected" and "Not Detected" harder
-          to tell apart at a glance than the status text next to them. The current version is
-          quieter and reads faster: the scan field's own background flickers between neutral and
-          its status color roughly twice a second, while the dot grid's color stays completely
-          static within each mode — a muted orange-grey while scanning, solid green the instant a
-          result reads "Detected," solid red for "Not Detected." The three tiles below are the
-          app's actual CSS running live, not screenshots.</p>
-      </div>
-      <div class="triple">
-        <div>
-          <div class="vs-shot-frame vs-shot-frame-phone">
-            <div class="vs-phone">
-              <div class="vs-phone-home"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3l9-8z"/></svg></div>
-              <div class="vs-phone-status vs-status-scan mono">Scanning...</div>
-              <div class="vs-scan-field vs-scanning"><div class="vs-grid-base"></div><div class="vs-grid-pulse"></div></div>
-              <div class="vs-phone-btn vs-invisible mono">Scan</div>
+          <div class="draft-col-label pain mono">Pain Points — Draft One</div>
+          <ul class="key-decisions">
+            <li>The entire dot grid pulses as one flat block, with no sense of direction or
+              movement across the surface.</li>
+            <li>Reads closer to a generic loading or buffering animation than an active scan.</li>
+            <li>Gives no visual cue for where in the pile the "read" is actually happening.</li>
+          </ul>
+          <div class="video-solo">
+            <div class="shot-frame">
+              <video src="thumbscanner/elements/scandraft1.mp4" autoplay muted loop playsinline aria-label="Scanning animation draft one, the entire dot grid pulsing brighter and dimmer as one flat block"></video>
             </div>
           </div>
-          <p class="before-after-label mono">Scanning</p>
+          <p class="before-after-label mono">Draft — Uniform Pulse</p>
+        </div>
+        <div class="draft-arrow" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 24 24"><path fill="currentColor" d="M4 11h13.17l-4.58-4.59L14 5l7 7-7 7-1.41-1.41L17.17 13H4z"/></svg>
         </div>
         <div>
-          <div class="vs-shot-frame vs-shot-frame-phone">
-            <div class="vs-phone">
-              <div class="vs-phone-home"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3l9-8z"/></svg></div>
-              <div class="vs-phone-status vs-status-bad mono">Not Detected</div>
-              <div class="vs-scan-field vs-not-detected"><div class="vs-grid-base"></div><div class="vs-grid-pulse"></div></div>
-              <div class="vs-phone-btn mono">Scan</div>
+          <div class="draft-col-label good mono">What Works — Final Design</div>
+          <ul class="key-decisions">
+            <li>A single line sweeps down the field on a loop, giving the scan a clear
+              direction.</li>
+            <li>Creates a sense of coverage, as though the field is being read edge to edge.</li>
+            <li>Reads as a purposeful, technical scanning motion audiences already
+              recognize.</li>
+          </ul>
+          <div class="video-solo">
+            <div class="shot-frame">
+              <video src="thumbscanner/elements/scandraft2.mp4" autoplay muted loop playsinline aria-label="Scanning animation draft two, a single orange line sweeping down the dot grid on a loop"></video>
             </div>
           </div>
-          <p class="before-after-label mono">Not Detected</p>
-        </div>
-        <div>
-          <div class="vs-shot-frame vs-shot-frame-phone">
-            <div class="vs-phone">
-              <div class="vs-phone-home"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3l9-8z"/></svg></div>
-              <div class="vs-phone-status vs-status-good mono">Detected</div>
-              <div class="vs-scan-field vs-detected"><div class="vs-grid-base"></div><div class="vs-grid-pulse"></div></div>
-              <div class="vs-phone-btn vs-invisible mono">Scan</div>
-            </div>
-          </div>
-          <p class="before-after-label mono">Detected</p>
+          <p class="before-after-label mono">Final Design — Directional Sweep</p>
         </div>
       </div>
-      <p class="overview-caption mono" style="margin-top:14px;">Live CSS, not screenshots — running the exact keyframes from style.css, in the actual on-screen context (home button, status text, Scan button included).</p>
-      <div class="callout">
-        <div class="label mono">A bug worth explaining</div>
-        <p>The "scanning" state is never removed from the field once a scan starts — "detected"
-          or "not detected" gets added alongside it, not instead of it. That meant a
-          <span class="mono">:nth-child()</span> selector written for the scanning dots ended up
-          with slightly higher CSS specificity than the plain rule meant to override it for a
-          finished result, so a flash of the old scanning color kept bleeding through after every
-          result came back. The fix was <span class="mono">:where()</span>, which matches the
-          same elements but contributes zero specificity of its own — it let the rules go back to
-          resolving in the order they were written, the way the cascade is supposed to work.</p>
+      <div class="finding-block" style="margin-top:28px;">
+        <p style="max-width:none;">The final design was chosen because it turns "scanning" into
+          something that visibly happens to the surface, not just a state label sitting above
+          it. A moving line gives the eye something concrete to track, which reads as
+          considerably more convincing than a flat pulse, without needing any accompanying text
+          to explain what is happening.</p>
       </div>
     </div>
 
     <div class="iteration-block">
-      <div class="iteration-tag mono">Scanning effect, then vs. now</div>
       <div class="finding-block">
-        <h3>From a radiating ripple to an inverted blink</h3>
-        <p>The "Scanning" state specifically went through its own redesign, separate from
-          Detected and Not Detected. The version before this one rippled: a burst of color
-          expanded outward from the center of the grid on a 1.2 second loop, the dots shifting
-          from grey to the app's orange accent as the ripple passed over them, three overlapping
-          waves staggered a fraction of a second apart so it never looked fully still. It looked
-          good in isolation, but busy and slightly gimmicky sitting on-screen for the full three
-          seconds of a scan. It was replaced with something calmer: the dot grid stays completely
-          still, and instead the whole field's background flickers between neutral and a dim
-          orange tint about twice a second — the same "flicker the field, not the dots" language
-          already used for Detected and Not Detected, so all three states now read as one
-          consistent system instead of scanning having its own separate visual idea.</p>
+        <h3>Two outcomes, each built to read instantly</h3>
+        <div class="iteration-tag mono">Result states</div>
       </div>
-      <div class="before-after">
+      <div class="draft-compare two-col">
         <div>
-          <div class="vs-shot-frame vs-shot-frame-phone">
-            <div class="vs-phone">
-              <div class="vs-phone-home"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3l9-8z"/></svg></div>
-              <div class="vs-phone-status vs-status-scan mono">Scanning...</div>
-              <div class="vs-scan-field vs-scanning-ripple">
-                <div class="vs-grid-base"></div>
-                <div class="vs-grid-pulse"></div>
-                <div class="vs-grid-pulse"></div>
-                <div class="vs-grid-pulse"></div>
-              </div>
-              <div class="vs-phone-btn vs-invisible mono">Scan</div>
+          <div class="draft-col-label status-bad mono">Not Detected</div>
+          <ul class="key-decisions">
+            <li>The scan field blinks between red and neutral instead of settling on a single
+              static color.</li>
+            <li>Motion catches peripheral attention, so the result registers even if no one is
+              looking directly at the screen the moment it happens.</li>
+            <li>Borrows the "active alert" convention from real hardware, signaling a state
+              meant to be retried rather than treated as final.</li>
+          </ul>
+          <div class="video-solo">
+            <div class="shot-frame">
+              <video src="thumbscanner/elements/notdetected.mp4" autoplay muted loop playsinline aria-label="VitalScan Not Detected state, the scan field blinking between red and neutral"></video>
             </div>
           </div>
-          <p class="before-after-label mono">Removed — Grey → Orange Ripple</p>
+          <p class="before-after-label mono">Not Detected — Blinking Red</p>
         </div>
         <div>
-          <div class="vs-shot-frame vs-shot-frame-phone">
-            <div class="vs-phone">
-              <div class="vs-phone-home"><svg viewBox="0 0 24 24" width="13" height="13"><path fill="currentColor" d="M12 3l9 8h-3v9h-5v-6h-2v6H6v-9H3l9-8z"/></svg></div>
-              <div class="vs-phone-status vs-status-scan mono">Scanning...</div>
-              <div class="vs-scan-field vs-scanning">
-                <div class="vs-grid-base"></div>
-                <div class="vs-grid-pulse"></div>
-              </div>
-              <div class="vs-phone-btn vs-invisible mono">Scan</div>
+          <div class="draft-col-label status-good mono">Detected</div>
+          <ul class="key-decisions">
+            <li>A successful scan turns the field green and opens a short calculating phase.</li>
+            <li>The count slows as it approaches the real result instead of landing on it all
+              at once, the same way a spinning wheel loses momentum before it stops.</li>
+            <li>That slowing is what creates the anticipation: people instinctively start
+              guessing where it will land during the slowest final stretch.</li>
+          </ul>
+          <div class="video-solo">
+            <div class="shot-frame">
+              <video src="thumbscanner/elements/detected.mp4" autoplay muted loop playsinline aria-label="VitalScan Detected state, the field turning green, a number flickering and then counting up and slowing into a final result, followed by a verify detection prompt"></video>
             </div>
           </div>
-          <p class="before-after-label mono">Current — Inverted Blink</p>
+          <p class="before-after-label mono">Detected — Count Up to Result</p>
         </div>
       </div>
-      <p class="overview-caption mono" style="margin-top:14px;">Both live CSS. The ripple is reconstructed from the exact keyframes in the commit right before it was replaced, not a re-creation from memory.</p>
-    </div>
-
-    <div class="iteration-block">
-      <div class="iteration-tag mono">Result reveal</div>
-      <div class="finding-block">
-        <h3>From a hard snap to a number that counts itself up</h3>
-        <p>The result number originally flickered through random digits for a moment, then
-          snapped straight to the real value. It now flickers for three seconds — the
-          "calculating" state — before counting up from zero to the actual result over five
-          seconds, slowing down as it approaches the number, an easing curve chosen specifically
-          so the count feels like it is arriving at an answer rather than just stopping.</p>
-      </div>
-      <div class="callout">
-        <div class="label mono">A detail worth naming</div>
-        <p>The deceleration wasn't just visual. The tick sound that accompanies each digit change
-          during the count-up naturally spaces out as the animation slows, because the sound is
-          triggered by the same value-change event as the visual update. One easing curve, two
-          senses, no separate audio timeline to keep in sync by hand.</p>
+      <div class="finding-block" style="margin-top:28px;">
+        <p style="max-width:none;">Both states are built around the same principle, a result
+          should be felt rather than only labeled. Not Detected uses motion to hold attention on
+          a state that is meant to be retried, while Detected uses a slowing count to give a
+          successful read its own sense of weight and anticipation.</p>
       </div>
     </div>
   </section>
 
-  <!-- 04 THE HIDDEN MECHANIC -->
+  <!-- 04 DESIGNED FOR DISCRETION -->
   <section class="cs-section">
-    <div class="cs-num mono">04 / THE HIDDEN MECHANIC</div>
-    <h2>A passcode that isn't really a passcode</h2>
-    <p class="lede">The core trick: the six-digit passcode never validates against a stored code
-      at all. It unlocks only when it ends in a specific pair of digits — currently 1 and 9 —
-      with no visual cue that those two positions mean anything different from the other four.
-      End it with anything else and the dots shake and reset, no matter what came before. The
-      digits that do "pass" aren't wasted either: the first digit sets how many times the scan
-      will read "Not Detected" before it finally succeeds, and the second and third become the
-      two-digit number it reports once it does.</p>
+    <div class="cs-num mono">04 / DESIGNED FOR DISCRETION</div>
+    <h2>An interface built to disappear at the right moment</h2>
+    <p class="lede">A performance utility only works if it never draws attention to itself at
+      the moment that matters most. Much of the interaction design was built around that
+      constraint: giving a performer ordinary, natural feeling actions that a spectator reads
+      as simply operating the app, while leaving room for the performer's own handling of the
+      cards to happen at the same time, unnoticed.</p>
 
     <div class="finding-block">
-      <h3>Three mechanics, each hidden a different way</h3>
-      <p>The secret gate was rebuilt twice before landing here. It started as an invisible zone on
-        the lock screen that had to be double-tapped before the passcode would validate — first a
-        small, easy-to-miss 110×110 pixel target in the corner, later a full-width band that was
-        easier to stumble into. That was replaced with a single press-and-hold of about two
-        seconds in the same spot, with a small haptic buzz on trigger. Both versions had the same
-        weakness: they were a separate gesture, on top of the passcode, that a curious user could
-        eventually locate by methodically tapping and holding around the screen. Folding the check
-        directly into the passcode's own last two digits removes that surface entirely — there is
-        no hidden zone left to find, because the only "secret" is which digits a normal-looking
-        passcode has to end in.</p>
+      <h3>Every screen designed with intention</h3>
+      <p>Because VitalScan is a technology layer on top of an existing piece of magic, not the
+        trick itself, every screen had to read as considered, professional software rather than
+        anything styled like a "magic" app. Layouts, type, and color were treated the same way a
+        genuine diagnostic or utility tool would be: intuitive at a glance, confident rather than
+        playful, and free of anything that would make a spectator pause and wonder why a
+        scanning app looks the way it does.</p>
     </div>
 
     <div class="finding-block">
-      <h3>Fixing the parts that weren't the trick</h3>
-      <p>Alongside the mechanic itself, two ordinary usability issues surfaced during testing on
-        actual mobile viewports and needed fixing on their own merit: buttons weren't showing a
-        press state reliably on mobile Safari, since CSS <span class="mono">:active</span> alone
-        doesn't fire consistently on a plain tap, and the bottom of the keypad was getting cropped
-        on shorter phone screens because of how mobile browsers report viewport height.</p>
+      <h3>Ordinary actions, carrying more than they show</h3>
+      <p>Every input on VitalScan, the passcode entry, the hold to scan gesture, the tap that
+        starts a new scan, was designed to look and feel like a normal piece of app interaction
+        on its own. None of it needed to look secretive, because none of it needed to be hidden
+        from view, only folded into a motion a spectator already expects a performer to make.</p>
     </div>
 
-    <ul class="key-decisions">
-      <li>Replaced CSS <span class="mono">:active</span> styling with a small Pointer Events
-        driven <span class="mono">.pressed</span> class, so every button gets identical tactile
-        feedback on mouse and touch alike.</li>
-      <li>Switched the app's height to <span class="mono">100dvh</span>, the dynamic viewport
-        unit, with a fallback for older browsers, so mobile browser chrome no longer clips content
-        off the bottom of the screen.</li>
-      <li>Tightened the lock screen's vertical spacing so the full keypad, including the 0 and
-        delete keys, stays visible on screens as small as 360×640.</li>
-    </ul>
-  </section>
-
-  <!-- 05 SOUND DESIGN -->
-  <section class="cs-section">
-    <div class="cs-num mono">05 / SOUND DESIGN</div>
-    <h2>Every sound is generated, not recorded</h2>
-    <p class="lede">There isn't a single audio file in the project. Every tone — the scanning
-      pings, the detected and not-detected chimes, the calculating ticks, the decelerating
-      count-up — is synthesized on the fly with the Web Audio API: plain oscillators shaped by
-      short gain envelopes, composed into short chime sequences for the more celebratory moments.</p>
-
-    <div class="finding-block">
-      <h3>Subtracting as much as adding</h3>
-      <p>Sound was added broadly at first, including a continuous rising tone that played for the
-        full three seconds a user held their thumb on the sensor. On review, that tone was pulled
-        entirely — holding the sensor is now silent — while the short completion chime once
-        verification succeeds was kept. Iteration on a build like this isn't only about adding
-        detail; knowing what to remove again is just as much a part of the process.</p>
-    </div>
-
-    <div class="callout">
-      <div class="label mono">Why synthesize instead of use audio files</div>
-      <p>No asset pipeline, no licensing to think about, and no network requests: the entire app,
-        sound included, is three text files that load instantly and work offline. For a small
-        interactive prototype like this, that trade-off was worth more than the extra realism a
-        sampled sound library might have added.</p>
-    </div>
   </section>
 
   <!-- 06 OUTCOME & REFLECTION -->
   <section class="cs-section">
-    <div class="cs-num mono">06 / OUTCOME &amp; REFLECTION</div>
+    <div class="cs-num mono">05 / OUTCOME &amp; REFLECTION</div>
     <h2>What this project actually demonstrates</h2>
     <div class="outcome-box">
       <h3 class="sub-heading">Summary</h3>
-      <p>VitalScan is not a client deliverable, and it doesn't pretend to solve a real problem.
-        What it demonstrates is a working method: the same "look at it, react, adjust" loop used
-        with a physical prototype or a Figma file applies just as directly to a live, running
-        piece of software, when the iteration loop is fast enough to keep up with the reaction.
-        Twenty-four rounds of direction, each one verified for real before it counted as done —
-        including reworking the entire visual identity twice — produced a small app with a
-        genuine identity, its own sound design, and interaction details most prototypes never get
-        far enough to include.</p>
+      <p>VitalScan gives an already proven routine a considered piece of technology to perform
+        behind, designed the same way any other project on this site was: through repeated
+        rounds of direction and revision, checked against a real, running build rather than a
+        static file. Twenty four rounds of iteration, including two full visual identity
+        reworks, produced an app with its own visual language, its own sound design, and
+        interaction details built specifically to support a live performance rather than a
+        screen viewed in isolation.</p>
 
       <h3 class="sub-heading" style="margin-top:20px;">What Comes Next</h3>
       <ul class="key-decisions">
-        <li>A proper deployment behind a real domain, rather than a local build, so the prank
-          version is actually shareable.</li>
-        <li>Device-level haptics on the hold-to-scan interaction, where the platform supports it,
-          to close the gap between the visual and physical feedback.</li>
-        <li>A richer fake "diagnostic report" behind each result, giving the joke more to say once
-          someone has actually been fooled by it.</li>
+        <li>A proper deployment behind a dedicated domain, so the app is easy to hand to a
+          spectator or run from a performer's own phone during a real set.</li>
+        <li>Device level haptics on the hold to scan interaction, where the platform supports
+          it, to bring the physical and visual feedback closer together.</li>
+        <li>Additional result presentation options, giving performers more than one way to
+          reveal a result depending on the routine and the room.</li>
       </ul>
     </div>
   </section>
