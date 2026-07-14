@@ -101,7 +101,11 @@
 
   /* callout */
   .callout{ background:var(--signal-soft); border:1px dashed var(--signal); padding:22px 26px; border-radius:3px; margin-top:28px; }
+  a.callout{ display:block; cursor:pointer; transition:filter .15s; }
+  a.callout:hover{ filter:brightness(0.97); }
   .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .callout.callout-green{ background:#DCF0E2; border-color:#1E7A42; }
+  .callout.callout-green .label{ color:#1E7A42; }
   .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
   .callout a{ border-bottom:1px solid var(--ink); }
 
@@ -198,11 +202,10 @@
       to production. It is the first flagship product designed from the ground up that has since
       been released to market.</p>
 
-    <div class="callout">
+    <a class="callout callout-green" href="https://sudokoo.com/products/Cooling/cpuaircoolers/SK620V-AM5-Designated-Dual-Tower-Air-Cooler-with-Digital-Screen/2025/21248.shtml?type=Overview_Products" target="_blank" rel="noopener">
       <div class="label mono">See it live</div>
-      <p>The SK620 and SK700 are available on the Sudokoo company website:
-        <a href="https://sudokoo.com/products/Cooling/cpuaircoolers/SK620V-AM5-Designated-Dual-Tower-Air-Cooler-with-Digital-Screen/2025/21248.shtml?type=Overview_Products" target="_blank" rel="noopener">view the product page →</a></p>
-    </div>
+      <p>The SK620 and SK700 are available on the Sudokoo company website: view the product page →</p>
+    </a>
   </section>
 
   <!-- 02 RESEARCH -->

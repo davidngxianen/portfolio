@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sudokoo &amp; DeepCool: Extended Work Portfolio Case Study</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#121316;
+    --paper-dim:#1C1E22;
+    --ink:#F2F1ED;
+    --ink-soft:#9498A0;
+    --line:#2B2E33;
+    --signal:#E2582B;
+    --signal-soft:#2E1B12;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  body.no-scroll{ overflow:hidden; }
+  ::selection{background:var(--signal);color:var(--paper);}
+  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
+  a{ color:inherit; text-decoration:none; }
+
+  header{
+    position:sticky; top:0; z-index:40;
+    background:rgba(18,19,22,0.88);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav-inner{
+    padding:18px 6vw;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+  .back-link{
+    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
+    transition:color .15s;
+  }
+  .back-link:hover{ color:var(--ink); }
+  .logo{ font-weight:600; font-size:15px; }
+  .logo span{ color:var(--signal); }
+
+  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
+
+  /* hero */
+  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
+  .cs-eyebrow{
+    display:flex; align-items:center; gap:10px;
+    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
+    margin-bottom:22px;
+  }
+  .cs-hero h1{
+    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
+    max-width:24ch; margin-bottom:24px;
+  }
+  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:64ch; }
+  .cs-hero p + p{ margin-top:14px; }
+  .cs-meta{ display:flex; gap:32px; margin-top:44px; flex-wrap:wrap; }
+  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
+  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+  .cs-meta-subtle{ color:var(--ink-soft); }
+  .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
+
+  /* hero image / general showcase image */
+  .ph{
+    background:
+      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
+      var(--paper-dim);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    position:relative; overflow:hidden;
+  }
+  .ph-hero{ aspect-ratio:16/8; margin-top:0; background:#0E0E0E; border:none; }
+  .ph-hero img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+
+  /* section shell */
+  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
+  .cs-section:last-of-type{ border-bottom:none; }
+  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
+  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:30ch; }
+  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:70ch; margin-bottom:36px; }
+
+  .status-tag{
+    display:inline-block; font-size:11px; text-transform:uppercase; letter-spacing:0.08em;
+    padding:5px 10px; border-radius:20px; margin-bottom:16px;
+  }
+  .status-tag.shipped{ color:#4CAF6D; background:#16301F; }
+  .status-tag.archive{ color:var(--ink-soft); background:var(--paper-dim); }
+
+  /* findings */
+  .finding-block{ margin-top:40px; }
+  .finding-block:first-of-type{ margin-top:0; }
+  .finding-block h3{ font-size:18px; font-weight:600; margin-bottom:10px; }
+  .finding-block p{ font-size:14.5px; line-height:1.75; color:var(--ink-soft); max-width:70ch; }
+
+  .callout{ background:var(--signal-soft); border:1px dashed var(--signal); padding:22px 26px; border-radius:3px; margin-top:28px; }
+  a.callout{ display:block; cursor:pointer; transition:filter .15s; }
+  a.callout:hover{ filter:brightness(0.9); }
+  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
+  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
+  .callout.callout-green{ background:#16301F; border-color:#4CAF6D; }
+  .callout.callout-green .label{ color:#4CAF6D; }
+
+  .nda-notice{
+    max-width:1200px; margin:0 auto; padding:20px 6vw;
+    display:flex; align-items:flex-start; gap:14px;
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    background:var(--paper-dim);
+  }
+  .nda-notice .icon{ flex:0 0 auto; font-size:15px; line-height:1.3; color:var(--ink-soft); }
+  .nda-notice .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink); margin-bottom:6px; }
+  .nda-notice p{ font-size:13px; line-height:1.65; color:var(--ink-soft); max-width:80ch; }
+  .key-decisions{ list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:4px; }
+  .key-decisions li{ font-size:13.5px; line-height:1.6; color:var(--ink); padding-left:16px; position:relative; }
+  .key-decisions li::before{ content:'—'; position:absolute; left:0; color:var(--signal); }
+
+  /* single figure image */
+  .figure-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:60ch; margin-top:20px; margin-bottom:16px; font-style:italic; }
+  .figure-img{ max-width:360px; }
+  .figure-img-lg{ max-width:460px; }
+  .figure-img-xl{ max-width:640px; }
+  .figure-img-2xl{ max-width:900px; }
+  .figure-img img{ width:100%; display:block; border-radius:6px; background:#0E0E0E; }
+
+  /* render grid */
+  .render-grid{ display:grid; gap:24px; margin-top:28px; }
+  .render-grid.cols-1{ grid-template-columns:1fr; }
+  .render-grid.cols-2{ grid-template-columns:1fr 1fr; }
+  .render-grid.cols-3{ grid-template-columns:repeat(3,1fr); }
+  .render-grid img{ width:100%; display:block; border-radius:10px; background:#0E0E0E; }
+  .render-grid-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:14px; }
+  .render-grid.tight{ gap:6px; }
+  @media (max-width:700px){
+    .render-grid.cols-2,.render-grid.cols-3{ grid-template-columns:1fr; max-width:400px; margin-left:auto; margin-right:auto; }
+  }
+
+  /* match-height variant, reproduced from sk620.html for the embedded SK620 story */
+  .render-grid.match-height{ align-items:center; }
+  .render-grid.match-height > div{ display:flex; align-items:center; justify-content:center; height:320px; }
+  .render-grid.match-height img{ width:auto; max-width:100%; height:100%; object-fit:contain; }
+  .render-grid.match-height.flush-left{ display:flex; }
+  .render-grid.match-height.flush-left > div{ flex:0 0 auto; width:auto; justify-content:flex-start; }
+  .render-grid.match-height.lg > div{ height:420px; }
+  @media (max-width:700px){
+    .render-grid.match-height > div{ height:220px; }
+    .render-grid.match-height.lg > div{ height:260px; }
+    .render-grid.match-height.flush-left{ flex-wrap:wrap; gap:20px; }
+    .render-grid.match-height.flush-left > div{ flex:0 1 auto; max-width:100%; }
+  }
+  .sk620-repro .figure-img img,
+  .sk620-repro .render-grid img{ background:#F3F3F1; }
+
+  /* project cards */
+  .proj-stack{ display:flex; flex-direction:column; gap:16px; margin-top:32px; }
+  .proj-card{ border:1px solid var(--line); border-radius:10px; background:var(--paper); }
+  .proj-card-summary{
+    display:flex; align-items:center; gap:24px; width:100%; padding:22px 26px;
+    background:none; border:none; font:inherit; color:inherit; text-align:left;
+    cursor:pointer; transition:background .15s; border-radius:10px;
+  }
+  .proj-card-summary:hover{ background:var(--paper-dim); }
+  .proj-card-summary:focus-visible{ outline:2px solid var(--signal); outline-offset:-2px; }
+  .proj-card-thumb{ flex:0 0 auto; width:84px; height:84px; border-radius:8px; overflow:hidden; background:#0E0E0E; }
+  .proj-card-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .proj-card-head{ flex:1 1 auto; min-width:0; }
+  .proj-card-eyebrow{ display:flex; align-items:center; gap:12px; font-size:11px; color:var(--ink-soft); margin-bottom:10px; flex-wrap:wrap; text-transform:uppercase; letter-spacing:0.08em; }
+  .proj-card-eyebrow .status-tag{ margin-bottom:0; }
+  .proj-card-head h3{ font-size:clamp(1.1rem,2.2vw,1.45rem); font-weight:600; margin-bottom:8px; letter-spacing:-0.01em; }
+  .proj-card-toggle{ flex:0 0 auto; display:flex; align-items:center; gap:8px; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-soft); }
+  .proj-card-toggle .toggle-label::before{ content:'View project'; }
+  .proj-card.is-expanded .proj-card-toggle .toggle-label::before{ content:'Collapse'; }
+  .proj-card-toggle .chevron{ display:inline-block; transition:transform .2s; font-size:14px; }
+  .proj-card.is-expanded .proj-card-toggle .chevron{ transform:rotate(180deg); }
+  .proj-card-scroll{ display:none; }
+  .proj-card-body{ padding:10px 26px 44px; }
+  .proj-card-body .finding-block:first-of-type{ margin-top:0; }
+  .proj-designer{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-soft); margin-bottom:22px; }
+
+  /* expanded state: card lifts off the stack and overlaps the page like a modal */
+  .proj-backdrop{
+    position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:190;
+    opacity:0; pointer-events:none; transition:opacity .4s ease;
+  }
+  .proj-backdrop.is-visible{ opacity:1; pointer-events:auto; }
+  .proj-card.is-expanded{
+    position:fixed; top:4vh; left:0; right:0; margin:0 auto;
+    width:min(1120px,94vw); max-height:92vh;
+    display:flex; flex-direction:column;
+    z-index:200; border-radius:16px; overflow:hidden;
+    box-shadow:0 30px 80px rgba(0,0,0,0.6);
+    animation:projCardZoomIn .22s ease;
+  }
+  .proj-card.is-expanded .proj-card-summary{ flex:0 0 auto; border-bottom:1px solid var(--line); border-radius:16px 16px 0 0; }
+  .proj-card.is-expanded .proj-card-summary:hover{ background:none; }
+  .proj-card.is-expanded .proj-card-scroll{ display:block; flex:1 1 auto; overflow-y:auto; -webkit-overflow-scrolling:touch; }
+  @keyframes projCardZoomIn{
+    from{ opacity:0; transform:scale(.96); }
+    to{ opacity:1; transform:scale(1); }
+  }
+  @media (max-width:700px){
+    .proj-card-summary{ flex-wrap:wrap; gap:14px; padding:16px 18px; }
+    .proj-card-thumb{ width:56px; height:56px; }
+    .proj-card-body{ padding:8px 18px 36px; }
+    .proj-card.is-expanded{ top:0; left:0; right:0; width:100%; max-height:100%; height:100%; border-radius:0; margin:0; }
+    .proj-card.is-expanded .proj-card-summary{ border-radius:0; }
+  }
+
+  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
+  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; text-wrap:pretty; }
+
+  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
+  .next-project{ font-size:13px; color:var(--ink-soft); }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project:hover strong{ color:var(--signal); }
+
+  footer.site-footer{
+    border-top:1px solid var(--line);
+    padding:24px 6vw;
+    display:flex; justify-content:space-between;
+    font-size:11px; color:var(--ink-soft);
+  }
+
+  @media (max-width:700px){ .cs-meta{ flex-wrap:wrap; gap:24px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-inner">
+    <a href="index.html" class="back-link mono">← Back to work</a>
+    <div class="logo mono">DAVID NG<span>.</span></div>
+  </div>
+</header>
+
+<main>
+
+  <section class="cs-hero">
+    <div class="cs-eyebrow mono"><span>●</span> Industrial Design</div>
+    <h1>Sudokoo &amp; DeepCool: Extended Work Portfolio</h1>
+    <p>This portfolio spans both shipped products and the exploratory work behind them, covering
+      the full scope of design work carried out for Sudokoo and DeepCool between 2024 and 2026:
+      products that reached the market, an OEM assignment delivered for a third party client, and
+      concepts that work, or hold real potential, archived here for future development or to
+      shape the direction of products still to come. I designed award winning solutions that
+      won both the Red Dot and iF Award, and showcased work on the show floor at Computex 2025
+      and CES 2026.</p>
+    <div class="cs-meta">
+      <div>YEAR <strong>2024 - 2026</strong></div>
+      <div>ROLE <strong>Lead Industrial Designer</strong></div>
+      <div>TOOLS <strong>KeyShot, Rhino, Photoshop, Illustrator, Bambu Studio</strong></div>
+      <div>SCOPE <strong>3D Modeling, Prototyping, User Research, DFM, CMF</strong></div>
+      <div class="cs-meta-subtle">LAST REVISED <strong>2026</strong></div>
+    </div>
+  </section>
+
+  <div class="nda-notice">
+    <div class="icon mono">⚠</div>
+    <div>
+      <div class="label mono">Confidential, please read</div>
+      <p>The works shown here are protected by non-disclosure agreements (NDAs) and are shared
+        exclusively for portfolio review by the hiring team. Please do not reproduce, distribute,
+        or disclose any part of these materials.</p>
+    </div>
+  </div>
+
+  <!-- WHAT I DID HERE -->
+  <section class="cs-section">
+    <h2>What I did here</h2>
+    <p class="lede">Design work spans computer chassis, AIO liquid cooling systems, CPU air
+      coolers, and computer fans, taking products from concept to production while collaborating
+      directly with engineers and manufacturers around five core principles:</p>
+    <ul class="key-decisions">
+      <li>Compatibility</li>
+      <li>Cost efficiency</li>
+      <li>Aesthetics</li>
+      <li>Performance</li>
+      <li>User experience</li>
+    </ul>
+    <p class="lede" style="margin-top:24px; margin-bottom:0;">This included multiple visits to
+      the company headquarters in Beijing, working directly alongside engineers, designers, and
+      stakeholders throughout development.</p>
+  </section>
+
+  <!-- PROJECTS -->
+  <section class="cs-section">
+    <div class="cs-num mono">PROJECTS</div>
+
+    <div class="proj-stack">
+
+      <!-- SK SERIES - FAN COOLER -->
+      <div class="proj-card">
+        <button class="proj-card-summary" type="button" aria-expanded="false">
+          <div class="proj-card-thumb"><img src="sudokooportfolio/image10.png" alt="Sudokoo SK620 dual tower CPU air cooler in white, with a digital screen showing live CPU frequency, load, temperature, and power draw"></div>
+          <div class="proj-card-head">
+            <div class="proj-card-eyebrow mono">SK SERIES — FAN COOLER <span class="status-tag shipped mono">Shipped</span></div>
+            <h3>SK620 &amp; SK700 Series</h3>
+          </div>
+          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+        </button>
+        <div class="proj-card-scroll">
+          <div class="proj-card-body">
+            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="sk620-repro">
+
+              <div class="finding-block">
+                <h3>Overview: a flagship product, built end to end</h3>
+                <p>The SK620 and SK700 were designed for Sudokoo, the company brand this project was
+                  built under. The work ran across roughly seven months, covering the full process end to
+                  end: initial draft concepts, pain point research, form and engineering development,
+                  design for manufacturing, and liaising directly with engineers in China to bring the
+                  design to production. It is the first flagship product designed from the ground up
+                  that has since been released to market.</p>
+              </div>
+              <a class="callout callout-green" href="https://sudokoo.com/products/Cooling/cpuaircoolers/SK620V-AM5-Designated-Dual-Tower-Air-Cooler-with-Digital-Screen/2025/21248.shtml?type=Overview_Products" target="_blank" rel="noopener">
+                <div class="label mono">See it live</div>
+                <p>The SK620 and SK700 are available on the Sudokoo company website: view the product page →</p>
+              </a>
+              <div class="figure-img figure-img-2xl" style="margin-top:36px;">
+                <img src="sk620/sk620hero.png" alt="Sudokoo SK620 air cooler installed inside a PC build, its digital screen showing live fan speed, load, CPU temperature, and power draw">
+              </div>
+
+              <div class="finding-block" style="margin-top:44px;">
+                <h3>Research: what actually goes wrong when building a PC</h3>
+                <p>Before any form was drawn, the research looked at where people actually get stuck
+                  while installing a CPU cooler, not just what a finished cooler should look like.</p>
+              </div>
+              <div class="finding-block">
+                <h3>Mounting brackets are fiddly</h3>
+                <p>Fitting a heatsink and fan around a motherboard's mounting bracket is a multi step,
+                  fine motor task, tightening spring loaded screws in the right order, engaging wire clips
+                  under tension, all while working blind around a tower of fins. Small misalignments here
+                  are one of the most common points where a build stalls.</p>
+              </div>
+              <div class="figure-img figure-img-xl" style="margin-top:20px;">
+                <img src="sk620/cpucoolerpainpoint1.png" alt="Diagram of the preparation and fan clip installation steps for a conventional CPU air cooler, showing the fiddly wire clip retention step">
+              </div>
+              <div class="finding-block">
+                <h3>RAM clearance is a physical blocker</h3>
+                <p>Tall air coolers routinely collide with tall RAM heatsinks, especially on the fin
+                  closest to the socket. Builders often discover this only after the cooler is already
+                  seated, forcing them to remove the fan, swap RAM slots, or abandon their preferred
+                  sticks entirely.</p>
+              </div>
+              <div class="figure-img figure-img-xl" style="margin-top:20px;">
+                <img src="sk620/cpucoolerpainpoint2.png" alt="Diagram showing a CPU air cooler fin physically blocked by tall RAM sticks during installation">
+              </div>
+
+              <div class="finding-block" style="margin-top:44px;">
+                <h3>The design: a geometric cooler with a screen of its own</h3>
+                <p>The Sudokoo SK700 and SK620 are high performance air coolers built for superior
+                  thermal efficiency and ultra quiet operation. The SK620 reimagines CPU cooling with a
+                  bold, geometric dual tower design, while the SK700 carries the same design language
+                  into a single tower form. Both share a sleek full black or white finish and a
+                  distinctive digital screen that displays real time system stats.</p>
+              </div>
+              <div class="figure-img figure-img-2xl" style="margin-top:20px;">
+                <img src="sk620/Picture8.png" alt="Sudokoo SK700 single tower CPU air cooler in black and white finishes, side by side, each showing the digital screen display">
+                <p class="figure-caption">The SK700, single tower, in black and white.</p>
+              </div>
+              <div class="figure-img figure-img-2xl">
+                <img src="sk620/Picture9.png" alt="Sudokoo SK620 dual tower CPU air cooler in black and white finishes, side by side, each showing the digital screen display">
+                <p class="figure-caption">The SK620, dual tower, in black and white.</p>
+              </div>
+
+              <div class="finding-block" style="margin-top:44px;">
+                <h3>Design details: angular surfaces, built for the hand as much as the eye</h3>
+                <p>The SK700 and SK620 feature angular, mecha inspired surfaces that reflect ambient
+                  light for a dynamic, modern look that complements today's custom PC builds. Both models
+                  include ergonomic features such as recessed grip zones for easy fan removal and
+                  installation.</p>
+              </div>
+              <div class="render-grid cols-2 match-height tight flush-left lg">
+                <div><img src="sk620/image 214.svg" alt="Close up of the angular, mecha inspired shroud surface on the Sudokoo SK620 and SK700 air coolers"></div>
+                <div><img src="sk620/image 216.svg" alt="Recessed grip zone on the Sudokoo SK620 and SK700 air coolers, designed for easy fan removal and installation"></div>
+              </div>
+
+              <div class="finding-block" style="margin-top:44px;">
+                <h3>Engineering features: solving mounting and RAM clearance at the source</h3>
+                <p>The two pain points identified in research, fiddly mounting and blocked RAM, were
+                  designed against directly rather than left as tradeoffs.</p>
+              </div>
+              <div class="finding-block">
+                <h3>Rail lock fan mount</h3>
+                <p>The innovative rail lock fan mount allows tool free, height adjustable installation,
+                  enhancing both usability and RAM compatibility. Instead of wrestling with wire clips,
+                  the fan slides into position along a rail and locks in place, with height adjustment
+                  built in to clear taller RAM heatsinks.</p>
+              </div>
+              <div class="figure-img figure-img-2xl" style="margin-top:20px;">
+                <img src="sk620/Picture6.png" alt="Exploded view of the Sudokoo SK620 fan detaching from the rail lock mount, showing the tool free release">
+              </div>
+              <div class="finding-block">
+                <h3>Side vents on the SK620</h3>
+                <p>On the SK620, side vents are added to enhance air inflow to the central fan, improving
+                  thermal performance.</p>
+              </div>
+              <div class="figure-img figure-img-2xl" style="margin-top:20px;">
+                <img src="sk620/Picture7.png" alt="Sudokoo SK620 shown with the fan removed, revealing the side vents added to enhance air inflow to the central fan">
+              </div>
+
+              <div class="finding-block" style="margin-top:44px;">
+                <h3>Engineering deliverables</h3>
+                <p>Design intent was communicated to the engineering team directly on the CAD model, not
+                  just in renders. Annotated Rhino geometry called out exactly which surfaces needed to
+                  align or be trimmed for clearance, and side by side revision comparisons tracked how a
+                  flagged issue moved from one design pass to the next, dated and labeled so nothing was
+                  lost between mechanical design and industrial design.</p>
+              </div>
+              <div class="render-grid cols-2">
+                <div><img src="sudokooportfolio/image22.png" alt="Annotated Rhino wireframe of the SK620 fan assembly, with a Chinese note pointing to a surface that must be aligned"></div>
+                <div><img src="sudokooportfolio/image23.png" alt="Annotated Rhino render of the SK620 shroud side panel, with a red arrow marking where the panel should be trimmed to sit flush with the fan for RAM clearance"></div>
+                <div><img src="sudokooportfolio/image25.png" alt="Side by side comparison of an edited SK620 shroud design against the original design, with a Chinese note warning that adjusting the thickness would break the geometry circled in red"></div>
+                <div><img src="sudokooportfolio/image26.png" alt="Close up CAD comparison of the SK620 heatsink base, with Chinese notes flagging an exposed inner shell area and the fix of thickening the outer yellow shell"></div>
+                <div><img src="sudokooportfolio/image27.png" alt="Side by side CAD revision comparison of a shroud corner, dated August 20 mechanical design pass and August 24 industrial design pass, with a Chinese note marking the area that needed alignment"></div>
+                <div><img src="sudokooportfolio/image28.png" alt="Side by side CAD revision comparison of the full shroud face with dimension callouts, dated August 20 mechanical design pass and August 24 industrial design pass"></div>
+              </div>
+              <div class="render-grid cols-2 match-height" style="margin-top:24px;">
+                <div><img src="sudokooportfolio/image29.png" alt="Side by side CAD revision comparison of the shroud vent grille geometry, dated August 20 mechanical design pass and August 24 industrial design pass"></div>
+                <div><img src="sudokooportfolio/image30.png" alt="Side by side CAD revision comparison of the shroud side profile, with a red arrow flagging an edge to review, dated August 20 mechanical design pass and August 24 industrial design pass"></div>
+              </div>
+              <p class="render-grid-caption">Design feedback communicated directly on the CAD model, tracked from a flagged issue to the revision it produced days later.</p>
+
+              <div class="finding-block" style="margin-top:44px;">
+                <h3>Recognition: on the show floor at Computex and CES</h3>
+                <p>Sudokoo presented the SK620 and SK700 at Computex 2025 and CES 2026, with the design
+                  personally presented on the show floor at both events.</p>
+              </div>
+              <div class="render-grid cols-2 match-height tight flush-left">
+                <div><img src="sk620/image 221.svg" alt="Sudokoo SK620 and SK700 air coolers presented at Computex 2025"></div>
+                <div><img src="sk620/image 222.svg" alt="Sudokoo SK620 and SK700 air coolers presented at CES 2026"></div>
+              </div>
+
+            </div>
+
+            <div class="finding-block" style="margin-top:44px;">
+              <h3>Exploring what comes after SK620</h3>
+              <p>Beyond the shipped product, internal explorations looked at forward looking directions
+                for the next generation of fan coolers, testing more angular, faceted forms, alternate
+                shroud proportions, and, in a further set of directions, chassis mounted screens large
+                enough to show more than system stats.</p>
+            </div>
+            <div class="render-grid cols-1" style="max-width:900px;">
+              <div><img src="sudokooportfolio/fd1.png" alt="Three views of an octagonal shroud fan cooler concept in white, showing the built in stats display from a three quarter angle, a top down mounted view, and a straight on front view"></div>
+              <div><img src="sudokooportfolio/fd2.png" alt="Black and white colorway comparison of the octagonal shroud fan cooler concept, each with the same stats display"></div>
+              <div><img src="sudokooportfolio/fd3.png" alt="White and dark grey colorway comparison of the angular gaming chassis style cooler concept, each with a landscape display showing game key art"></div>
+              <div><img src="sudokooportfolio/fd4.png" alt="Two views of the white angular gaming chassis style cooler concept, a three quarter angle with the display lit and a top down view showing the heatsink fins"></div>
+            </div>
+
+            <div class="finding-block" style="margin-top:44px;">
+              <p>A key consideration throughout the design process was ensuring that each product
+                integrates seamlessly within the broader PC ecosystem. Since CPU coolers are often
+                positioned alongside graphics cards, the visual language of the cooler should complement
+                the overall system rather than exist as a standalone product.</p>
+            </div>
+            <div class="render-grid cols-1" style="max-width:900px;">
+              <div><img src="sudokooportfolio/image43.jpeg" alt="Two angular gaming chassis concepts side by side, a full size tower and a compact version, both fitted with a landscape display showing game key art"></div>
+              <div><img src="sudokooportfolio/image44.png" alt="The compact chassis display module shown installed inside a blue lit PC build, mounted between the motherboard and a graphics card"></div>
+              <div><img src="sudokooportfolio/image45.jpeg" alt="The compact display module installed inside a tempered glass PC build, mounted directly above a Gigabyte GeForce RTX graphics card alongside HyperX memory"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- LM360 - AIO LIQUID COOLER -->
+      <div class="proj-card">
+        <button class="proj-card-summary" type="button" aria-expanded="false">
+          <div class="proj-card-thumb"><img src="sudokooportfolio/image64.png" alt="LM360 liquid cooler pump installed in a PC build, its illuminated display and RGB lighting shown alongside RAM modules and a graphics card"></div>
+          <div class="proj-card-head">
+            <div class="proj-card-eyebrow mono">LM360 — AIO LIQUID COOLER <span class="status-tag shipped mono">Shipped</span></div>
+            <h3>LM360 AIO Liquid Cooler</h3>
+          </div>
+          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+        </button>
+        <div class="proj-card-scroll">
+          <div class="proj-card-body">
+            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="lm360-repro">
+
+              <div class="finding-block">
+                <h3>Overview: a screen, not just a shroud</h3>
+                <p>The LM series brings a fresh update to liquid cooling with a compact 2.4 inch IPS
+                  display that now supports MP4 video playback for a more dynamic screen experience.
+                  Work on LM360 ran across five months, led from the earliest design direction through
+                  to design for manufacturing.</p>
+              </div>
+              <a class="callout callout-green" href="https://www.deepcool.com/products/Cooling/cpuliquidcoolers/LM360-6th-Gen-ARGB-Liquid-Cooler-with-mini-LCD-Screen/2025/21346.shtml" target="_blank" rel="noopener">
+                <div class="label mono">See it live</div>
+                <p>LM360 is available on the DeepCool company website: view the product page →</p>
+              </a>
+              <div class="figure-img figure-img-2xl" style="margin-top:36px;">
+                <img src="LM360/Picture1.jpg" alt="LM360 liquid cooler pump installed in a white PC build, its display showing CPU temperature, frequency, and power">
+              </div>
+
+              <div class="finding-block" style="margin-top:44px;">
+                <h3>Built for clarity</h3>
+                <p>A 320 x 240 resolution ensures crisp visuals, while enhanced color accuracy and
+                  screen stability deliver consistent clarity throughout. The soft perimeter lighting
+                  adds structured contrast to the minimal design.</p>
+              </div>
+              <div class="render-grid cols-1" style="max-width:900px;">
+                <div><img src="LM360/Picture2.png" alt="LM360 style display pump block installed in two different PC builds, showing live CPU and GPU stats on screen"></div>
+                <div><img src="LM360/img3.png" alt="Close up of the pump display showing CPU temperature, GPU frequency, and CPU power readouts, with a soft perimeter light bar below"></div>
+              </div>
+
+              <div class="finding-block" style="margin-top:44px;">
+                <h3>The power source effect: making the pump feel like the source</h3>
+                <p>Beyond the screen itself, the lighting was treated as part of the product's core
+                  identity rather than decoration added on top. At the heart of the design is a softly
+                  illuminated core that appears to radiate energy outward through the layered structure.
+                  This lighting effect creates the impression that the pump is the power source of the
+                  cooling system, giving the product a sense of motion and vitality while maintaining a
+                  clean, sophisticated aesthetic.</p>
+              </div>
+              <div class="figure-img figure-img-xl" style="margin-top:20px;">
+                <img src="LM360/Picture10.png" alt="Close up of the illuminated pump core installed between RGB fans and RAM, its perimeter light glowing outward from the display housing">
+              </div>
+
+              <div class="finding-block" style="margin-top:44px;">
+                <h3>Concept generation: from an ambitious first pass to something buildable</h3>
+                <p>The following concept represents the initial design direction for the LM360 series.
+                  The original proposal explored a more premium and futuristic aesthetic, featuring
+                  layered geometries and intricate surface details that created a bold visual identity
+                  and a strong sense of depth. However, to better align with the target market, the
+                  concept was simplified to reduce production costs, improve manufacturability, and
+                  streamline assembly while preserving the core design language. This iterative process
+                  demonstrates the balance between ambitious design vision and the practical realities
+                  of mass production.</p>
+              </div>
+              <div class="render-grid cols-1" style="max-width:900px;">
+                <div><img src="LM360/Picture3.png" alt="Early LM360 concept render with layered octagonal geometry and exposed screws, showing a CPU temperature readout of 68 degrees"></div>
+                <div><img src="LM360/picture4.svg" alt="Further early LM360 concept renders exploring the layered housing and perimeter lighting from two angles"></div>
+                <div><img src="sudokooportfolio/fd5.png" alt="Two three quarter views of the octagonal LM360 concept pump in dark grey, one with the display lit showing 68 degrees Celsius and one with the display off"></div>
+                <div><img src="sudokooportfolio/fd6.png" alt="Side profile of the octagonal LM360 concept pump showing a glowing blue edge lit strip, alongside a straight on front view with the display active and RGB corner screws visible"></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- OEM PROJECT - SPARKLE USB HUB ADAPTER -->
+      <div class="proj-card">
+        <button class="proj-card-summary" type="button" aria-expanded="false">
+          <div class="proj-card-thumb"><img src="sudokooportfolio/image51.png" alt="Sparkle HDMI docking variant, angled view showing a USB-C port, three HDMI ports, and the ribbed grip channel"></div>
+          <div class="proj-card-head">
+            <div class="proj-card-eyebrow mono">OEM PROJECT — SPARKLE USB HUB ADAPTER <span class="status-tag shipped mono">Shipped</span></div>
+            <h3>Sparkle USB Hub Adapter</h3>
+          </div>
+          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+        </button>
+        <div class="proj-card-scroll">
+          <div class="proj-card-body">
+            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="finding-block">
+              <h3>Overview: designing a brand's language into someone else's product</h3>
+              <p>This project was developed for Sparkle as an OEM design assignment. The
+                deliverable was the industrial design of a USB hub adapter, creating a solution that
+                reflected the client's brand language while considering usability, manufacturability, and
+                product aesthetics.</p>
+            </div>
+            <div class="figure-img figure-img-2xl" style="margin-top:20px;">
+              <img src="sudokooportfolio/sparklehero.png" alt="Sparkle USB hub adapter, a brushed metal enclosure with ribbed grip channels and the Sparkle wordmark across the top, alongside a labeled breakdown of its port strip and side profiles">
+            </div>
+
+            <div class="finding-block" style="margin-top:44px;">
+              <h3>Ports as a design language</h3>
+              <p>Even functional details like the port layout were treated as part of the product's
+                visual identity, with a full width HDMI, USB-C, and ventilation array laid out to read
+                as a single considered surface rather than a row of components bolted on afterward.
+                The port layout also had to flex across two different types of models built for this
+                assignment.</p>
+            </div>
+            <div class="render-grid cols-2" style="margin-top:20px;">
+              <div><img src="sudokooportfolio/850.png" alt="Sparkle HUB 850 model, two views showing a headphone jack, microphone jack, dial, and USB-C alt mode input, alongside a USB-C 3.2 10Gbps port and HDMI in and out ports"></div>
+              <div><img src="sudokooportfolio/770.png" alt="Sparkle HUB 770 model, two views showing two USB-A 3.2 10Gbps ports and a USB-C 3.2 10Gbps port, alongside a USB-C power input and two HDMI 2.0 ports"></div>
+            </div>
+            <p class="render-grid-caption">Two different types of models built from the same design language: the HUB 850, focused on audio and video passthrough, and the HUB 770, focused on high speed data and dual HDMI output.</p>
+
+            <div class="finding-block" style="margin-top:44px;">
+              <h3>CMF communicated for manufacturing</h3>
+              <p>Color, material, and finish requirements were documented and handed directly to the
+                manufacturing team, ensuring the brushed aluminum finish and assembly requirements
+                translated accurately from design intent into a produced part.</p>
+            </div>
+            <div class="figure-img figure-img-2xl" style="margin-top:20px;">
+              <img src="sudokooportfolio/eng.png" alt="Internal DeepCool CMF and assembly documentation for the HUB770, showing assembly steps, shell finish, and front and back panel material specifications in Chinese">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARCHIVE - MATERIAL & BRAND LANGUAGE EXPLORATION (merged translucent materials + brand language) -->
+      <div class="proj-card">
+        <button class="proj-card-summary" type="button" aria-expanded="false">
+          <div class="proj-card-thumb"><img src="sudokooportfolio/image72.png" alt="Translucent AIO pump concept with a frosted glass-like chamfered top, glowing blue and purple edge lighting, and a display reading 206 degrees Fahrenheit"></div>
+          <div class="proj-card-head">
+            <div class="proj-card-eyebrow mono">ARCHIVE — MATERIAL &amp; BRAND LANGUAGE EXPLORATION <span class="status-tag archive mono">Concept, Unreleased</span></div>
+            <h3>Exploration of Sudokoo's future AIO identity</h3>
+          </div>
+          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+        </button>
+        <div class="proj-card-scroll">
+          <div class="proj-card-body">
+            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="finding-block">
+              <h3>Overview: exploration of Sudokoo's future AIO identity</h3>
+              <p>This is an exploration of concepts designed for the possible directions Sudokoo's
+                design language could lean toward. These represent work with potential for future
+                development, or a direction the brand could follow going forward.</p>
+            </div>
+
+            <div class="finding-block">
+              <h3>Borrowing from consumer audio, not other coolers</h3>
+              <p>This concept explored semi translucent materials as a new visual direction for future
+                AIO products, inspired by the growing trend of translucent speaker and audio products
+                rather than by other cooling hardware. The design investigates how partially transparent
+                plastics can reveal internal structure while maintaining a clean, premium appearance.</p>
+            </div>
+            <div class="figure-img figure-img-lg" style="margin-top:20px;">
+              <img src="sudokooportfolio/image72.png" alt="Translucent AIO pump concept with a frosted glass-like chamfered top, glowing blue and purple edge lighting, and a display reading 206 degrees Fahrenheit">
+              <p class="figure-caption">A semi translucent housing concept, letting internal structure read through the shell itself.</p>
+            </div>
+
+            <div class="finding-block">
+              <h3>Reference points from consumer audio</h3>
+              <p>The moodboard for this direction was pulled directly from translucent speaker design
+                rather than other cooling hardware, including Harman Kardon's frosted, dome topped
+                speaker enclosures, referenced here as third party inspiration rather than original
+                design work.</p>
+            </div>
+            <div class="figure-img figure-img-2xl" style="margin-top:20px;">
+              <img src="sudokooportfolio/moodboards.png" alt="Moodboard of three Harman Kardon speakers and a Volumit lamp, each with a translucent frosted or dotted shell, used as third party reference, not an original design">
+            </div>
+
+            <div class="finding-block" style="margin-top:44px;">
+              <h3>A distinct brand language, beyond translucency</h3>
+              <p>Another way of defining Sudokoo's design language was to create concepts that were
+                visually distinctive and unlike existing products on the market, while maintaining a
+                strong sense of aesthetic refinement and brand appeal.</p>
+            </div>
+            <div class="figure-img figure-img-2xl" style="margin-top:20px;">
+              <img src="sudokooportfolio/aios.png" alt="Two AIO pump concepts side by side, one with a large rectangular translucent display glowing blue and purple, and one with a translucent arched accent labeled V1">
+            </div>
+            <div class="render-grid cols-1" style="max-width:900px;">
+              <div><img src="sudokooportfolio/image77.png" alt="Translucent Sudokoo AIO pump installed in a purple lit PC build, glowing beside RGB memory and a graphics card"></div>
+              <div><img src="sudokooportfolio/image78.png" alt="Translucent Sudokoo AIO pump installed in a purple lit PC build, close up on the frosted glowing shell with the Sudokoo wordmark"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARCHIVE - ADAPTIVE DISPLAY MECHANISM -->
+      <div class="proj-card">
+        <button class="proj-card-summary" type="button" aria-expanded="false">
+          <div class="proj-card-thumb"><img src="sudokooportfolio/image79.png" alt="Adaptive AIO pump display concept mounted on a bracket, showing GPU load, CPU frequency, a circular percentage readout, time, and CPU temperature"></div>
+          <div class="proj-card-head">
+            <div class="proj-card-eyebrow mono">ARCHIVE — ADAPTIVE DISPLAY MECHANISM <span class="status-tag archive mono">Concept, Unreleased</span></div>
+            <h3>360 Flip Screen AIO Liquid Cooler</h3>
+          </div>
+          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+        </button>
+        <div class="proj-card-scroll">
+          <div class="proj-card-body">
+            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="finding-block">
+              <h3>Overview: a pump display that adapts to the build around it</h3>
+              <p>This concept explored a more adaptable AIO pump display, addressing one of
+                the common challenges faced during PC assembly: component clearance and display
+                orientation. The design investigates a modular screen mechanism capable of rotating 360
+                degrees and pivoting 90 degrees between landscape and portrait, with the display also able
+                to shift laterally to avoid interference with nearby components such as memory modules or
+                graphics cards.</p>
+            </div>
+            <div class="figure-img figure-img-xl" style="margin-top:20px;">
+              <img src="sudokooportfolio/image79.png" alt="Adaptive AIO pump display concept mounted on a bracket, showing GPU load, CPU frequency, a circular percentage readout, time, and CPU temperature">
+            </div>
+            <div class="render-grid cols-1" style="max-width:640px;">
+              <div><img src="sudokooportfolio/image80.png" alt="Close up of the adaptive display in landscape orientation, showing CPU frequency, GPU load, CPU temperature, and time under the LS Series label"></div>
+            </div>
+
+            <div class="finding-block">
+              <h3>Validated through rapid prototyping</h3>
+              <p>The pump mechanism underwent multiple rounds of 3D printed prototyping to validate its
+                movement, durability, and ease of assembly, arriving at a final mechanism that rotates,
+                pivots, and shifts while staying compact enough to integrate into the pump housing.</p>
+            </div>
+            <div class="render-grid cols-2">
+              <div><img src="sudokooportfolio/image81.png" alt="Exploded render of the adaptive display mechanism, showing the display panel, fan, and mounting bracket separated apart"></div>
+              <div><img src="sudokooportfolio/image82.png" alt="Adaptive display mechanism module shown from the rear, with the display panel hinged open on its pivot mount"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARCHIVE - RADIATOR FAN COVER -->
+      <div class="proj-card">
+        <button class="proj-card-summary" type="button" aria-expanded="false">
+          <div class="proj-card-thumb"><img src="sudokooportfolio/image86.png" alt="Radiator fan cover concept installed inside a full PC build, shown above an MSI motherboard and GeForce RTX graphics card with blue RGB lighting"></div>
+          <div class="proj-card-head">
+            <div class="proj-card-eyebrow mono">ARCHIVE — RADIATOR FAN COVER <span class="status-tag archive mono">Concept, Unreleased</span></div>
+            <h3>AIO Fan Cooler Case</h3>
+          </div>
+          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+        </button>
+        <div class="proj-card-scroll">
+          <div class="proj-card-body">
+            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="finding-block">
+              <h3>Overview: designing the part of an AIO everyone ignores</h3>
+              <p>Conventional AIO designs focus almost entirely on the pump, treating the
+                radiator as a purely functional component with minimal design consideration. This concept
+                introduces a radiator fan cover as a new design initiative, concealing exposed mounting
+                hardware and structural elements while extending the product's design language across the
+                entire cooling system rather than stopping at the pump.</p>
+            </div>
+            <div class="figure-img figure-img-2xl" style="margin-top:20px;">
+              <img src="sudokooportfolio/image83.png" alt="Full DeepCool 360mm AIO kit, three RGB lit fans mounted on the radiator alongside the pump block, connected by braided tubing">
+              <p class="figure-caption">The full DeepCool radiator, fan array, and pump kit the cover concept was built around.</p>
+            </div>
+
+            <div class="finding-block">
+              <h3>Designed against a real DeepCool radiator</h3>
+              <p>The cover was not designed in isolation, it was modeled directly against a production
+                DeepCool 360mm AIO radiator and fan array, with an exploded structure showing how a
+                translucent fan cover would sit over the existing fan blades and radiator fins without
+                changing the cooling hardware underneath.</p>
+            </div>
+            <div class="render-grid cols-1" style="max-width:900px;">
+              <div><img src="sudokooportfolio/2s.png" alt="Two views of the DeepCool 360mm AIO radiator and three fan array, a straight on front elevation above an angled three quarter view"></div>
+            </div>
+            <div class="finding-block" style="margin-top:28px;">
+              <p>The fan cover conceals exposed mounting hardware and structural elements, creating a
+                cleaner, more cohesive appearance while extending the product's design language across
+                the entire cooling system.</p>
+            </div>
+            <div class="figure-img figure-img-2xl" style="margin-top:20px;">
+              <img src="sudokooportfolio/image86.png" alt="Radiator fan cover concept installed inside a full PC build, shown above an MSI motherboard and GeForce RTX graphics card with blue RGB lighting">
+            </div>
+
+            <div class="finding-block" style="margin-top:44px;">
+              <h3>Four lighting and mounting variations</h3>
+              <p>Beyond the final direction, four variants were laid out side by side for review: A1 in
+                plain black with a subtle edge lit rim, A2 with bold gradient RGB rings covering the full
+                face of each fan, A3 highlighting the exposed mounting bracket structure the cover is
+                designed to conceal, and A4 in plain black with a cooler toned blue rim light.</p>
+            </div>
+            <div class="figure-img figure-img-2xl" style="margin-top:20px;">
+              <img src="sudokooportfolio/4pic.png" alt="Four labeled variations of the DeepCool fan array, A1 plain black with subtle rim lighting, A2 with bold gradient pink to blue RGB rings, A3 showing the exposed mounting bracket structure, and A4 plain black with blue rim lighting">
+            </div>
+            <div class="finding-block" style="margin-top:44px;">
+              <p>An exploded view of the assembly, breaking the cover down into its construction
+                layers.</p>
+            </div>
+            <div class="figure-img figure-img-2xl" style="margin-top:20px;">
+              <img src="sudokooportfolio/explodedview.png" alt="Labeled exploded engineering view of the radiator, fan array, DeepCool shroud, and translucent green fan cover, with Chinese callouts marking the recessed surface, recessed surface with sticker, and perforated venting">
+              <p class="figure-caption">The construction detail behind the cover: recessed surfaces, a decal covered panel, and the perforated venting pattern.</p>
+            </div>
+
+            <div class="finding-block" style="margin-top:44px;">
+              <h3>Proven through a working prototype</h3>
+              <p>To validate the concept beyond a render, a functional prototype was fabricated using 3D
+                printing, with LED lighting integrated into the enclosure to accurately simulate the
+                intended visual effect, then photographed both assembled and taken apart to show how the
+                cover shell separates from the fan and radiator assembly.</p>
+            </div>
+            <div class="figure-img figure-img-2xl">
+              <img src="sudokooportfolio/proto.png" alt="Five photographs of the 3D printed radiator fan cover prototype: assembled on a desk from multiple angles, lit from behind the fan blades, and disassembled to show the cover shell separated from the fan and radiator assembly">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARCHIVE - MINI CHASSIS CONCEPT -->
+      <div class="proj-card">
+        <button class="proj-card-summary" type="button" aria-expanded="false">
+          <div class="proj-card-thumb"><img src="sudokooportfolio/image97.png" alt="Ultra thin mini PC chassis concept with a perforated grille top panel and a tempered glass side window"></div>
+          <div class="proj-card-head">
+            <div class="proj-card-eyebrow mono">ARCHIVE — MINI CHASSIS CONCEPT <span class="status-tag archive mono">Concept, Unreleased</span></div>
+            <h3>Ultra Thin Chassis</h3>
+          </div>
+          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+        </button>
+        <div class="proj-card-scroll">
+          <div class="proj-card-body">
+            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="finding-block">
+              <h3>Overview: how compact can a chassis get without feeling cheap</h3>
+              <p>This concept explores the design of an ultra thin mini PC chassis, pushing
+                the boundaries of compactness while maintaining a clean, minimalist aesthetic. The
+                objective was a form factor that minimizes its physical footprint without compromising
+                usability or the visual refinement expected of a premium desktop product.</p>
+            </div>
+            <div class="render-grid cols-1" style="max-width:1000px;">
+              <div><img src="sudokooportfolio/image97.png" alt="Ultra thin mini PC chassis concept with a perforated grille top panel and a tempered glass side window"></div>
+              <div><img src="sudokooportfolio/image98.png" alt="Mini PC chassis concept, straight on front view showing the vented grille panel and tempered glass side window"></div>
+            </div>
+            <div class="finding-block" style="margin-top:28px;">
+              <p>The orange side panel conceals a dedicated cable management compartment,
+                allowing cables to be routed and organized neatly behind the main structure.</p>
+            </div>
+            <div class="render-grid cols-1" style="max-width:1000px;">
+              <div><img src="sudokooportfolio/image99.png" alt="Mini PC chassis concept, three quarter angle showing the perforated top panel and a copper accent band along the base with the Sudokoo wordmark"></div>
+            </div>
+            <div class="finding-block" style="margin-top:28px;">
+              <p>By combining functional venting with purely aesthetic surface detailing, the design
+                creates a cohesive visual language where performance and form are seamlessly
+                integrated.</p>
+            </div>
+            <div class="render-grid cols-1" style="max-width:1000px;">
+              <div><img src="sudokooportfolio/image100.png" alt="Close up of the mini PC chassis concept's copper accent band and Sudokoo wordmark along the base edge"></div>
+            </div>
+            <div class="finding-block" style="margin-top:28px;">
+              <p>This approach reinforces the minimalist identity of the chassis while ensuring that
+                every design element contributes either functionally, aesthetically, or both.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ARCHIVE - MOD CHASSIS CONCEPT -->
+      <div class="proj-card">
+        <button class="proj-card-summary" type="button" aria-expanded="false">
+          <div class="proj-card-thumb"><img src="sudokooportfolio/image101.png" alt="Sudokoo MOD chassis concept with a pink and yellow geometric skin panel and tempered glass side"></div>
+          <div class="proj-card-head">
+            <div class="proj-card-eyebrow mono">ARCHIVE — MOD CHASSIS CONCEPT <span class="status-tag archive mono">Concept, Unreleased</span></div>
+            <h3>MOD Chassis</h3>
+          </div>
+          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+        </button>
+        <div class="proj-card-scroll">
+          <div class="proj-card-body">
+            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="finding-block">
+              <h3>Overview: a platform built for future brand showcases</h3>
+              <p>This project was envisioned as a platform for future brand showcases, where
+                unique MOD skins could be developed to demonstrate different design directions at major
+                industry exhibitions including Computex and CES. The work covered both the 3D chassis
+                architecture and the outer skin itself.</p>
+            </div>
+            <div class="render-grid cols-1" style="max-width:900px;">
+              <div><img src="sudokooportfolio/image101.png" alt="Sudokoo MOD chassis concept with a pink and yellow geometric skin panel and tempered glass side"></div>
+              <div><img src="sudokooportfolio/image102.png" alt="Close up of the Sudokoo MOD chassis top corner, showing the pink and yellow geometric skin graphics over perforated venting and the Sudokoo wordmark"></div>
+              <div><img src="sudokooportfolio/image103.png" alt="Close up of the Sudokoo MOD chassis skin panel, showing the pink and yellow geometric graphics and perforated venting"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- OUTCOME & REFLECTION -->
+  <section class="cs-section">
+    <h2>What this body of work represents</h2>
+    <div class="outcome-box">
+      <p>Taken together, this portfolio represents two flagship products carried from concept to
+        mass production, a client brand translated faithfully into an OEM product, and a
+        continuous line of internal exploration that never stopped once a product shipped. The
+        archive concepts, an adaptive display mechanism, a translucent material direction, a
+        radiator treated as seriously as the pump, and a chassis platform built for future
+        showcases, represent the design thinking that shapes what Sudokoo and DeepCool release
+        next, even when a given concept never reaches market itself.</p>
+    </div>
+  </section>
+
+  <div class="cs-footer">
+    <a href="index.html" class="back-link mono">← Back to all work</a>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <span class="mono">© 2026 DAVID NG</span>
+  <span class="mono">CASE STUDY · WORK PORTFOLIO</span>
+</footer>
+
+<script>
+(function(){
+  var backdrop = document.createElement('div');
+  backdrop.className = 'proj-backdrop';
+  document.body.appendChild(backdrop);
+
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.proj-card'));
+  var current = null;
+
+  function closeCard(card){
+    if(!card) return;
+    card.classList.remove('is-expanded');
+    backdrop.classList.remove('is-visible');
+    document.body.classList.remove('no-scroll');
+    var btn = card.querySelector('.proj-card-summary');
+    if(btn) btn.setAttribute('aria-expanded','false');
+    if(current === card) current = null;
+  }
+
+  function openCard(card){
+    if(current && current !== card) closeCard(current);
+    card.classList.add('is-expanded');
+    backdrop.classList.add('is-visible');
+    document.body.classList.add('no-scroll');
+    var btn = card.querySelector('.proj-card-summary');
+    if(btn) btn.setAttribute('aria-expanded','true');
+    var scroll = card.querySelector('.proj-card-scroll');
+    if(scroll) scroll.scrollTop = 0;
+    current = card;
+  }
+
+  cards.forEach(function(card){
+    var btn = card.querySelector('.proj-card-summary');
+    btn.addEventListener('click', function(){
+      if(card.classList.contains('is-expanded')){
+        closeCard(card);
+      } else {
+        openCard(card);
+      }
+    });
+  });
+
+  backdrop.addEventListener('click', function(){
+    closeCard(current);
+  });
+
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && current) closeCard(current);
+  });
+})();
+</script>
+
+</body>
+</html>

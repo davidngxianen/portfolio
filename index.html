@@ -335,10 +335,10 @@
     transition:opacity .2s;
   }
   .card:hover .corner{ opacity:0.7; }
-  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
-  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
-  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
-  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
+  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--signal); border-left:1px solid var(--signal); }
+  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--signal); border-right:1px solid var(--signal); }
+  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--signal); border-left:1px solid var(--signal); }
+  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--signal); border-right:1px solid var(--signal); }
 
   .card-info{
     padding:20px 22px 24px;
@@ -480,6 +480,28 @@
     padding-bottom:2px;
   }
   .gate-link.show{ display:inline-block; }
+  .confidential-preview{
+    display:flex;
+    gap:20px;
+    align-items:center;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:16px;
+    max-width:560px;
+    margin-bottom:32px;
+    background:var(--paper-dim);
+  }
+  .confidential-preview-thumb{
+    flex:0 0 auto;
+    width:96px;
+    height:72px;
+    overflow:hidden;
+    border-radius:2px;
+  }
+  .confidential-preview-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .confidential-preview-info .card-tag{ margin-bottom:6px; font-size:15px; color:var(--signal); }
+  .confidential-preview-info .card-title{ font-size:16px; margin-bottom:4px; }
+  .confidential-preview-info .card-desc{ font-size:12.5px; margin-bottom:0; }
 
   .skills-list{ display:flex; flex-direction:column; gap:0; }
   .skill-row{
@@ -825,12 +847,20 @@
     <div class="confidential-gate">
       <p>Some of my professional work is covered by NDA and is not shown publicly on this site.
         If you have been given the passcode, enter it below to view the portfolio.</p>
+      <div class="confidential-preview">
+        <div class="confidential-preview-thumb">
+          <img src="sudokooportfolio/image61.jpg" alt="DeepCool liquid cooler pump installed in a white PC build, its display showing CPU frequency, temperature, and power">
+        </div>
+        <div class="confidential-preview-info">
+          <div class="card-tag mono">Work · Extended Portfolio</div>
+        </div>
+      </div>
       <div class="gate-form" id="gateForm">
         <input type="password" id="passcodeInput" class="mono" placeholder="Enter passcode">
         <button type="button" id="passcodeSubmit" class="mono">Unlock</button>
       </div>
       <p class="gate-error mono" id="gateError">Incorrect passcode. Please try again.</p>
-      <a href="Work Portfolio David.pdf" target="_blank" rel="noopener" class="gate-link mono" id="gateLink">View Confidential Portfolio →</a>
+      <a href="workportfolio.html" class="gate-link mono" id="gateLink">View Confidential Portfolio →</a>
     </div>
   </section>
 
@@ -892,10 +922,18 @@
   const gateForm = document.getElementById('gateForm');
   const gateError = document.getElementById('gateError');
   const gateLink = document.getElementById('gateLink');
-  const PASSCODE = 'workfolio26';
+  // SHA-256 digest of the passcode, so the plaintext value never appears in this file
+  const PASSCODE_HASH = '894f5ba38f09cab576b7eae797bdfd70a17e073cffb8f2a2e58b62d68fc7be3a';
 
-  function tryUnlock(){
-    if(passcodeInput.value === PASSCODE){
+  async function sha256Hex(text){
+    const data = new TextEncoder().encode(text);
+    const digest = await crypto.subtle.digest('SHA-256', data);
+    return Array.from(new Uint8Array(digest)).map(b => b.toString(16).padStart(2, '0')).join('');
+  }
+
+  async function tryUnlock(){
+    const hash = await sha256Hex(passcodeInput.value);
+    if(hash === PASSCODE_HASH){
       gateForm.style.display = 'none';
       gateError.classList.remove('show');
       gateLink.classList.add('show');
