@@ -641,6 +641,12 @@
     margin-top:20px;
     max-width:60ch;
   }
+
+  /* Reduced-motion safety net: any inline transition set by the reveal
+     script below collapses to an instant, non-animated state change. */
+  @media (prefers-reduced-motion: reduce){
+    * { transition-duration: 0.01ms !important; }
+  }
 </style>
 </head>
 <body>
@@ -1015,6 +1021,91 @@
 </div>
 
 <script>
+  // reveal helpers — purely inline-style driven so there is never a CSS
+  // state where content is hidden without JS having actually run.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function revealNow(el, { y = 22, duration = 700, delay = 0 } = {}){
+    if(!el || reduceMotion) return;
+    el.style.opacity = '0';
+    el.style.transform = `translateY(${y}px)`;
+    requestAnimationFrame(() => {
+      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
+      requestAnimationFrame(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+    });
+  }
+
+  // Bidirectional scroll reveal: replays every time the element crosses in
+  // or out of view, in either scroll direction. Returns a controller with a
+  // manual replay() so non-scroll triggers (like a filter tab switch) can
+  // re-fire the same animation on demand.
+  function makeScrollReveal(el, opts = {}){
+    if(!el || reduceMotion || !('IntersectionObserver' in window)) return null;
+    const y = opts.y ?? 26;
+    const duration = opts.duration ?? 700;
+    const delay = opts.delay ?? 0;
+
+    function hide(){
+      el.style.transition = 'none';
+      el.style.opacity = '0';
+      el.style.transform = `translateY(${y}px)`;
+    }
+    function show(){
+      requestAnimationFrame(() => {
+        el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
+        requestAnimationFrame(() => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        });
+      });
+    }
+
+    hide();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) show();
+        else hide();
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    io.observe(el);
+
+    return {
+      replay(){
+        hide();
+        requestAnimationFrame(() => requestAnimationFrame(show));
+      },
+    };
+  }
+
+  // hero entrance: heading, intro copy, skills, meta row cascade in
+  revealNow(document.querySelector('.hero h1'), { y: 28, duration: 800, delay: 0 });
+  revealNow(document.querySelector('.hero-sub'), { delay: 150 });
+  revealNow(document.querySelector('.hero-skills'), { delay: 220 });
+  revealNow(document.querySelector('.hero-bottom-row'), { delay: 340 });
+
+  // scroll-triggered reveals for everything below the fold — replay any
+  // time they're scrolled back into or out of view
+  document.querySelectorAll('.section-head, .confidential-gate, .contact').forEach(el => makeScrollReveal(el));
+  const cardReveals = new Map();
+  document.querySelectorAll('.grid .card').forEach((el, i) => {
+    const reveal = makeScrollReveal(el, { delay: (i % 2) * 90 });
+    if(reveal) cardReveals.set(el, reveal);
+  });
+
+  // safety net: whatever happens with the animations above, guarantee every
+  // revealed element is fully visible and interactive after a few seconds,
+  // no matter what.
+  setTimeout(() => {
+    document.querySelectorAll('.hero h1, .hero-sub, .hero-skills, .hero-bottom-row, .section-head, .confidential-gate, .contact, .grid .card')
+      .forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+  }, 4000);
+
   // filters
   const buttons = document.querySelectorAll('.filter-btn');
   const cards = document.querySelectorAll('.card');
@@ -1040,6 +1131,14 @@
           }
         });
       }
+
+      // replay the reveal animation for whichever cards are now showing,
+      // so switching tabs feels as alive as scrolling does
+      cards.forEach((c, i) => {
+        if(c.classList.contains('hidden')) return;
+        const reveal = cardReveals.get(c);
+        if(reveal) reveal.replay();
+      });
     });
   });
 

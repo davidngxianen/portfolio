@@ -145,6 +145,41 @@
     display:flex; justify-content:space-between;
     font-size:11px; color:var(--ink-soft);
   }
+
+  /* Reduced-motion safety net: any inline transition set by the reveal
+     script below collapses to an instant, non-animated state change. */
+  @media (prefers-reduced-motion: reduce){
+    * { transition-duration: 0.01ms !important; }
+  }
+
+  /* section table of contents — built and populated by script at the
+     bottom of the page, wraps around the existing .cs-section stack */
+  .cs-layout{ display:flex; align-items:flex-start; gap:48px; }
+  .cs-content{ flex:1; min-width:0; }
+  .cs-toc{
+    display:none;
+    position:fixed;
+    top:96px;
+    width:200px;
+    max-height:calc(100vh - 120px);
+    overflow-y:auto;
+  }
+  .cs-toc ul{ list-style:none; border-left:1px solid var(--line); }
+  .cs-toc a{
+    display:block;
+    padding:9px 0 9px 18px;
+    margin-left:-1px;
+    border-left:2px solid transparent;
+    font-size:12px;
+    line-height:1.4;
+    color:var(--ink-soft);
+    text-decoration:none;
+    transition:color .15s, border-color .15s;
+  }
+  .cs-toc a:hover{ color:var(--ink); }
+  .cs-toc a.is-active{ color:var(--signal); border-left-color:var(--signal); font-weight:600; }
+  .cs-toc-num{ display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.05em; opacity:0.75; margin-bottom:3px; }
+  .cs-toc-label{ display:block; }
 </style>
 </head>
 <body>
@@ -326,6 +361,182 @@
   <span class="mono">© 2026 DAVID NG</span>
   <span class="mono">CASE STUDY · DUO</span>
 </footer>
+
+<script>
+  // reveal helpers — purely inline-style driven so there is never a CSS
+  // state where content is hidden without JS having actually run.
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function revealNow(el, { y = 22, duration = 700, delay = 0 } = {}){
+    if(!el || reduceMotion) return;
+    el.style.opacity = '0';
+    el.style.transform = `translateY(${y}px)`;
+    requestAnimationFrame(() => {
+      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
+      requestAnimationFrame(() => {
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+      });
+    });
+  }
+
+  // Bidirectional scroll reveal: replays every time the element crosses in
+  // or out of view, in either scroll direction.
+  function makeScrollReveal(el, opts = {}){
+    if(!el || reduceMotion || !('IntersectionObserver' in window)) return null;
+    const y = opts.y ?? 26;
+    const duration = opts.duration ?? 700;
+    const delay = opts.delay ?? 0;
+
+    function hide(){
+      el.style.transition = 'none';
+      el.style.opacity = '0';
+      el.style.transform = `translateY(${y}px)`;
+    }
+    function show(){
+      requestAnimationFrame(() => {
+        el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
+        requestAnimationFrame(() => {
+          el.style.opacity = '1';
+          el.style.transform = 'translateY(0)';
+        });
+      });
+    }
+
+    hide();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) show();
+        else hide();
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    io.observe(el);
+
+    return { replay(){ hide(); requestAnimationFrame(() => requestAnimationFrame(show)); } };
+  }
+
+  // hero entrance: eyebrow, heading, lede, meta row, hero image cascade in
+  revealNow(document.querySelector('.cs-eyebrow'), { y: 16, duration: 700, delay: 0 });
+  revealNow(document.querySelector('.cs-hero h1'), { y: 28, duration: 800, delay: 100 });
+  revealNow(document.querySelector('.cs-hero > p'), { delay: 250 });
+  revealNow(document.querySelector('.cs-meta'), { delay: 380 });
+  revealNow(document.querySelector('.ph-hero'), { y: 24, duration: 800, delay: 480 });
+
+  // scroll-triggered reveals for everything below the fold — replay any
+  // time they're scrolled back into or out of view
+  const REVEAL_SELECTOR = '.cs-section h2, .cs-section .lede, .finding-block, .figure-img, .render-grid, .callout, .outcome-box, .video-embed';
+  document.querySelectorAll(REVEAL_SELECTOR).forEach((el, i) => makeScrollReveal(el, { delay: (i % 2) * 60 }));
+
+  // safety net: whatever happens with the animations above, guarantee every
+  // revealed element is fully visible and interactive after a few seconds,
+  // no matter what.
+  setTimeout(() => {
+    document.querySelectorAll('.cs-eyebrow, .cs-hero h1, .cs-hero > p, .cs-meta, .ph-hero, ' + REVEAL_SELECTOR)
+      .forEach(el => {
+        el.style.opacity = '1';
+        el.style.transform = 'none';
+      });
+  }, 4000);
+
+  // section table of contents — reads the existing .cs-section stack,
+  // wraps it in a sticky sidebar layout, and highlights the section
+  // currently in view. Fully self-generating: no per-page content to edit.
+  (function(){
+    const main = document.querySelector('main');
+    if(!main) return;
+    const sections = Array.from(main.querySelectorAll(':scope > .cs-section'));
+    if(sections.length < 2) return;
+
+    const entries = sections.map((sec, i) => {
+      const numEl = sec.querySelector('.cs-num');
+      const h2 = sec.querySelector('h2');
+      const id = sec.id || ('toc-section-' + (i + 1));
+      sec.id = id;
+      return {
+        id,
+        num: numEl ? numEl.textContent.trim() : '',
+        label: h2 ? h2.textContent.trim() : ('Section ' + (i + 1)),
+        el: sec,
+      };
+    });
+
+    const layout = document.createElement('div');
+    layout.className = 'cs-layout';
+    const content = document.createElement('div');
+    content.className = 'cs-content';
+
+    sections[0].parentNode.insertBefore(layout, sections[0]);
+    sections.forEach(sec => content.appendChild(sec));
+
+    const nav = document.createElement('nav');
+    nav.className = 'cs-toc';
+    nav.setAttribute('aria-label', 'Section navigation');
+    const list = document.createElement('ul');
+    entries.forEach(entry => {
+      const li = document.createElement('li');
+      const a = document.createElement('a');
+      a.href = '#' + entry.id;
+      a.dataset.tocFor = entry.id;
+      const numSpan = document.createElement('span');
+      numSpan.className = 'cs-toc-num';
+      numSpan.textContent = entry.num;
+      a.appendChild(numSpan);
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        entry.el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+        history.replaceState(null, '', '#' + entry.id);
+      });
+      li.appendChild(a);
+      list.appendChild(li);
+    });
+    nav.appendChild(list);
+
+    layout.appendChild(nav);
+    layout.appendChild(content);
+
+    // align the sidebar with the hero's meta row (YEAR / ROLE / TOOLS...),
+    // both vertically (once, on load) and horizontally (on load + resize,
+    // since horizontal position doesn't depend on scroll)
+    // align the sidebar vertically with the project title, and pin it to
+    // the far left of the viewport — hiding itself if there's ever not
+    // enough room to avoid overlapping the content
+    const titleRef = document.querySelector('.cs-hero h1');
+    const contentRef = document.querySelector('.cs-hero') || content;
+    const setTocTop = () => {
+      if(titleRef){
+        nav.style.top = Math.max(96, titleRef.getBoundingClientRect().top) + 'px';
+      }
+    };
+    setTocTop();
+    // the hero entrance animation is still settling into place when this
+    // first runs, so re-measure once it's done for pixel-accurate alignment
+    setTimeout(setTocTop, 900);
+    const TOC_LEFT = 24;
+    const updateTocVisibility = () => {
+      const contentLeft = contentRef.getBoundingClientRect().left;
+      if(contentLeft - (TOC_LEFT + 200) < 24){
+        nav.style.display = 'none';
+      } else {
+        nav.style.display = 'block';
+        nav.style.left = TOC_LEFT + 'px';
+      }
+    };
+    updateTocVisibility();
+    window.addEventListener('resize', updateTocVisibility);
+
+    if('IntersectionObserver' in window){
+      const spy = new IntersectionObserver((observed) => {
+        observed.forEach(obsEntry => {
+          const link = nav.querySelector(`a[data-toc-for="${obsEntry.target.id}"]`);
+          if(!link || !obsEntry.isIntersecting) return;
+          nav.querySelectorAll('a').forEach(a => a.classList.remove('is-active'));
+          link.classList.add('is-active');
+        });
+      }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
+      sections.forEach(sec => spy.observe(sec));
+    }
+  })();
+</script>
 
 </body>
 </html>
