@@ -440,10 +440,9 @@
     margin-bottom:28px;
   }
   .gate-form{ display:flex; gap:12px; max-width:400px; }
-  .passcode-field{ position:relative; flex:1; display:flex; }
   .gate-form input{
-    width:100%;
-    padding:12px 40px 12px 14px;
+    flex:1;
+    padding:12px 14px;
     border:1px solid var(--line);
     border-radius:var(--radius);
     background:var(--paper-dim);
@@ -452,29 +451,7 @@
     font-size:13px;
   }
   .gate-form input:focus{ outline:none; border-color:var(--signal); }
-  .passcode-toggle{
-    position:absolute;
-    right:0;
-    top:0;
-    bottom:0;
-    width:40px;
-    background:none;
-    border:none;
-    border-left:1px solid var(--line);
-    padding:6px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    cursor:pointer;
-    color:var(--ink-soft);
-    border-radius:0 var(--radius) var(--radius) 0;
-  }
-  .passcode-toggle:hover{ color:var(--paper); background:var(--signal); border-color:var(--signal); }
-  .passcode-toggle svg{ width:18px; height:18px; }
-  .passcode-toggle .icon-eye{ display:none; }
-  .passcode-toggle.is-shown .icon-eye-off{ display:none; }
-  .passcode-toggle.is-shown .icon-eye{ display:block; }
-  .gate-form > button{
+  .gate-form button{
     padding:12px 22px;
     border:1px solid var(--ink);
     border-radius:var(--radius);
@@ -486,7 +463,7 @@
     cursor:pointer;
     transition:background .15s, border-color .15s;
   }
-  .gate-form > button:hover{ background:var(--signal); border-color:var(--signal); }
+  .gate-form button:hover{ background:var(--signal); border-color:var(--signal); }
   .gate-error{
     display:none;
     font-size:12px;
@@ -511,37 +488,18 @@
     border-radius:var(--radius);
     padding:16px;
     max-width:560px;
-    width:100%;
     margin-bottom:32px;
     background:var(--paper-dim);
-    cursor:pointer;
-    text-align:left;
-    font:inherit;
-    transition:background .15s, border-color .15s;
   }
-  .confidential-preview:hover{ background:var(--signal-soft); border-color:var(--signal); }
   .confidential-preview-thumb{
     flex:0 0 auto;
-    width:72px;
+    width:96px;
     height:72px;
     overflow:hidden;
     border-radius:2px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    background:var(--paper);
-    border:1px solid var(--line);
   }
   .confidential-preview-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .confidential-preview-thumb svg{ width:40px; height:40px; }
   .confidential-preview-info .card-tag{ margin-bottom:6px; font-size:15px; color:var(--signal); }
-  @keyframes shake{
-    10%,90%{ transform:translateX(-1px); }
-    20%,80%{ transform:translateX(2px); }
-    30%,50%,70%{ transform:translateX(-4px); }
-    40%,60%{ transform:translateX(4px); }
-  }
-  .gate-form.shake{ animation:shake .5s cubic-bezier(.36,.07,.19,.97) both; }
   .confidential-preview-info .card-title{ font-size:16px; margin-bottom:4px; }
   .confidential-preview-info .card-desc{ font-size:12.5px; margin-bottom:0; }
 
@@ -587,40 +545,6 @@
   .socials{ display:flex; gap:24px; }
   .socials a{ font-size:13px; color:var(--ink-soft); }
   .socials a:hover{ color:var(--ink); }
-  .shop-badge{
-    display:inline-flex;
-    align-items:center;
-    gap:10px;
-    margin-top:64px;
-    margin-bottom:32px;
-    font-family:'IBM Plex Mono',monospace;
-    font-size:13px;
-    color:var(--ink-soft);
-    transform:rotate(-2deg);
-  }
-  .shop-badge:hover{ color:var(--ink); }
-  .shop-badge-circled{
-    position:relative;
-    display:inline-block;
-    padding:4px 16px;
-    font-family:'Space Grotesk',sans-serif;
-    font-weight:600;
-    color:var(--signal);
-  }
-  .shop-badge-svg{
-    position:absolute;
-    top:50%; left:50%;
-    transform:translate(-50%,-50%);
-    width:100%; height:190%;
-    pointer-events:none;
-  }
-  .shop-badge-svg path{
-    fill:none;
-    stroke:var(--signal);
-    stroke-width:2.2;
-    stroke-linecap:round;
-  }
-  @media (max-width:600px){ .shop-badge{ flex-wrap:wrap; margin-top:20px; } }
 
   footer{
     border-top:1px solid var(--line);
@@ -704,7 +628,7 @@
   <section id="work">
     <div class="section-head">
       <h2>Selected Work</h2>
-      <span class="idx mono">11 PROJECTS</span>
+      <span class="idx mono">10 PROJECTS</span>
     </div>
 
     <div class="filters">
@@ -834,20 +758,20 @@
         </div>
       </a>
 
-      <a class="card" data-cat="industrial" data-year="2021" href="teslon.html">
-        <div class="card-thumb">
+      <a class="card" data-cat="industrial" data-year="2017" href="slidepal.html">
+        <div class="card-thumb thumb-contain thumb-bottom">
           <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-          <img src="teslon/teslonhero.png" alt="Close up angled shot of the Teslon iron, a matte black form with a glowing orange edge line, photographed in a dark studio with rising smoke">
+          <img src="slidepal/heroslidepal.svg" alt="Slidepal remote control with its sliding cover exposing the SMART TV / AV button set">
         </div>
         <div class="card-info">
-          <div class="card-tag mono">Industrial Design · Brand Language Exercise</div>
-          <div class="card-title">Teslon: An Iron Designed Like a Tesla</div>
-          <div class="card-desc">A personal exercise redesigning a clothes iron entirely within
-            Tesla's design language, translating the Cybertruck's faceted, rugged confidence onto
-            a small handheld object.</div>
+          <div class="card-tag mono">Industrial Design · 1st Runner Up, Omni Remotes</div>
+          <div class="card-title">Slidepal: Sliding Cover Remote Control</div>
+          <div class="card-desc">A remote control that lets users physically slide away the
+            buttons they do not need, exposing only the controls relevant to the TV mode they are
+            currently in.</div>
           <div class="spec-line mono">
-            <span>YEAR <b>2021</b></span>
-            <span>CATEGORY <b>Home Appliance</b></span>
+            <span>YEAR <b>2017</b></span>
+            <span>CATEGORY <b>Remote</b></span>
             <span>ROLE <b>Industrial Designer</b></span>
           </div>
           <div class="view-case mono">View case study →</div>
@@ -912,26 +836,6 @@
         </div>
       </a>
 
-      <a class="card" data-cat="industrial" data-year="2017" href="slidepal.html">
-        <div class="card-thumb thumb-contain thumb-bottom">
-          <span class="corner tl"></span><span class="corner tr"></span><span class="corner bl"></span><span class="corner br"></span>
-          <img src="slidepal/heroslidepal.svg" alt="Slidepal remote control with its sliding cover exposing the SMART TV / AV button set">
-        </div>
-        <div class="card-info">
-          <div class="card-tag mono">Industrial Design · 1st Runner Up, Omni Remotes</div>
-          <div class="card-title">Slidepal: Sliding Cover Remote Control</div>
-          <div class="card-desc">A remote control that lets users physically slide away the
-            buttons they do not need, exposing only the controls relevant to the TV mode they are
-            currently in.</div>
-          <div class="spec-line mono">
-            <span>YEAR <b>2017</b></span>
-            <span>CATEGORY <b>Remote</b></span>
-            <span>ROLE <b>Industrial Designer</b></span>
-          </div>
-          <div class="view-case mono">View case study →</div>
-        </div>
-      </a>
-
     </div>
   </section>
 
@@ -943,42 +847,20 @@
     <div class="confidential-gate">
       <p>Some of my professional work is covered by NDA and is not shown publicly on this site.
         If you have been given the passcode, enter it below to view the portfolio.</p>
-      <button type="button" class="confidential-preview" id="workTagBtn">
+      <div class="confidential-preview">
         <div class="confidential-preview-thumb">
-          <svg viewBox="0 0 64 64" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <rect x="14" y="22" width="36" height="30" rx="6"></rect>
-            <line x1="32" y1="14" x2="32" y2="22"></line>
-            <circle cx="32" cy="9" r="3.5"></circle>
-            <circle cx="24" cy="36" r="3.5" fill="var(--signal)" stroke="none"></circle>
-            <circle cx="40" cy="36" r="3.5" fill="var(--signal)" stroke="none"></circle>
-            <line x1="24" y1="45" x2="40" y2="45"></line>
-            <line x1="6" y1="32" x2="14" y2="32"></line>
-            <line x1="50" y1="32" x2="58" y2="32"></line>
-          </svg>
+          <img src="sudokooportfolio/image61.jpg" alt="DeepCool liquid cooler pump installed in a white PC build, its display showing CPU frequency, temperature, and power">
         </div>
         <div class="confidential-preview-info">
           <div class="card-tag mono">Work · Extended Portfolio</div>
         </div>
-      </button>
+      </div>
       <div class="gate-form" id="gateForm">
-        <div class="passcode-field">
-          <input type="password" id="passcodeInput" class="mono" placeholder="Enter passcode">
-          <button type="button" class="passcode-toggle" id="passcodeToggle" aria-label="Show passcode">
-            <svg class="icon-eye" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <ellipse cx="12" cy="12" rx="10" ry="6"></ellipse>
-              <circle cx="12" cy="12" r="3"></circle>
-            </svg>
-            <svg class="icon-eye-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <ellipse cx="12" cy="12" rx="10" ry="6"></ellipse>
-              <circle cx="12" cy="12" r="3"></circle>
-              <line x1="3" y1="3" x2="21" y2="21"></line>
-            </svg>
-          </button>
-        </div>
+        <input type="password" id="passcodeInput" class="mono" placeholder="Enter passcode">
         <button type="button" id="passcodeSubmit" class="mono">Unlock</button>
       </div>
       <p class="gate-error mono" id="gateError">Incorrect passcode. Please try again.</p>
-      <a href="work2426portfolio.html" class="gate-link mono" id="gateLink">View Confidential Portfolio →</a>
+      <a href="workportfolio.html" class="gate-link mono" id="gateLink">View Confidential Portfolio →</a>
     </div>
   </section>
 
@@ -995,15 +877,6 @@
           <a href="Resume - David.pdf" target="_blank" rel="noopener">RESUME ↓</a>
         </div>
       </div>
-      <a class="shop-badge" href="https://www.afoldwithin.com" target="_blank" rel="noopener">
-        <span>Check out my shop too:</span>
-        <span class="shop-badge-circled">
-          afoldwithin.com
-          <svg class="shop-badge-svg" viewBox="0 0 220 70" preserveAspectRatio="none" aria-hidden="true">
-            <path d="M12,35 C10,14 40,6 110,5 C182,4 210,16 208,36 C206,58 172,66 108,65 C42,64 14,56 12,35 Z"></path>
-          </svg>
-        </span>
-      </a>
     </div>
   </section>
 
@@ -1046,31 +919,11 @@
   // confidential work passcode gate
   const passcodeInput = document.getElementById('passcodeInput');
   const passcodeSubmit = document.getElementById('passcodeSubmit');
-  const passcodeToggle = document.getElementById('passcodeToggle');
   const gateForm = document.getElementById('gateForm');
   const gateError = document.getElementById('gateError');
   const gateLink = document.getElementById('gateLink');
-  const workTagBtn = document.getElementById('workTagBtn');
   // SHA-256 digest of the passcode, so the plaintext value never appears in this file
   const PASSCODE_HASH = '894f5ba38f09cab576b7eae797bdfd70a17e073cffb8f2a2e58b62d68fc7be3a';
-
-  passcodeToggle.addEventListener('click', () => {
-    const isShown = passcodeInput.type === 'text';
-    passcodeInput.type = isShown ? 'password' : 'text';
-    passcodeToggle.classList.toggle('is-shown', !isShown);
-    passcodeToggle.setAttribute('aria-label', isShown ? 'Show passcode' : 'Hide passcode');
-    passcodeInput.focus();
-  });
-
-  workTagBtn.addEventListener('click', () => {
-    gateForm.classList.remove('shake');
-    void gateForm.offsetWidth; // restart the animation on repeated clicks
-    gateForm.classList.add('shake');
-    passcodeInput.focus();
-  });
-  gateForm.addEventListener('animationend', () => {
-    gateForm.classList.remove('shake');
-  });
 
   async function sha256Hex(text){
     const data = new TextEncoder().encode(text);
@@ -1084,7 +937,6 @@
       gateForm.style.display = 'none';
       gateError.classList.remove('show');
       gateLink.classList.add('show');
-      window.location.href = gateLink.getAttribute('href');
     } else {
       gateError.classList.add('show');
     }
@@ -1092,9 +944,6 @@
   passcodeSubmit.addEventListener('click', tryUnlock);
   passcodeInput.addEventListener('keydown', (e) => {
     if(e.key === 'Enter') tryUnlock();
-  });
-  passcodeInput.addEventListener('input', () => {
-    gateError.classList.remove('show');
   });
 </script>
 
