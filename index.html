@@ -93,7 +93,7 @@
     padding-bottom:10vh;
     position:relative;
     display:flex;
-    justify-content:space-between;
+    justify-content:center;
     align-items:flex-start;
     gap:60px;
     overflow:hidden;
@@ -110,6 +110,7 @@
   .hero-main{
     flex:1;
     min-width:0;
+    max-width:1600px;
     position:relative;
     z-index:1;
     padding:48px;
@@ -208,7 +209,7 @@
     margin-top:72px;
   }
   .hero-sub{
-    max-width:52ch;
+    flex:1;
     font-size:17px;
     line-height:1.6;
     color:var(--ink-soft);
@@ -216,7 +217,7 @@
   }
   .hero-sub p + p{ margin-top:16px; }
   .hero-skills{ flex-shrink:0; width:440px; display:flex; flex-direction:column; gap:0; }
-  @media (max-width:900px){ .hero-intro-row{ flex-direction:column; gap:32px; } .hero-skills{ width:100%; } }
+  @media (max-width:900px){ .hero-intro-row{ flex-direction:column; gap:32px; } .hero-sub{ max-width:none; width:100%; } .hero-skills{ width:100%; } }
   .hero-bottom-row{
     display:flex;
     justify-content:space-between;
@@ -1339,7 +1340,7 @@
     },
     'industrial-designer': {
       lines: ['Creating products where', 'function, engineering,', 'and craftsmanship meet.'],
-      sub: '<p>I design physical products that balance user needs, engineering constraints, manufacturability, and aesthetics. My work spans award-winning PC hardware, consumer electronics, homeware, and custom 3D-printed lighting, earning recognition including the iF Design Award and two Red Dot Design Awards. Whether designing a CPU cooler, a lamp, or a remote control, I strive to create products that are intuitive, purposeful, and built for real-world use.</p>',
+      sub: '<p>I design physical products that balance user needs, engineering constraints, manufacturability, and aesthetics. My work spans award-winning PC hardware, consumer electronics, homeware, and custom 3D-printed lighting, earning recognition including the iF Design Award and two Red Dot Design Awards, and showcased at Computex 2025 and CES 2026. Whether designing a CPU cooler, a lamp, or a remote control, I strive to create products that are intuitive, purposeful, and built for real-world use.</p>',
     },
     'product-management': {
       lines: ['Turning ideas into', 'products that reach', 'the market.'],
@@ -1385,6 +1386,25 @@
       const newSize = Math.max(baseFontSize * (available / maxWidth), minFontSize);
       el.style.fontSize = newSize + 'px';
     }
+
+    // the actual rendered width of the heading's widest line: if it had to
+    // shrink to fit, that's the full available width; otherwise it's
+    // whatever the text naturally measured at its unshrunk size
+    return Math.min(maxWidth, available);
+  }
+
+  // keeps the intro paragraph's right edge in line with wherever the
+  // heading's widest line actually ends (not the full column width) —
+  // only applies in the desktop two-column layout; mobile's column layout
+  // already stretches the paragraph to 100% via CSS
+  function syncSubWidthToHeading(headingRenderedWidth){
+    const subEl = document.getElementById('heroSub');
+    if(!subEl) return;
+    if(window.innerWidth > 900 && headingRenderedWidth){
+      subEl.style.maxWidth = headingRenderedWidth + 'px';
+    } else {
+      subEl.style.maxWidth = '';
+    }
   }
 
   function typeHeading(lines, onDone){
@@ -1399,7 +1419,7 @@
     const totalChars = lines.reduce((n, l) => n + l.length, 0);
     heroTypingDuration = totalChars * typingSpeed + (lines.length - 1) * linePause + 300;
 
-    fitHeadingFontSize(el, lines);
+    syncSubWidthToHeading(fitHeadingFontSize(el, lines));
 
     // measure the final rendered height at the current viewport width first
     // (line breaks can wrap differently per persona and per screen width)
@@ -1454,6 +1474,21 @@
 
   typeHeading(personaData.anyone.lines);
 
+  // the very first fit/measure pass above can run before the Inter webfont
+  // has finished downloading, using fallback-font metrics that don't match
+  // the real (usually narrower) character widths — re-run once the real
+  // font is actually active so the heading size and synced paragraph width
+  // aren't left locked to that inaccurate first pass
+  if(document.fonts && document.fonts.ready){
+    document.fonts.ready.then(() => {
+      const el = document.getElementById('heroTyping');
+      if(!el || !currentHeadingLines) return;
+      syncSubWidthToHeading(fitHeadingFontSize(el, currentHeadingLines));
+      el.style.minHeight = '';
+      el.style.minHeight = el.getBoundingClientRect().height + 'px';
+    });
+  }
+
   // re-fit the heading's font-size/reserved height if the viewport WIDTH
   // changes (window resize, phone rotation) — otherwise a size computed for
   // one width would be stale after the layout changes. Mobile browsers also
@@ -1482,7 +1517,7 @@
         }
       }
 
-      fitHeadingFontSize(el, currentHeadingLines);
+      syncSubWidthToHeading(fitHeadingFontSize(el, currentHeadingLines));
       el.style.minHeight = '';
       el.style.minHeight = el.getBoundingClientRect().height + 'px';
     }, 150);
