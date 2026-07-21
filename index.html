@@ -189,8 +189,7 @@
   .persona-tab:hover{ color:#FF5A1F; }
   .persona-tab.active{ color:#FF5A1F; }
   @media (max-width:600px){
-    .hero-persona-tabs{ flex-wrap:wrap; overflow-x:visible; gap:10px 16px; }
-    .persona-tab{ font-size:11px; white-space:normal; }
+    .hero-persona-tabs{ display:none; }
   }
   .hero-intro-row{
     display:flex;
@@ -1441,6 +1440,18 @@
     headingResizeTimer = setTimeout(() => {
       const el = document.getElementById('heroTyping');
       if(!el || !currentHeadingLines) return;
+
+      // mobile only ever shows the default "For anyone" persona (the tabs
+      // are hidden there) — snap back to it if a different persona was
+      // left active from a wider viewport before resizing/rotating down
+      if(window.innerWidth <= 600){
+        const anyoneTab = document.querySelector('.persona-tab[data-persona="anyone"]');
+        if(anyoneTab && !anyoneTab.classList.contains('active')){
+          anyoneTab.click();
+          return;
+        }
+      }
+
       fitHeadingFontSize(el, currentHeadingLines);
       el.style.minHeight = '';
       el.style.minHeight = el.getBoundingClientRect().height + 'px';
