@@ -5,17 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portfolio: Industrial &amp; Product Design</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#FDFDFC;
-    --paper-dim:#F3F3F1;
-    --ink:#15171A;
-    --ink-soft:#565A5F;
-    --line:#E2E1DC;
+    --paper:#FFFFFF;
+    --paper-dim:#F5F5F5;
+    --ink:#111111;
+    --ink-soft:#374151;
+    --line:#E5E7EB;
     --signal:#D2491E;
     --signal-soft:#F0DCD2;
-    --radius:2px;
+    --radius:8px;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
   html{scroll-behavior:smooth;}
@@ -29,8 +29,9 @@
   ::selection{background:var(--signal);color:var(--paper);}
 
   h1,h2,h3,.display{
-    font-family:'Space Grotesk',sans-serif;
-    letter-spacing:-0.01em;
+    font-family:'Inter',sans-serif;
+    font-weight:600;
+    letter-spacing:-0.02em;
   }
   .mono{
     font-family:'IBM Plex Mono',monospace;
@@ -95,8 +96,30 @@
     justify-content:space-between;
     align-items:flex-start;
     gap:60px;
+    overflow:hidden;
   }
-  .hero-main{ flex:1; min-width:0; }
+  .hero-bg-video{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    z-index:0;
+  }
+  .hero .crosshair{ z-index:1; }
+  .hero-main{
+    flex:1;
+    min-width:0;
+    position:relative;
+    z-index:1;
+    padding:48px;
+    border-radius:28px;
+    background:rgba(255,255,255,0.82);
+    backdrop-filter:blur(28px) saturate(180%);
+    -webkit-backdrop-filter:blur(28px) saturate(180%);
+    border:1px solid rgba(255,255,255,0.7);
+    box-shadow:0 20px 60px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.75);
+  }
   .hero-awards{
     display:flex;
     flex-direction:row;
@@ -129,6 +152,39 @@
     line-height:0.98;
     font-weight:600;
     max-width:100%;
+    min-height:2.94em;
+    color:#FF5A1F;
+    transition:opacity .18s ease;
+  }
+  .hero-persona-tabs{
+    display:flex;
+    flex-wrap:nowrap;
+    gap:20px;
+    margin-bottom:24px;
+    overflow-x:auto;
+    -webkit-overflow-scrolling:touch;
+    scrollbar-width:none;
+  }
+  .hero-persona-tabs::-webkit-scrollbar{ display:none; }
+  .persona-tab{
+    font-size:12px;
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    padding:4px 0;
+    border:none;
+    background:none;
+    color:#FFFFFF;
+    cursor:pointer;
+    transition:color .15s;
+    font-family:'Inter',sans-serif;
+    white-space:nowrap;
+    flex-shrink:0;
+  }
+  .persona-tab:hover{ color:#FF5A1F; }
+  .persona-tab.active{ color:#FF5A1F; }
+  @media (max-width:600px){
+    .hero-persona-tabs{ flex-wrap:wrap; overflow-x:visible; gap:10px 16px; }
+    .persona-tab{ font-size:11px; white-space:normal; }
   }
   .hero-intro-row{
     display:flex;
@@ -142,6 +198,7 @@
     font-size:17px;
     line-height:1.6;
     color:var(--ink-soft);
+    transition:opacity .18s ease;
   }
   .hero-sub p + p{ margin-top:16px; }
   .hero-skills{ flex-shrink:0; width:440px; display:flex; flex-direction:column; gap:0; }
@@ -163,7 +220,7 @@
   .hero-meta div{font-size:12px;color:var(--ink-soft);}
   .hero-meta strong{
     display:block;
-    font-family:'Space Grotesk',sans-serif;
+    font-family:'Inter',sans-serif;
     font-size:14px;
     color:var(--ink);
     margin-top:4px;
@@ -233,29 +290,52 @@
   }
 
   /* ---------- work grid ---------- */
+  .grid-bleed{
+    width:100vw;
+    position:relative;
+    left:50%;
+    right:50%;
+    margin-left:-50vw;
+    margin-right:-50vw;
+    margin-bottom:100px;
+    padding:48px 6vw;
+    background-color:#FFFFFF;
+    background-image:
+      linear-gradient(to right, rgba(17,17,17,0.07) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(17,17,17,0.07) 1px, transparent 1px);
+    background-size:40px 40px;
+  }
   .grid{
     display:grid;
     grid-template-columns:repeat(2,1fr);
-    gap:1px;
-    background:var(--line);
-    border:1px solid var(--line);
-    margin-bottom:100px;
+    gap:28px;
+    max-width:2200px;
+    margin:0 auto;
   }
-  @media (max-width:800px){ .grid{grid-template-columns:1fr;} }
+  @media (max-width:800px){ .grid{grid-template-columns:1fr;} .grid-bleed{padding:24px 6vw;} }
 
   .card{
-    background:var(--paper);
+    background:rgba(255,255,255,0.5);
+    backdrop-filter:blur(28px) saturate(180%);
+    -webkit-backdrop-filter:blur(28px) saturate(180%);
+    border:1px solid rgba(255,255,255,0.55);
+    border-radius:24px;
+    box-shadow:0 8px 30px rgba(20,20,20,0.10), inset 0 1px 0 rgba(255,255,255,0.6);
     padding:0;
     position:relative;
     cursor:pointer;
     overflow:hidden;
-    transition:background .2s;
+    transition:background .25s, transform .25s, box-shadow .25s;
     display:block;
   }
-  .card:hover{ background:var(--paper-dim); }
+  .card:hover{
+    background:rgba(255,255,255,0.68);
+    transform:translateY(-3px);
+    box-shadow:0 16px 44px rgba(20,20,20,0.14), inset 0 1px 0 rgba(255,255,255,0.7);
+  }
   .card.hidden{ display:none; }
   .card-locked{ cursor:default; }
-  .card-locked:hover{ background:var(--paper); }
+  .card-locked:hover{ background:rgba(255,255,255,0.5); transform:none; box-shadow:0 8px 30px rgba(20,20,20,0.10), inset 0 1px 0 rgba(255,255,255,0.6); }
   .card-locked:hover .corner{ opacity:0; }
   .wip-badge{
     position:absolute;
@@ -279,7 +359,7 @@
     display:flex;
     align-items:center;
     justify-content:center;
-    border-bottom:1px solid var(--line);
+    border-bottom:1px solid rgba(255,255,255,0.4);
   }
   .card-thumb .ph-label{
     font-size:11px;
@@ -336,10 +416,10 @@
     transition:opacity .2s;
   }
   .card:hover .corner{ opacity:0.7; }
-  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--signal); border-left:1px solid var(--signal); }
-  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--signal); border-right:1px solid var(--signal); }
-  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--signal); border-left:1px solid var(--signal); }
-  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--signal); border-right:1px solid var(--signal); }
+  .corner.tl{ top:16px; left:16px; border-top:1px solid var(--signal); border-left:1px solid var(--signal); }
+  .corner.tr{ top:16px; right:16px; border-top:1px solid var(--signal); border-right:1px solid var(--signal); }
+  .corner.bl{ bottom:16px; left:16px; border-bottom:1px solid var(--signal); border-left:1px solid var(--signal); }
+  .corner.br{ bottom:16px; right:16px; border-bottom:1px solid var(--signal); border-right:1px solid var(--signal); }
 
   .card-info{
     padding:20px 22px 24px;
@@ -425,8 +505,72 @@
   .case-outline li b{
     color:var(--ink);
     font-weight:600;
-    font-family:'Space Grotesk',sans-serif;
+    font-family:'Inter',sans-serif;
   }
+
+  /* ---------- other stuff ---------- */
+  .other-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:24px;
+    padding:56px 0 100px;
+  }
+  @media (max-width:900px){ .other-grid{ grid-template-columns:1fr; } }
+  .other-card{
+    display:block;
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--paper);
+    overflow:hidden;
+    transition:border-color .2s, transform .2s, box-shadow .2s;
+  }
+  .other-card:hover{
+    border-color:var(--signal);
+    transform:translateY(-3px);
+    box-shadow:0 16px 36px rgba(20,20,20,0.10);
+  }
+  .other-card-thumb{
+    aspect-ratio:2837/1251;
+    overflow:hidden;
+    background:var(--paper-dim);
+  }
+  .other-card-thumb img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+    transition:transform .3s ease;
+  }
+  .other-card:hover .other-card-thumb img{ transform:scale(1.04); }
+  .other-card-body{ padding:24px 28px 28px; }
+  .other-card-tag{
+    font-size:11px;
+    color:var(--signal);
+    text-transform:uppercase;
+    letter-spacing:0.06em;
+    margin-bottom:10px;
+  }
+  .other-card-title{
+    font-size:19px;
+    font-weight:600;
+    margin-bottom:10px;
+  }
+  .other-card-desc{
+    font-size:13px;
+    line-height:1.55;
+    color:var(--ink-soft);
+    margin-bottom:18px;
+  }
+  .other-card-link{
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    padding-top:14px;
+    border-top:1px dashed var(--line);
+    transition:color .2s;
+  }
+  .other-card:hover .other-card-link{ color:var(--signal); }
 
   /* ---------- confidential ---------- */
   .confidential-gate{
@@ -551,10 +695,10 @@
     display:flex;
     justify-content:space-between;
     padding:14px 0;
-    border-bottom:1px solid var(--line);
+    border-bottom:1px solid rgba(17,17,17,0.18);
     font-size:13px;
   }
-  .skill-row:first-child{ border-top:1px solid var(--line); }
+  .skill-row:first-child{ border-top:1px solid rgba(17,17,17,0.18); }
   .skill-row .label{ color:var(--ink-soft); }
   .skill-row .val{ color:var(--ink); text-align:right; }
 
@@ -579,7 +723,7 @@
   }
   .contact-email{
     font-size:clamp(1.1rem,2.5vw,1.6rem);
-    font-family:'Space Grotesk',sans-serif;
+    font-family:'Inter',sans-serif;
     border-bottom:1px solid var(--ink);
     padding-bottom:4px;
     transition:opacity .15s;
@@ -604,7 +748,7 @@
     position:relative;
     display:inline-block;
     padding:4px 16px;
-    font-family:'Space Grotesk',sans-serif;
+    font-family:'Inter',sans-serif;
     font-weight:600;
     color:var(--signal);
   }
@@ -624,12 +768,13 @@
   @media (max-width:600px){ .shop-badge{ flex-wrap:wrap; margin-top:20px; } }
 
   footer{
+    background:#101010;
     border-top:1px solid var(--line);
     padding:24px 6vw;
     display:flex;
     justify-content:space-between;
     font-size:11px;
-    color:var(--ink-soft);
+    color:#A1A1AA;
   }
 
   .note{
@@ -648,6 +793,20 @@
   @media (prefers-reduced-motion: reduce){
     * { transition-duration: 0.01ms !important; }
   }
+
+  .typing-cursor{
+    display:inline-block;
+    margin-left:2px;
+    animation:cursorBlink 0.9s step-end infinite;
+    transition:opacity .4s;
+  }
+  @keyframes cursorBlink{
+    0%,50%{ opacity:1; }
+    51%,100%{ opacity:0; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .typing-cursor{ animation:none; opacity:0; }
+  }
 </style>
 </head>
 <body>
@@ -661,6 +820,7 @@
         <ul>
           <li><a href="#work">Work</a></li>
           <li><a href="#confidential">Confidential</a></li>
+          <li><a href="#other-stuff">Other Stuff</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="Resume - David.pdf" target="_blank" rel="noopener">Resume</a></li>
         </ul>
@@ -669,11 +829,21 @@
   </header>
 
   <section class="hero">
+    <video class="hero-bg-video" autoplay muted loop playsinline>
+      <source src="TESLON.mp4" type="video/mp4">
+    </video>
     <div class="crosshair"></div>
     <div class="hero-main">
-      <h1>Hi, I am David, <br>a Product &amp; <br>Industrial Designer.</h1>
+      <div class="hero-persona-tabs" role="tablist" aria-label="View this intro for">
+        <button class="persona-tab active" type="button" data-persona="anyone">For anyone</button>
+        <button class="persona-tab" type="button" data-persona="product-designer">Product Designers</button>
+        <button class="persona-tab" type="button" data-persona="ux-researcher">UX Researcher</button>
+        <button class="persona-tab" type="button" data-persona="industrial-designer">Industrial Designers</button>
+        <button class="persona-tab" type="button" data-persona="product-management">Product Management</button>
+      </div>
+      <h1 id="heroTyping">Hi, I am David, <br>a Multidisciplinary <br>Designer.</h1>
       <div class="hero-intro-row">
-        <div class="hero-sub">
+        <div class="hero-sub" id="heroSub">
           <p>I design products across the physical and digital world, from injection moulded
             hardware to the interfaces that power them, drawing on nearly a decade of academic and
             professional work for clients and companies.</p>
@@ -721,6 +891,7 @@
       <button class="filter-btn" data-filter="recent">Most Recent</button>
     </div>
 
+    <div class="grid-bleed">
     <div class="grid" id="grid">
 
       <a class="card" data-cat="uiux" data-year="2021" href="pulse-app.html">
@@ -940,6 +1111,7 @@
       </a>
 
     </div>
+    </div>
   </section>
 
   <section id="confidential">
@@ -986,6 +1158,45 @@
       </div>
       <p class="gate-error mono" id="gateError">Incorrect passcode. Please try again.</p>
       <a href="work2426portfolio.html" class="gate-link mono" id="gateLink">View Confidential Portfolio →</a>
+    </div>
+  </section>
+
+  <section id="other-stuff">
+    <div class="section-head">
+      <h2>Other Stuff That I Make</h2>
+      <span class="idx mono">SIDE PROJECTS</span>
+    </div>
+
+    <div class="other-grid">
+      <a class="other-card" href="https://instagram.com/afoldwithin" target="_blank" rel="noopener">
+        <div class="other-card-thumb"><img src="s2.png" alt="@afoldwithin 3D printing work" loading="lazy"></div>
+        <div class="other-card-body">
+          <div class="other-card-tag mono">Instagram · 3D Printing</div>
+          <div class="other-card-title">@afoldwithin</div>
+          <div class="other-card-desc">Experiments with custom G-code for 3D printing, small batch drops, and the occasional prototyping mess, posted as it happens.</div>
+          <div class="other-card-link mono">Visit account →</div>
+        </div>
+      </a>
+
+      <a class="other-card" href="https://instagram.com/5of5p4d35" target="_blank" rel="noopener">
+        <div class="other-card-thumb"><img src="s1.png" alt="@5of5p4d35 graphic design work" loading="lazy"></div>
+        <div class="other-card-body">
+          <div class="other-card-tag mono">Instagram · Graphic Design</div>
+          <div class="other-card-title">@5of5p4d35</div>
+          <div class="other-card-desc">Photoshop composites and graphic experiments, made outside of client and product work.</div>
+          <div class="other-card-link mono">Visit account →</div>
+        </div>
+      </a>
+
+      <a class="other-card" href="https://www.kickstarter.com/projects/2040067416/1174508669?ref=98l19k&token=b041e856" target="_blank" rel="noopener">
+        <div class="other-card-thumb"><img src="s3.png" alt="Draft Kickstarter campaign preview" loading="lazy"></div>
+        <div class="other-card-body">
+          <div class="other-card-tag mono">Kickstarter · Draft Campaign</div>
+          <div class="other-card-title">A campaign in the works</div>
+          <div class="other-card-desc">A product I am designing and bringing to Kickstarter, currently a draft page ahead of launch.</div>
+          <div class="other-card-link mono">Preview draft →</div>
+        </div>
+      </a>
     </div>
   </section>
 
@@ -1055,13 +1266,15 @@
       el.style.transform = `translateY(${y}px)`;
     }
     function show(){
-      requestAnimationFrame(() => {
-        el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
-        requestAnimationFrame(() => {
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        });
-      });
+      // force a synchronous style flush so the browser commits the current
+      // (transition:none, opacity:0) state before the transition is
+      // re-enabled and the value changes — relying on requestAnimationFrame
+      // timing alone for this is fragile and can silently skip the fade
+      void el.offsetHeight;
+      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
+      void el.offsetHeight;
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
     }
 
     hide();
@@ -1073,19 +1286,150 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     io.observe(el);
 
-    return {
-      replay(){
-        hide();
-        requestAnimationFrame(() => requestAnimationFrame(show));
-      },
-    };
+    return { replay(){ hide(); show(); } };
   }
 
-  // hero entrance: heading, intro copy, skills, meta row cascade in
-  revealNow(document.querySelector('.hero h1'), { y: 28, duration: 800, delay: 0 });
+  // hero entrance: heading types itself out, then intro copy, skills, and
+  // meta row cascade in once typing has finished
+  const typingSpeed = 36; // ms per character
+  const linePause = typingSpeed * 6; // pause between lines
+  let heroTypingDuration = 900; // fallback if the heading isn't found
+
+  const personaData = {
+    anyone: {
+      lines: ['Hi, I am David,', 'a Multidisciplinary', 'Designer.'],
+      sub: '<p>I design products across the physical and digital world, from injection moulded hardware to the interfaces that power them, drawing on nearly a decade of academic and professional work for clients and companies.</p>'
+        + '<p>Core skills span user research, journey mapping, usability testing, 3D modeling in Rhino, rendering, and translating pain points into intuitive interfaces, backed by Figma, front end coding, and rapid prototyping, with a proven track record leading projects from concept to launch across cross functional and cross border teams.</p>',
+    },
+    'product-designer': {
+      lines: ['I design intuitive', 'digital experiences', 'people enjoy using.'],
+      sub: '<p>I design digital products that balance usability, functionality, and visual clarity. From emergency response applications to tools that enhance the experience of performing magic, I create thoughtful interfaces tailored to different user contexts. I also leverage AI-assisted workflows with tools like Claude Code to rapidly prototype and develop functional Progressive Web Apps (PWAs), including projects such as VitalScan and even this very website.</p>',
+    },
+    'ux-researcher': {
+      lines: ['Understanding people', 'before designing', 'solutions.'],
+      sub: '<p>I believe meaningful design begins with understanding people. From studying the installation journey of PC builders to researching the emotional connections between memories and photographs, I uncover user needs through observation, interviews, usability studies, and analysis. By empathizing with users, I identify pain points, reveal opportunity spaces, and translate insights into better experiences.</p>',
+    },
+    'industrial-designer': {
+      lines: ['Creating products where', 'function, engineering,', 'and craftsmanship meet.'],
+      sub: '<p>I design physical products that balance user needs, engineering constraints, manufacturability, and aesthetics. My work spans award-winning PC hardware, consumer electronics, homeware, and custom 3D-printed lighting, earning recognition including the iF Design Award and two Red Dot Design Awards. Whether designing a CPU cooler, a lamp, or a remote control, I strive to create products that are intuitive, purposeful, and built for real-world use.</p>',
+    },
+    'product-management': {
+      lines: ['Turning ideas into', 'products that reach', 'the market.'],
+      sub: '<p>Beyond designing products, I enjoy guiding them from concept to launch. I led the development of the SK620, SK700, and LM360 product series, working closely with engineers, product managers, marketing teams, manufacturers, and executive leadership across Singapore and China. Balancing user needs, technical feasibility, cost, timelines, and business objectives has taught me that successful products are built through collaboration as much as design.</p>',
+    },
+  };
+
+  // each call supersedes any in-flight typing/safety-net from a previous
+  // call (e.g. rapid persona-tab switching) via a generation token, so a
+  // stale timer never overwrites newer content or touches a wiped-out node
+  let typingToken = 0;
+  let typingSafetyTimer = null;
+
+  function typeHeading(lines, onDone){
+    const el = document.getElementById('heroTyping');
+    if(!el) return;
+
+    typingToken++;
+    const myToken = typingToken;
+    if(typingSafetyTimer) clearTimeout(typingSafetyTimer);
+
+    const totalChars = lines.reduce((n, l) => n + l.length, 0);
+    heroTypingDuration = totalChars * typingSpeed + (lines.length - 1) * linePause + 300;
+
+    // measure the final rendered height at the current viewport width first
+    // (line breaks can wrap differently per persona and per screen width)
+    // and lock it in, so surrounding content doesn't stagger down as the
+    // heading grows while typing
+    el.style.minHeight = '';
+    el.innerHTML = lines.join('<br>');
+    el.style.minHeight = el.getBoundingClientRect().height + 'px';
+
+    if(reduceMotion){
+      if(onDone) onDone();
+      return;
+    }
+
+    el.textContent = '';
+    const cursor = document.createElement('span');
+    cursor.className = 'typing-cursor';
+    cursor.textContent = '|';
+    el.appendChild(cursor);
+
+    let lineIndex = 0, charIndex = 0;
+    function typeNext(){
+      if(myToken !== typingToken) return;
+      if(lineIndex >= lines.length){
+        cursor.remove();
+        if(onDone) onDone();
+        return;
+      }
+      const line = lines[lineIndex];
+      if(charIndex < line.length){
+        cursor.insertAdjacentText('beforebegin', line[charIndex]);
+        charIndex++;
+        setTimeout(typeNext, typingSpeed);
+      } else {
+        if(lineIndex < lines.length - 1){
+          cursor.insertAdjacentHTML('beforebegin', '<br>');
+        }
+        lineIndex++;
+        charIndex = 0;
+        setTimeout(typeNext, linePause);
+      }
+    }
+    typeNext();
+
+    // safety net: whatever happens above, guarantee the correct final
+    // heading text is in place after typing should long be finished
+    typingSafetyTimer = setTimeout(() => {
+      if(myToken !== typingToken) return;
+      el.innerHTML = lines.join('<br>');
+    }, heroTypingDuration + 4000);
+  }
+
+  typeHeading(personaData.anyone.lines);
+
   revealNow(document.querySelector('.hero-sub'), { delay: 150 });
   revealNow(document.querySelector('.hero-skills'), { delay: 220 });
   revealNow(document.querySelector('.hero-bottom-row'), { delay: 340 });
+
+  // persona tabs: swap the heading + intro copy to speak to a specific
+  // audience, retyping the heading and cross-fading the intro paragraphs
+  (function(){
+    const tabs = document.querySelectorAll('.persona-tab');
+    const subEl = document.getElementById('heroSub');
+    if(!tabs.length || !subEl) return;
+
+    tabs.forEach(tab => {
+      tab.addEventListener('click', () => {
+        if(tab.classList.contains('active')) return;
+        const persona = personaData[tab.dataset.persona];
+        if(!persona) return;
+
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const heading = document.getElementById('heroTyping');
+        const swapText = () => {
+          subEl.innerHTML = persona.sub;
+          typeHeading(persona.lines);
+        };
+
+        if(reduceMotion){
+          swapText();
+          return;
+        }
+
+        subEl.style.opacity = '0';
+        if(heading) heading.style.opacity = '0';
+        setTimeout(() => {
+          swapText();
+          subEl.style.opacity = '1';
+          if(heading) heading.style.opacity = '1';
+        }, 180);
+      });
+    });
+  })();
 
   // scroll-triggered reveals for everything below the fold — replay any
   // time they're scrolled back into or out of view
@@ -1095,12 +1439,15 @@
     const reveal = makeScrollReveal(el, { delay: (i % 2) * 90 });
     if(reveal) cardReveals.set(el, reveal);
   });
+  document.querySelectorAll('.other-card').forEach((el, i) => {
+    makeScrollReveal(el, { delay: (i % 3) * 90 });
+  });
 
   // safety net: whatever happens with the animations above, guarantee every
   // revealed element is fully visible and interactive after a few seconds,
   // no matter what.
   setTimeout(() => {
-    document.querySelectorAll('.hero h1, .hero-sub, .hero-skills, .hero-bottom-row, .section-head, .confidential-gate, .contact, .grid .card')
+    document.querySelectorAll('.hero h1, .hero-sub, .hero-skills, .hero-bottom-row')
       .forEach(el => {
         el.style.opacity = '1';
         el.style.transform = 'none';

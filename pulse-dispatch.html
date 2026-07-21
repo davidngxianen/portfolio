@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pulse Dispatch: Web Console Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#FDFDFC;
-    --paper-dim:#F3F3F1;
-    --ink:#15171A;
-    --ink-soft:#565A5F;
-    --line:#E2E1DC;
+    --paper:#FFFFFF;
+    --paper-dim:#F5F5F5;
+    --ink:#111111;
+    --ink-soft:#374151;
+    --line:#E5E7EB;
     --signal:#D2491E;
     --signal-soft:#F0DCD2;
   }
@@ -25,7 +25,7 @@
     -webkit-font-smoothing:antialiased;
   }
   ::selection{background:var(--signal);color:var(--paper);}
-  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  h1,h2,h3{ font-family:'Inter',sans-serif; font-weight:600; letter-spacing:-0.02em; }
   .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
   a{ color:inherit; text-decoration:none; }
 
@@ -63,7 +63,7 @@
   .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
   .cs-meta{ display:flex; gap:48px; margin-top:44px; flex-wrap:wrap; }
   .cs-meta div{ font-size:12px; color:var(--ink-soft); }
-  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+  .cs-meta strong{ display:block; font-family:'Inter',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
   .cs-meta-note{ font-size:11px; color:var(--ink-soft); margin-top:24px; line-height:1.6; }
   .cs-meta-subtle{ margin-left:auto; color:var(--ink-soft); }
   .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
@@ -149,12 +149,12 @@
   .research-inputs{ border:1px solid var(--line); padding:26px; display:flex; flex-direction:column; gap:16px; margin-top:28px; }
   .ri-item{ display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--line); padding-bottom:16px; }
   .ri-item:last-child{ border-bottom:none; padding-bottom:0; }
-  .ri-item strong{ font-family:'Space Grotesk',sans-serif; font-size:16px; color:var(--signal); min-width:96px; flex-shrink:0; }
+  .ri-item strong{ font-family:'Inter',sans-serif; font-size:16px; color:var(--signal); min-width:96px; flex-shrink:0; }
   .ri-item span{ font-size:12px; color:var(--ink-soft); line-height:1.5; }
 
   /* persona card */
   .persona-card{ margin-top:10px; }
-  .persona-name-primary{ font-family:'Space Grotesk',sans-serif; font-size:38px; font-weight:600; letter-spacing:-0.01em; margin-bottom:0; line-height:1.1; }
+  .persona-name-primary{ font-family:'Inter',sans-serif; font-size:38px; font-weight:600; letter-spacing:-0.01em; margin-bottom:0; line-height:1.1; }
   .persona-name-secondary{ font-size:14px; color:var(--ink-soft); margin-bottom:16px; }
   .persona-role{ font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:18px; }
   .persona-quote{ font-size:15px; font-style:italic; color:var(--ink); line-height:1.6; border-left:3px solid var(--signal); padding-left:16px; margin-bottom:26px; }
@@ -176,13 +176,13 @@
   }
   .feature-list .feature-row:last-child{ border-bottom:1px solid var(--line); }
   @media (max-width:700px){ .feature-row{ grid-template-columns:1fr; } }
-  .feature-row .f-title{ font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:16px; }
+  .feature-row .f-title{ font-family:'Inter',sans-serif; font-weight:600; font-size:16px; }
   .feature-row .f-desc{ font-size:14px; color:var(--ink-soft); line-height:1.6; }
 
   .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin-top:10px; }
   @media (max-width:800px){ .stat-row{ grid-template-columns:1fr 1fr; } }
   .stat{ border-top:1px solid var(--line); padding-top:16px; }
-  .stat .num{ font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,4vw,3rem); font-weight:600; color:var(--signal); }
+  .stat .num{ font-family:'Inter',sans-serif; font-size:clamp(1.8rem,4vw,3rem); font-weight:600; color:var(--signal); }
   .stat .lbl{ font-size:12px; color:var(--ink-soft); margin-top:8px; line-height:1.4; }
 
   .outcome-box{ display:flex; flex-direction:column; gap:18px; }
@@ -190,14 +190,15 @@
 
   .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
   .next-project{ font-size:13px; color:var(--ink-soft); }
-  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Inter',sans-serif; margin-top:6px; }
   .next-project:hover strong{ color:var(--signal); }
 
   footer.site-footer{
+    background:#101010;
     border-top:1px solid var(--line);
     padding:24px 6vw;
     display:flex; justify-content:space-between;
-    font-size:11px; color:var(--ink-soft);
+    font-size:11px; color:#A1A1AA;
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -422,31 +423,31 @@
 
         <g>
           <rect x="20" y="60" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="105" y="87" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Answer &amp; Verify</text>
+          <text x="105" y="87" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Answer &amp; Verify</text>
           <text x="105" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Confirms caller &amp; location</text>
         </g>
         <g>
           <rect x="250" y="60" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="335" y="87" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Record Incident</text>
+          <text x="335" y="87" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Record Incident</text>
           <text x="335" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Captures details for triage</text>
         </g>
         <g>
           <rect x="480" y="60" width="170" height="64" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
-          <text x="565" y="87" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Dispatch Division</text>
+          <text x="565" y="87" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Dispatch Division</text>
           <text x="565" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">EMS Tiered Response Framework</text>
         </g>
 
         <g>
           <rect x="380" y="196" width="130" height="50" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
-          <text x="445" y="226" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="12" fill="var(--ink)">Ambulance</text>
+          <text x="445" y="226" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="12" fill="var(--ink)">Ambulance</text>
         </g>
         <g>
           <rect x="530" y="196" width="130" height="50" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
-          <text x="595" y="226" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="12" fill="var(--ink)">Firefighter</text>
+          <text x="595" y="226" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="12" fill="var(--ink)">Firefighter</text>
         </g>
         <g>
           <rect x="680" y="196" width="130" height="50" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
-          <text x="745" y="226" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="12" fill="var(--ink)">Police</text>
+          <text x="745" y="226" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="12" fill="var(--ink)">Police</text>
         </g>
       </svg>
     </div>
@@ -561,22 +562,22 @@
 
         <g>
           <rect x="20" y="30" width="190" height="70" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="115" y="60" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Immediate Responder</text>
+          <text x="115" y="60" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Immediate Responder</text>
           <text x="115" y="78" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Pulse App · reports &amp; shares location</text>
         </g>
         <g>
           <rect x="610" y="30" width="190" height="70" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="705" y="60" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Secondary Responder</text>
+          <text x="705" y="60" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Secondary Responder</text>
           <text x="705" y="78" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Pulse App · AED status &amp; location</text>
         </g>
         <g>
           <rect x="315" y="370" width="190" height="70" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="410" y="400" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Dispatched Unit</text>
+          <text x="410" y="400" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Dispatched Unit</text>
           <text x="410" y="418" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Ambulance · live GPS en route</text>
         </g>
         <g>
           <rect x="315" y="195" width="190" height="90" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
-          <text x="410" y="230" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Coordination View</text>
+          <text x="410" y="230" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Coordination View</text>
           <text x="410" y="248" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Pulse Dispatch</text>
           <text x="410" y="264" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Watched by the Emergency Dispatcher</text>
         </g>
@@ -717,13 +718,15 @@
       el.style.transform = `translateY(${y}px)`;
     }
     function show(){
-      requestAnimationFrame(() => {
-        el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
-        requestAnimationFrame(() => {
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        });
-      });
+      // force a synchronous style flush so the browser commits the current
+      // (transition:none, opacity:0) state before the transition is
+      // re-enabled and the value changes — relying on requestAnimationFrame
+      // timing alone for this is fragile and can silently skip the fade
+      void el.offsetHeight;
+      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
+      void el.offsetHeight;
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
     }
 
     hide();
@@ -735,7 +738,7 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     io.observe(el);
 
-    return { replay(){ hide(); requestAnimationFrame(() => requestAnimationFrame(show)); } };
+    return { replay(){ hide(); show(); } };
   }
 
   // hero entrance: eyebrow, heading, lede, meta row, hero image cascade in
@@ -754,7 +757,7 @@
   // revealed element is fully visible and interactive after a few seconds,
   // no matter what.
   setTimeout(() => {
-    document.querySelectorAll('.cs-eyebrow, .cs-hero h1, .cs-hero > p, .cs-meta, .ph-hero, ' + REVEAL_SELECTOR)
+    document.querySelectorAll('.cs-eyebrow, .cs-hero h1, .cs-hero > p, .cs-meta, .ph-hero')
       .forEach(el => {
         el.style.opacity = '1';
         el.style.transform = 'none';

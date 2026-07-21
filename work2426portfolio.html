@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sudokoo &amp; DeepCool: Extended Work Portfolio Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#121316;
-    --paper-dim:#1C1E22;
-    --ink:#F2F1ED;
-    --ink-soft:#9498A0;
-    --line:#2B2E33;
+    --paper:#101010;
+    --paper-dim:#1A1A1A;
+    --ink:#FFFFFF;
+    --ink-soft:#A1A1AA;
+    --line:#262626;
     --signal:#E2582B;
     --signal-soft:#2E1B12;
   }
@@ -26,7 +26,7 @@
   }
   body.no-scroll{ overflow:hidden; }
   ::selection{background:var(--signal);color:var(--paper);}
-  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  h1,h2,h3{ font-family:'Inter',sans-serif; font-weight:600; letter-spacing:-0.02em; }
   .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
   a{ color:inherit; text-decoration:none; }
 
@@ -66,7 +66,7 @@
   .cs-hero p + p{ margin-top:14px; }
   .cs-meta{ display:flex; gap:32px; margin-top:44px; flex-wrap:wrap; }
   .cs-meta div{ font-size:12px; color:var(--ink-soft); }
-  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+  .cs-meta strong{ display:block; font-family:'Inter',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
   .cs-meta-subtle{ color:var(--ink-soft); }
   .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
 
@@ -160,14 +160,40 @@
   .sk620-repro .render-grid img{ background:#F3F3F1; }
 
   /* project cards */
-  .proj-stack{ display:flex; flex-direction:column; gap:16px; margin-top:32px; }
-  .proj-card{ border:1px solid var(--line); border-radius:10px; background:var(--paper); }
+  .proj-stack-bleed{
+    width:100vw;
+    position:relative;
+    left:50%;
+    right:50%;
+    margin-left:-50vw;
+    margin-right:-50vw;
+    margin-top:32px;
+    padding:40px 6vw;
+    background:
+      radial-gradient(circle at 10% 15%, rgba(255,255,255,0.28), transparent 42%),
+      radial-gradient(circle at 90% 10%, rgba(255,255,255,0.22), transparent 42%),
+      radial-gradient(circle at 20% 90%, rgba(0,0,0,0.65), transparent 42%),
+      radial-gradient(circle at 92% 85%, rgba(255,255,255,0.18), transparent 42%),
+      var(--paper-dim);
+  }
+  .proj-stack{
+    display:flex; flex-direction:column; gap:20px;
+    max-width:1200px; margin:0 auto;
+  }
+  .proj-card{
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:20px;
+    background:rgba(255,255,255,0.06);
+    backdrop-filter:blur(24px) saturate(160%);
+    -webkit-backdrop-filter:blur(24px) saturate(160%);
+    box-shadow:0 8px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+  }
   .proj-card-summary{
     display:flex; align-items:center; gap:24px; width:100%; padding:22px 26px;
     background:none; border:none; font:inherit; color:inherit; text-align:left;
-    cursor:pointer; transition:background .15s; border-radius:10px;
+    cursor:pointer; transition:background .15s; border-radius:20px;
   }
-  .proj-card-summary:hover{ background:var(--paper-dim); }
+  .proj-card-summary:hover{ background:rgba(255,255,255,0.08); }
   .proj-card-summary:focus-visible{ outline:2px solid var(--signal); outline-offset:-2px; }
   .proj-card-thumb{ flex:0 0 auto; width:84px; height:84px; border-radius:8px; overflow:hidden; background:#0E0E0E; }
   .proj-card-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
@@ -196,6 +222,9 @@
     width:min(1120px,94vw); max-height:92vh;
     display:flex; flex-direction:column;
     z-index:200; border-radius:16px; overflow:hidden;
+    background:#141414;
+    backdrop-filter:none;
+    -webkit-backdrop-filter:none;
     box-shadow:0 30px 80px rgba(0,0,0,0.6);
     animation:projCardZoomIn .22s ease;
   }
@@ -219,7 +248,7 @@
 
   .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
   .next-project{ font-size:13px; color:var(--ink-soft); }
-  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Inter',sans-serif; margin-top:6px; }
   .next-project:hover strong{ color:var(--signal); }
 
   footer.site-footer{
@@ -300,6 +329,7 @@
   <section class="cs-section">
     <div class="cs-num mono">PROJECTS</div>
 
+    <div class="proj-stack-bleed">
     <div class="proj-stack">
 
       <!-- SK SERIES - FAN COOLER -->
@@ -862,6 +892,7 @@
       </div>
 
     </div>
+    </div>
   </section>
 
   <!-- OUTCOME & REFLECTION -->
@@ -919,13 +950,15 @@
       el.style.transform = `translateY(${y}px)`;
     }
     function show(){
-      requestAnimationFrame(() => {
-        el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
-        requestAnimationFrame(() => {
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        });
-      });
+      // force a synchronous style flush so the browser commits the current
+      // (transition:none, opacity:0) state before the transition is
+      // re-enabled and the value changes — relying on requestAnimationFrame
+      // timing alone for this is fragile and can silently skip the fade
+      void el.offsetHeight;
+      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
+      void el.offsetHeight;
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
     }
 
     hide();
@@ -937,7 +970,7 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     io.observe(el);
 
-    return { replay(){ hide(); requestAnimationFrame(() => requestAnimationFrame(show)); } };
+    return { replay(){ hide(); show(); } };
   }
 
   // hero entrance: eyebrow, heading, intro copy, meta row cascade in
@@ -955,7 +988,7 @@
   document.querySelectorAll(PROJ_CARD_SELECTOR).forEach((el, i) => makeScrollReveal(el, { delay: (i % 2) * 60 }));
 
   setTimeout(() => {
-    document.querySelectorAll('.cs-eyebrow, .cs-hero h1, .cs-hero p, .cs-meta, .nda-notice, ' + PROJ_CARD_SELECTOR)
+    document.querySelectorAll('.cs-eyebrow, .cs-hero h1, .cs-hero p, .cs-meta, .nda-notice')
       .forEach(el => {
         el.style.opacity = '1';
         el.style.transform = 'none';

@@ -5,14 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pulse: Emergency Response App Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
   :root{
-    --paper:#FDFDFC;
-    --paper-dim:#F3F3F1;
-    --ink:#15171A;
-    --ink-soft:#565A5F;
-    --line:#E2E1DC;
+    --paper:#FFFFFF;
+    --paper-dim:#F5F5F5;
+    --ink:#111111;
+    --ink-soft:#374151;
+    --line:#E5E7EB;
     --signal:#D2491E;
     --signal-soft:#F0DCD2;
     --c1:#D2491E;
@@ -29,7 +29,7 @@
     -webkit-font-smoothing:antialiased;
   }
   ::selection{background:var(--signal);color:var(--paper);}
-  h1,h2,h3{ font-family:'Space Grotesk',sans-serif; letter-spacing:-0.01em; }
+  h1,h2,h3{ font-family:'Inter',sans-serif; font-weight:600; letter-spacing:-0.02em; }
   .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
   a{ color:inherit; text-decoration:none; }
 
@@ -68,7 +68,7 @@
   .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
   .cs-meta{ display:flex; gap:48px; margin-top:44px; flex-wrap:wrap; }
   .cs-meta div{ font-size:12px; color:var(--ink-soft); }
-  .cs-meta strong{ display:block; font-family:'Space Grotesk',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
+  .cs-meta strong{ display:block; font-family:'Inter',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
   .cs-meta-note{ font-size:11px; color:var(--ink-soft); margin-top:24px; line-height:1.6; }
   .cs-meta-subtle{ margin-left:auto; color:var(--ink-soft); }
   .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
@@ -134,7 +134,7 @@
   .chart-source{ font-size:11px; color:var(--ink-soft); margin-top:14px; line-height:1.6; }
   .chart-source a{ color:var(--signal); text-decoration:underline; text-underline-offset:2px; }
   .chart-source a:hover{ color:var(--ink); }
-  .competitor-label{ font-family:'Space Grotesk',sans-serif; font-size:17px; font-weight:600; color:var(--signal); line-height:1.4; }
+  .competitor-label{ font-family:'Inter',sans-serif; font-size:17px; font-weight:600; color:var(--signal); line-height:1.4; }
   .competitor-row{ display:grid; grid-template-columns:220px 1fr; gap:32px; align-items:start; margin-top:32px; }
   .competitor-row .cpr-gallery{ margin-top:0; }
   @media (max-width:800px){ .competitor-row{ grid-template-columns:1fr; } }
@@ -167,7 +167,7 @@
   .research-inputs{ border:1px solid var(--line); padding:26px; display:flex; flex-direction:column; gap:16px; justify-content:center; }
   .ri-item{ display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--line); padding-bottom:16px; }
   .ri-item:last-child{ border-bottom:none; padding-bottom:0; }
-  .ri-item strong{ font-family:'Space Grotesk',sans-serif; font-size:22px; color:var(--signal); min-width:48px; flex-shrink:0; }
+  .ri-item strong{ font-family:'Inter',sans-serif; font-size:22px; color:var(--signal); min-width:48px; flex-shrink:0; }
   .ri-item span{ font-size:12px; color:var(--ink-soft); line-height:1.4; }
 
   /* synthesis / affinity map */
@@ -273,7 +273,7 @@
   .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin-top:10px; }
   @media (max-width:800px){ .stat-row{ grid-template-columns:1fr 1fr; } }
   .stat{ border-top:1px solid var(--line); padding-top:16px; }
-  .stat .num{ font-family:'Space Grotesk',sans-serif; font-size:clamp(1.8rem,4vw,3rem); font-weight:600; color:var(--signal); }
+  .stat .num{ font-family:'Inter',sans-serif; font-size:clamp(1.8rem,4vw,3rem); font-weight:600; color:var(--signal); }
   .stat .lbl{ font-size:12px; color:var(--ink-soft); margin-top:8px; line-height:1.4; }
 
   /* outcome / next */
@@ -282,14 +282,15 @@
 
   .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
   .next-project{ font-size:13px; color:var(--ink-soft); }
-  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Space Grotesk',sans-serif; margin-top:6px; }
+  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Inter',sans-serif; margin-top:6px; }
   .next-project:hover strong{ color:var(--signal); }
 
   footer.site-footer{
+    background:#101010;
     border-top:1px solid var(--line);
     padding:24px 6vw;
     display:flex; justify-content:space-between;
-    font-size:11px; color:var(--ink-soft);
+    font-size:11px; color:#A1A1AA;
   }
 
   @media (prefers-reduced-motion: reduce){
@@ -374,17 +375,17 @@
         <line x1="20" y1="210" x2="600" y2="210" stroke="var(--line)" stroke-width="1" stroke-dasharray="2 4"/>
 
         <rect x="40" y="186" width="110" height="24" fill="var(--ink-soft)" opacity="0.5"/>
-        <text x="95" y="174" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="16" fill="var(--ink)">&lt;10%</text>
+        <text x="95" y="174" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="16" fill="var(--ink)">&lt;10%</text>
         <text x="95" y="230" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">No bystander</text>
         <text x="95" y="244" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">action</text>
 
         <rect x="255" y="114" width="110" height="96" fill="var(--c2)" opacity="0.75"/>
-        <text x="310" y="102" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="16" fill="var(--ink)">&gt;40%</text>
+        <text x="310" y="102" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="16" fill="var(--ink)">&gt;40%</text>
         <text x="310" y="230" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">Bystander</text>
         <text x="310" y="244" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">CPR</text>
 
         <rect x="470" y="42" width="110" height="168" fill="var(--signal)"/>
-        <text x="525" y="30" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="16" fill="var(--signal)">up to 70%</text>
+        <text x="525" y="30" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="16" fill="var(--signal)">up to 70%</text>
         <text x="525" y="230" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">CPR + AED</text>
         <text x="525" y="244" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="11" fill="var(--ink-soft)">together</text>
       </svg>
@@ -843,22 +844,22 @@
 
         <g>
           <rect x="20" y="28" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="105" y="55" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Immediate Responder</text>
+          <text x="105" y="55" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Immediate Responder</text>
           <text x="105" y="72" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Mobile · witnesses &amp; reports</text>
         </g>
         <g>
           <rect x="310" y="28" width="170" height="64" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
-          <text x="395" y="55" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Emergency Dispatcher</text>
+          <text x="395" y="55" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Emergency Dispatcher</text>
           <text x="395" y="72" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Desktop · Pulse Dispatch</text>
         </g>
         <g>
           <rect x="590" y="28" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="675" y="55" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Ambulance</text>
+          <text x="675" y="55" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Ambulance</text>
           <text x="675" y="72" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">On site · takes over care</text>
         </g>
         <g>
           <rect x="215" y="248" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="300" y="275" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Secondary Responder</text>
+          <text x="300" y="275" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Secondary Responder</text>
           <text x="300" y="292" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Mobile · brings the AED</text>
         </g>
       </svg>
@@ -932,24 +933,24 @@
           <rect x="20" y="36" width="150" height="18" rx="9" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="0.75"/>
           <text x="95" y="48.5" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8.5" letter-spacing="0.03em" fill="var(--signal)">IMMEDIATE RESPONDER</text>
           <rect x="20" y="60" width="160" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="100" y="87" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Home Screen</text>
+          <text x="100" y="87" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Home Screen</text>
           <text x="100" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">SOS button visible</text>
         </g>
         <g>
           <rect x="210" y="60" width="160" height="64" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
-          <text x="290" y="87" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Hold SOS (3s)</text>
+          <text x="290" y="87" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Hold SOS (3s)</text>
           <text x="290" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Reports the incident</text>
         </g>
         <g>
           <rect x="410" y="36" width="140" height="18" rx="9" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="0.75"/>
           <text x="480" y="48.5" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8.5" letter-spacing="0.03em" fill="var(--signal)">EMERGENCY DISPATCHER</text>
           <rect x="400" y="60" width="160" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="480" y="87" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Live Call + AI</text>
+          <text x="480" y="87" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Live Call + AI</text>
           <text x="480" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Listens, suggests a guide</text>
         </g>
         <g>
           <rect x="590" y="60" width="160" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="670" y="87" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">CPR / First Aid</text>
+          <text x="670" y="87" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">CPR / First Aid</text>
           <text x="670" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Illustrated, step by step</text>
         </g>
 
@@ -957,18 +958,18 @@
           <rect x="400" y="196" width="150" height="18" rx="9" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="0.75"/>
           <text x="475" y="208.5" text-anchor="middle" font-family="'IBM Plex Mono',monospace" font-size="8.5" letter-spacing="0.03em" fill="var(--signal)">SECONDARY RESPONDER</text>
           <rect x="400" y="220" width="160" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="480" y="247" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Proximity Notification</text>
+          <text x="480" y="247" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Proximity Notification</text>
           <text x="480" y="264" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Sent to nearby users</text>
         </g>
         <g>
           <rect x="590" y="220" width="160" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="670" y="247" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Navigate &amp; Collect AED</text>
+          <text x="670" y="247" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Navigate &amp; Collect AED</text>
           <text x="670" y="264" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Native maps, then hands it off</text>
         </g>
 
         <g>
           <rect x="390" y="360" width="220" height="64" rx="4" fill="var(--paper-dim)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="500" y="387" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Responders Arrive</text>
+          <text x="500" y="387" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Responders Arrive</text>
           <text x="500" y="404" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Care handed off, incident resolved</text>
         </g>
       </svg>
@@ -1121,13 +1122,15 @@
       el.style.transform = `translateY(${y}px)`;
     }
     function show(){
-      requestAnimationFrame(() => {
-        el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
-        requestAnimationFrame(() => {
-          el.style.opacity = '1';
-          el.style.transform = 'translateY(0)';
-        });
-      });
+      // force a synchronous style flush so the browser commits the current
+      // (transition:none, opacity:0) state before the transition is
+      // re-enabled and the value changes — relying on requestAnimationFrame
+      // timing alone for this is fragile and can silently skip the fade
+      void el.offsetHeight;
+      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
+      void el.offsetHeight;
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
     }
 
     hide();
@@ -1139,7 +1142,7 @@
     }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
     io.observe(el);
 
-    return { replay(){ hide(); requestAnimationFrame(() => requestAnimationFrame(show)); } };
+    return { replay(){ hide(); show(); } };
   }
 
   // hero entrance: eyebrow, heading, lede, meta row, hero image cascade in
@@ -1158,7 +1161,7 @@
   // revealed element is fully visible and interactive after a few seconds,
   // no matter what.
   setTimeout(() => {
-    document.querySelectorAll('.cs-eyebrow, .cs-hero h1, .cs-hero > p, .cs-meta, .ph-hero, ' + REVEAL_SELECTOR)
+    document.querySelectorAll('.cs-eyebrow, .cs-hero h1, .cs-hero > p, .cs-meta, .ph-hero')
       .forEach(el => {
         el.style.opacity = '1';
         el.style.transform = 'none';
