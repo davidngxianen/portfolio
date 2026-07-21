@@ -154,10 +154,8 @@
     max-width:100%;
     min-height:2.94em;
     color:#FF5A1F;
-    transition:opacity .18s ease;
+    transition:opacity .18s ease, font-size .18s ease;
     overflow-wrap:break-word;
-    word-break:break-word;
-    hyphens:auto;
   }
   @media (max-width:600px){
     .hero{ padding-top:12vh; }
@@ -1332,17 +1330,54 @@
   // stale timer never overwrites newer content or touches a wiped-out node
   let typingToken = 0;
   let typingSafetyTimer = null;
+  let currentHeadingLines = null;
+
+  // shrink the heading's font-size (instead of letting a long single word
+  // wrap/break mid-word) whenever the widest line wouldn't fit on one line
+  // at the CSS-defined size — keeps every persona's heading readable on
+  // narrow screens without ever spilling past the card
+  function fitHeadingFontSize(el, lines){
+    el.style.fontSize = '';
+    const baseFontSize = parseFloat(getComputedStyle(el).fontSize);
+    const available = el.clientWidth;
+    if(!available) return;
+
+    const probe = document.createElement('span');
+    probe.style.cssText = 'position:absolute; visibility:hidden; white-space:nowrap; left:-9999px; top:-9999px;';
+    const elStyle = getComputedStyle(el);
+    probe.style.fontFamily = elStyle.fontFamily;
+    probe.style.fontWeight = elStyle.fontWeight;
+    probe.style.letterSpacing = elStyle.letterSpacing;
+    probe.style.fontSize = baseFontSize + 'px';
+    document.body.appendChild(probe);
+
+    let maxWidth = 0;
+    lines.forEach(line => {
+      probe.textContent = line;
+      maxWidth = Math.max(maxWidth, probe.getBoundingClientRect().width);
+    });
+    document.body.removeChild(probe);
+
+    if(maxWidth > available){
+      const minFontSize = 22;
+      const newSize = Math.max(baseFontSize * (available / maxWidth), minFontSize);
+      el.style.fontSize = newSize + 'px';
+    }
+  }
 
   function typeHeading(lines, onDone){
     const el = document.getElementById('heroTyping');
     if(!el) return;
 
+    currentHeadingLines = lines;
     typingToken++;
     const myToken = typingToken;
     if(typingSafetyTimer) clearTimeout(typingSafetyTimer);
 
     const totalChars = lines.reduce((n, l) => n + l.length, 0);
     heroTypingDuration = totalChars * typingSpeed + (lines.length - 1) * linePause + 300;
+
+    fitHeadingFontSize(el, lines);
 
     // measure the final rendered height at the current viewport width first
     // (line breaks can wrap differently per persona and per screen width)
@@ -1397,6 +1432,21 @@
 
   typeHeading(personaData.anyone.lines);
 
+  // re-fit the heading's font-size/reserved height if the viewport changes
+  // (window resize, phone rotation) — otherwise a size computed for one
+  // width would be stale after the layout changes
+  let headingResizeTimer = null;
+  window.addEventListener('resize', () => {
+    clearTimeout(headingResizeTimer);
+    headingResizeTimer = setTimeout(() => {
+      const el = document.getElementById('heroTyping');
+      if(!el || !currentHeadingLines) return;
+      fitHeadingFontSize(el, currentHeadingLines);
+      el.style.minHeight = '';
+      el.style.minHeight = el.getBoundingClientRect().height + 'px';
+    }, 150);
+  });
+
   revealNow(document.querySelector('.hero-sub'), { delay: 150 });
   revealNow(document.querySelector('.hero-skills'), { delay: 220 });
   revealNow(document.querySelector('.hero-bottom-row'), { delay: 340 });
@@ -1407,6 +1457,12 @@
     const tabs = document.querySelectorAll('.persona-tab');
     const subEl = document.getElementById('heroSub');
     if(!tabs.length || !subEl) return;
+
+    // guards against a previous click's pending 180ms fade-swap still
+    // firing after a newer click — without this, quickly switching tabs
+    // could briefly show/type an already-superseded persona before the
+    // correct one takes over
+    let pendingSwapTimer = null;
 
     tabs.forEach(tab => {
       tab.addEventListener('click', () => {
@@ -1423,6 +1479,8 @@
           typeHeading(persona.lines);
         };
 
+        clearTimeout(pendingSwapTimer);
+
         if(reduceMotion){
           swapText();
           return;
@@ -1430,7 +1488,7 @@
 
         subEl.style.opacity = '0';
         if(heading) heading.style.opacity = '0';
-        setTimeout(() => {
+        pendingSwapTimer = setTimeout(() => {
           swapText();
           subEl.style.opacity = '1';
           if(heading) heading.style.opacity = '1';
