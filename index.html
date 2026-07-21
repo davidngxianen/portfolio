@@ -155,6 +155,14 @@
     min-height:2.94em;
     color:#FF5A1F;
     transition:opacity .18s ease;
+    overflow-wrap:break-word;
+    word-break:break-word;
+    hyphens:auto;
+  }
+  @media (max-width:600px){
+    .hero{ padding-top:12vh; }
+    .hero-main{ padding:28px 22px; border-radius:20px; }
+    .hero h1{ font-size:clamp(1.9rem, 10vw, 3rem); }
   }
   .hero-persona-tabs{
     display:flex;
@@ -820,7 +828,7 @@
         <ul>
           <li><a href="#work">Work</a></li>
           <li><a href="#confidential">Confidential</a></li>
-          <li><a href="#other-stuff">Other Stuff</a></li>
+          <li><a href="#other-stuff">Others</a></li>
           <li><a href="#contact">Contact</a></li>
           <li><a href="Resume - David.pdf" target="_blank" rel="noopener">Resume</a></li>
         </ul>
