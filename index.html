@@ -18,7 +18,7 @@
     --radius:8px;
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  html{scroll-behavior:smooth; overflow-anchor:none;}
   body{
     background:var(--paper);
     color:var(--ink);
@@ -159,7 +159,16 @@
   }
   @media (max-width:600px){
     .hero{ padding-top:12vh; }
-    .hero-main{ padding:28px 22px; border-radius:20px; }
+    .hero-bg-video{ display:none; }
+    .hero-main{
+      padding:0 4px;
+      border-radius:0;
+      background:none;
+      backdrop-filter:none;
+      -webkit-backdrop-filter:none;
+      border:none;
+      box-shadow:none;
+    }
     .hero h1{ font-size:clamp(1.9rem, 10vw, 3rem); }
   }
   .hero-persona-tabs{
@@ -834,8 +843,8 @@
   </header>
 
   <section class="hero">
-    <video class="hero-bg-video" autoplay muted loop playsinline>
-      <source src="TESLON.mp4" type="video/mp4">
+    <video class="hero-bg-video" muted loop playsinline preload="none">
+      <source data-src="TESLON.mp4" type="video/mp4">
     </video>
     <div class="crosshair"></div>
     <div class="hero-main">
@@ -1242,6 +1251,20 @@
   // state where content is hidden without JS having actually run.
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // the hero background video is desktop-only — on mobile it's hidden via
+  // CSS anyway, but without this it would still burn mobile data/battery
+  // downloading a ~90MB file in the background. Only assign the real src
+  // (and start playback) above the 600px breakpoint.
+  (function(){
+    const video = document.querySelector('.hero-bg-video');
+    if(!video || window.matchMedia('(max-width:600px)').matches) return;
+    const source = video.querySelector('source[data-src]');
+    if(!source) return;
+    source.src = source.dataset.src;
+    video.load();
+    video.play().catch(() => {});
+  })();
+
   function revealNow(el, { y = 22, duration = 700, delay = 0 } = {}){
     if(!el || reduceMotion) return;
     el.style.opacity = '0';
@@ -1431,13 +1454,20 @@
 
   typeHeading(personaData.anyone.lines);
 
-  // re-fit the heading's font-size/reserved height if the viewport changes
-  // (window resize, phone rotation) — otherwise a size computed for one
-  // width would be stale after the layout changes
+  // re-fit the heading's font-size/reserved height if the viewport WIDTH
+  // changes (window resize, phone rotation) — otherwise a size computed for
+  // one width would be stale after the layout changes. Mobile browsers also
+  // fire resize when their address bar shows/hides during normal scrolling,
+  // which only changes height — ignored below so scrolling never re-triggers
+  // this and makes the heading text visibly reflow/break mid-scroll
   let headingResizeTimer = null;
+  let lastHeadingFitWidth = window.innerWidth;
   window.addEventListener('resize', () => {
     clearTimeout(headingResizeTimer);
     headingResizeTimer = setTimeout(() => {
+      if(window.innerWidth === lastHeadingFitWidth) return;
+      lastHeadingFitWidth = window.innerWidth;
+
       const el = document.getElementById('heroTyping');
       if(!el || !currentHeadingLines) return;
 
