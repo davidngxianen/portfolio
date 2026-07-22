@@ -97,14 +97,15 @@
     align-items:flex-start;
     gap:60px;
     overflow:hidden;
+    background-color:#0A0A0A;
   }
-  .hero-bg-video{
+  .hero-grid-canvas{
     position:absolute;
     inset:0;
     width:100%;
     height:100%;
-    object-fit:cover;
     z-index:0;
+    display:block;
   }
   .hero .crosshair{ z-index:1; }
   .hero-main{
@@ -114,26 +115,21 @@
     position:relative;
     z-index:1;
     padding:48px;
-    border-radius:28px;
-    background:rgba(255,255,255,0.82);
-    backdrop-filter:blur(28px) saturate(180%);
-    -webkit-backdrop-filter:blur(28px) saturate(180%);
-    border:1px solid rgba(255,255,255,0.7);
-    box-shadow:0 20px 60px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.75);
   }
   .hero-awards{
     display:flex;
     flex-direction:row;
     flex-shrink:0;
+    align-items:center;
     justify-content:flex-end;
     gap:24px;
     width:520px;
     margin-top:0;
   }
-  .hero-awards img{ width:110px; height:auto; display:block; object-fit:contain; }
+  .hero-awards img{ height:56px; width:auto; display:block; object-fit:contain; }
   @media (max-width:600px){
     .hero-awards{ flex-wrap:wrap; gap:14px; width:100%; justify-content:flex-start; }
-    .hero-awards img{ width:64px; }
+    .hero-awards img{ height:40px; }
   }
   .hero-eyebrow{
     display:flex;
@@ -160,16 +156,7 @@
   }
   @media (max-width:600px){
     .hero{ padding-top:12vh; }
-    .hero-bg-video{ display:none; }
-    .hero-main{
-      padding:0 4px;
-      border-radius:0;
-      background:none;
-      backdrop-filter:none;
-      -webkit-backdrop-filter:none;
-      border:none;
-      box-shadow:none;
-    }
+    .hero-main{ padding:0 4px; }
     .hero h1{ font-size:clamp(1.9rem, 10vw, 3rem); }
   }
   .hero-persona-tabs{
@@ -212,7 +199,7 @@
     flex:1;
     font-size:17px;
     line-height:1.6;
-    color:var(--ink-soft);
+    color:#A1A1AA;
     transition:opacity .18s ease;
   }
   .hero-sub p + p{ margin-top:16px; }
@@ -232,12 +219,12 @@
     margin-top:0;
     flex-wrap:wrap;
   }
-  .hero-meta div{font-size:12px;color:var(--ink-soft);}
+  .hero-meta div{font-size:12px;color:#A1A1AA;}
   .hero-meta strong{
     display:block;
     font-family:'Inter',sans-serif;
     font-size:14px;
-    color:var(--ink);
+    color:#FFFFFF;
     margin-top:4px;
   }
 
@@ -250,7 +237,7 @@
   .crosshair::before,.crosshair::after{
     content:'';
     position:absolute;
-    background:var(--ink-soft);
+    background:#A1A1AA;
   }
   .crosshair::before{ width:100%;height:1px; top:50%; left:0; }
   .crosshair::after{ height:100%;width:1px; left:50%; top:0; }
@@ -710,12 +697,12 @@
     display:flex;
     justify-content:space-between;
     padding:14px 0;
-    border-bottom:1px solid rgba(17,17,17,0.18);
+    border-bottom:1px solid rgba(255,255,255,0.18);
     font-size:13px;
   }
-  .skill-row:first-child{ border-top:1px solid rgba(17,17,17,0.18); }
-  .skill-row .label{ color:var(--ink-soft); }
-  .skill-row .val{ color:var(--ink); text-align:right; }
+  .skill-row:first-child{ border-top:1px solid rgba(255,255,255,0.18); }
+  .skill-row .label{ color:#A1A1AA; }
+  .skill-row .val{ color:#FFFFFF; text-align:right; }
 
   /* ---------- contact ---------- */
   .contact{
@@ -844,9 +831,7 @@
   </header>
 
   <section class="hero">
-    <video class="hero-bg-video" muted loop playsinline preload="none">
-      <source data-src="TESLON.mp4" type="video/mp4">
-    </video>
+    <canvas class="hero-grid-canvas" aria-hidden="true"></canvas>
     <div class="crosshair"></div>
     <div class="hero-main">
       <div class="hero-persona-tabs" role="tablist" aria-label="View this intro for">
@@ -856,7 +841,7 @@
         <button class="persona-tab" type="button" data-persona="industrial-designer">Industrial Designers</button>
         <button class="persona-tab" type="button" data-persona="product-management">Product Management</button>
       </div>
-      <h1 id="heroTyping">Hi, I am David, <br>a Multidisciplinary <br>Designer.</h1>
+      <h1 id="heroTyping">Hi, I am David, <br>a Product & <br> Industrial Designer.</h1>
       <div class="hero-intro-row">
         <div class="hero-sub" id="heroSub">
           <p>I design products across the physical and digital world, from injection moulded
@@ -887,7 +872,7 @@
           <img src="PD2026_RD.png" alt="Red Dot Winner 2026">
           <img src="RD2021_01.png" alt="Red Dot Winner 2021">
           <img src="ifdesign.jpg" alt="iF Design Award 2026">
-          <img src="motorola.svg" alt="Motorola">
+          <img src="motorolaw.png" alt="Motorola">
         </div>
       </div>
     </div>
@@ -1252,18 +1237,102 @@
   // state where content is hidden without JS having actually run.
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  // the hero background video is desktop-only — on mobile it's hidden via
-  // CSS anyway, but without this it would still burn mobile data/battery
-  // downloading a ~90MB file in the background. Only assign the real src
-  // (and start playback) above the 600px breakpoint.
+  // interactive dot grid: dots near the cursor get pushed radially away,
+  // like pressing into a pin-art board, and ease back to rest once the
+  // cursor moves on or leaves
   (function(){
-    const video = document.querySelector('.hero-bg-video');
-    if(!video || window.matchMedia('(max-width:600px)').matches) return;
-    const source = video.querySelector('source[data-src]');
-    if(!source) return;
-    source.src = source.dataset.src;
-    video.load();
-    video.play().catch(() => {});
+    const hero = document.querySelector('.hero');
+    const canvas = document.querySelector('.hero-grid-canvas');
+    if(!hero || !canvas || reduceMotion) return;
+    const ctx = canvas.getContext('2d');
+    if(!ctx) return;
+
+    const spacing = 18;
+    const dotRadius = 1;
+    const interactionRadius = 200;
+    const maxDisplacement = 26;
+    const ease = 0.22;
+
+    let dots = [];
+    let width = 0, height = 0;
+    let dpr = window.devicePixelRatio || 1;
+    const mouse = { x: -9999, y: -9999, active: false };
+
+    function buildGrid(){
+      const rect = hero.getBoundingClientRect();
+      width = rect.width;
+      height = rect.height;
+      dpr = window.devicePixelRatio || 1;
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      canvas.style.width = width + 'px';
+      canvas.style.height = height + 'px';
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+      dots = [];
+      for(let y = spacing / 2; y < height; y += spacing){
+        for(let x = spacing / 2; x < width; x += spacing){
+          dots.push({ baseX: x, baseY: y, x, y });
+        }
+      }
+    }
+
+    function tick(){
+      ctx.clearRect(0, 0, width, height);
+      ctx.fillStyle = 'rgba(255,255,255,0.2)';
+
+      for(const dot of dots){
+        let targetX = dot.baseX;
+        let targetY = dot.baseY;
+        if(mouse.active){
+          const dx = dot.baseX - mouse.x;
+          const dy = dot.baseY - mouse.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          if(dist < interactionRadius){
+            const force = 1 - dist / interactionRadius;
+            const angle = Math.atan2(dy, dx);
+            targetX = dot.baseX + Math.cos(angle) * force * maxDisplacement;
+            targetY = dot.baseY + Math.sin(angle) * force * maxDisplacement;
+          }
+        }
+        dot.x += (targetX - dot.x) * ease;
+        dot.y += (targetY - dot.y) * ease;
+
+        ctx.beginPath();
+        ctx.arc(dot.x, dot.y, dotRadius, 0, Math.PI * 2);
+        ctx.fill();
+      }
+
+      requestAnimationFrame(tick);
+    }
+
+    buildGrid();
+    requestAnimationFrame(tick);
+
+    hero.addEventListener('mousemove', (e) => {
+      const rect = hero.getBoundingClientRect();
+      mouse.x = e.clientX - rect.left;
+      mouse.y = e.clientY - rect.top;
+      mouse.active = true;
+    });
+    hero.addEventListener('mouseleave', () => {
+      mouse.active = false;
+    });
+
+    // rebuild on ANY size change to the hero box, not just window resizes —
+    // switching personas changes the hero's content height (different
+    // heading/paragraph lengths), which needs the same rebuild or the grid
+    // is left sized for the old, shorter layout and leaves a bare gap
+    let gridResizeTimer = null;
+    const scheduleRebuild = () => {
+      clearTimeout(gridResizeTimer);
+      gridResizeTimer = setTimeout(buildGrid, 100);
+    };
+    if('ResizeObserver' in window){
+      new ResizeObserver(scheduleRebuild).observe(hero);
+    } else {
+      window.addEventListener('resize', scheduleRebuild);
+    }
   })();
 
   function revealNow(el, { y = 22, duration = 700, delay = 0 } = {}){
@@ -1326,7 +1395,7 @@
 
   const personaData = {
     anyone: {
-      lines: ['Hi, I am David,', 'a Multidisciplinary', 'Designer.'],
+      lines: ['Hi, I am David,', 'a Product &', 'Industrial Designer.'],
       sub: '<p>I design products across the physical and digital world, from injection moulded hardware to the interfaces that power them, drawing on nearly a decade of academic and professional work for clients and companies.</p>'
         + '<p>Core skills span user research, journey mapping, usability testing, 3D modeling in Rhino, rendering, and translating pain points into intuitive interfaces, backed by Figma, front end coding, and rapid prototyping, with a proven track record leading projects from concept to launch across cross functional and cross border teams.</p>',
     },
@@ -1335,15 +1404,15 @@
       sub: '<p>I design digital products that balance usability, functionality, and visual clarity. From emergency response applications to tools that enhance the experience of performing magic, I create thoughtful interfaces tailored to different user contexts. I also leverage AI-assisted workflows with tools like Claude Code to rapidly prototype and develop functional Progressive Web Apps (PWAs), including projects such as VitalScan and even this very website.</p>',
     },
     'ux-researcher': {
-      lines: ['Understanding people', 'before designing', 'solutions.'],
+      lines: ['I understand people', 'before designing', 'solutions.'],
       sub: '<p>I believe meaningful design begins with understanding people. From studying the installation journey of PC builders to researching the emotional connections between memories and photographs, I uncover user needs through observation, interviews, usability studies, and analysis. By empathizing with users, I identify pain points, reveal opportunity spaces, and translate insights into better experiences.</p>',
     },
     'industrial-designer': {
-      lines: ['Creating products where', 'function, engineering,', 'and craftsmanship meet.'],
+      lines: ['I create products where', 'function, engineering,', 'and craftsmanship meet.'],
       sub: '<p>I design physical products that balance user needs, engineering constraints, manufacturability, and aesthetics. My work spans award-winning PC hardware, consumer electronics, homeware, and custom 3D-printed lighting, earning recognition including the iF Design Award and two Red Dot Design Awards, and showcased at Computex 2025 and CES 2026. Whether designing a CPU cooler, a lamp, or a remote control, I strive to create products that are intuitive, purposeful, and built for real-world use.</p>',
     },
     'product-management': {
-      lines: ['Turning ideas into', 'products that reach', 'the market.'],
+      lines: ['I turn ideas into', 'products that reach', 'the market.'],
       sub: '<p>Beyond designing products, I enjoy guiding them from concept to launch. I led the development of the SK620, SK700, and LM360 product series, working closely with engineers, product managers, marketing teams, manufacturers, and executive leadership across Singapore and China. Balancing user needs, technical feasibility, cost, timelines, and business objectives has taught me that successful products are built through collaboration as much as design.</p>',
     },
   };
