@@ -154,6 +154,8 @@
     #pillnav { display: none; }
     .topnav-inner { padding: 0 var(--sp-lg) 0 54px; }
     .pill-seg { padding: 8px 10px; font-size: 12px; }
+    /* the Today/Vitals/Health tab bar keeps its desktop sizing on mobile too */
+    #tabnav .pill-seg { padding: 8px 15px; font-size: 13px; }
     .back-btn .label { display: none; }
     .back-btn { top: 20px; left: 10px; }
   }
@@ -282,6 +284,14 @@
   .compare-lead { font-size: 15px; font-weight: 600; color: var(--ink); margin-top: var(--sp-xl); }
   .compare-grid { margin-top: var(--sp-md); display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-lg); max-width: 62ch; }
   @media (max-width: 640px) { .compare-grid { grid-template-columns: 1fr; } }
+  /* the "what I'm cutting / what's worth keeping" pair stays side by side
+     even on mobile, unlike other compare-grid usages on the page */
+  @media (max-width: 640px) {
+    #cuttingKeepingGrid { grid-template-columns: 1fr 1fr; gap: var(--sp-sm); }
+    #cuttingKeepingGrid .compare-card { padding: var(--sp-md); }
+    #cuttingKeepingGrid h4 { font-size: 14px; }
+    #cuttingKeepingGrid p { font-size: 12.5px; line-height: 1.5; }
+  }
   .compare-card { padding: var(--sp-lg); border-radius: var(--r-lg); background: var(--canvas); border: 1px solid var(--hairline); box-shadow: var(--sh-soft); }
   .compare-card .icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: var(--sp-md); }
   .compare-card.not .icon { background: rgba(239, 68, 68, 0.1); }
@@ -536,9 +546,29 @@
   .reading-table td.name { font-weight: 600; color: var(--ink); white-space: nowrap; }
   .reading-table-wrap { overflow-x: auto; }
   .landscape-table td.name { white-space: normal; }
+
+  /* below 720px, every reading-table (landscape or not) drops the grid
+     entirely and re-stacks each row as its own labelled card, so nothing
+     needs a side-scroll to be read in full on a phone */
   @media (max-width: 720px) {
-    .landscape-table { table-layout: auto !important; width: auto !important; min-width: 640px; }
-    .landscape-table col { width: auto !important; }
+    .reading-table-wrap { overflow-x: visible; }
+    .landscape-table, .reading-table,
+    .landscape-table tbody, .reading-table tbody,
+    .landscape-table tr, .reading-table tr,
+    .landscape-table td, .reading-table td { display: block; width: 100% !important; }
+    .landscape-table thead, .reading-table thead { display: none; }
+    .landscape-table tr, .reading-table tr { padding: var(--sp-md) 0; border-bottom: 1px solid var(--hairline); }
+    .landscape-table tr:first-child, .reading-table tr:first-child { padding-top: 0; }
+    .landscape-table tr:last-child, .reading-table tr:last-child { border-bottom: none; }
+    .landscape-table td, .reading-table td { padding: 0; border: none; }
+    .landscape-table td.name, .reading-table td.name { white-space: normal; padding-bottom: 6px; font-size: 1rem; }
+    .landscape-table td:not(.name), .reading-table td:not(.name) { margin-top: var(--sp-sm); }
+    .landscape-table td:not(.name)::before, .reading-table td:not(.name)::before {
+      content: attr(data-label);
+      display: block;
+      font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--muted-soft); margin-bottom: 3px;
+    }
   }
 
   /* ---------- landscape: positioning quadrant, dark diagram style (matches the Process part's pm-canvas) ---------- */
@@ -1550,27 +1580,27 @@
           <tbody>
             <tr>
               <td class="name">Oura</td>
-              <td>Market leadership at 76% ring share, best in class sleep analysis, strongest validation record</td>
-              <td>Only mainstream ring charging a mandatory subscription; zero FDA cleared features on standard models</td>
-              <td>A subscription-free competitor matching app depth. Ultrahuman is explicitly attempting this, and a patent dispute has removed it from US markets, which is itself evidence Oura considers the threat real.</td>
+              <td data-label="Real strength">Market leadership at 76% ring share, best in class sleep analysis, strongest validation record</td>
+              <td data-label="Real weakness">Only mainstream ring charging a mandatory subscription; zero FDA cleared features on standard models</td>
+              <td data-label="What would break it">A subscription-free competitor matching app depth. Ultrahuman is explicitly attempting this, and a patent dispute has removed it from US markets, which is itself evidence Oura considers the threat real.</td>
             </tr>
             <tr>
               <td class="name">Whoop</td>
-              <td>Prescriptive coaching integrated into the data; strong athlete brand; hardware bundled into subscription</td>
-              <td>Highest recurring cost in category. Regulatory exposure: FDA warning letter July 2025</td>
-              <td>Members outgrowing the optimisation frame. There is no distribution or sensor advantage to fall back on.</td>
+              <td data-label="Real strength">Prescriptive coaching integrated into the data; strong athlete brand; hardware bundled into subscription</td>
+              <td data-label="Real weakness">Highest recurring cost in category. Regulatory exposure: FDA warning letter July 2025</td>
+              <td data-label="What would break it">Members outgrowing the optimisation frame. There is no distribution or sensor advantage to fall back on.</td>
             </tr>
             <tr>
               <td class="name">Apple / Samsung</td>
-              <td>Distribution on hardware already owned; genuine regulatory clearances</td>
-              <td>Generalist. Shows data without interpretation. Sleep tracking is a feature, not the product.</td>
-              <td>Very little. This position is close to unassailable at the top of the funnel, which is why competing on breadth is a losing move.</td>
+              <td data-label="Real strength">Distribution on hardware already owned; genuine regulatory clearances</td>
+              <td data-label="Real weakness">Generalist. Shows data without interpretation. Sleep tracking is a feature, not the product.</td>
+              <td data-label="What would break it">Very little. This position is close to unassailable at the top of the funnel, which is why competing on breadth is a losing move.</td>
             </tr>
             <tr>
               <td class="name">Ultrahuman / RingConn / Amazfit</td>
-              <td>No subscription; aggressive pricing ($179 to 349)</td>
-              <td>Thinner apps, less validation, no distribution</td>
-              <td>Already happening. This is a margin-compression race. Ultrahuman grew 5.4&times; to $64M revenue in 2025 but is competing on price against a category leader with 20&times; the install base.</td>
+              <td data-label="Real strength">No subscription; aggressive pricing ($179 to 349)</td>
+              <td data-label="Real weakness">Thinner apps, less validation, no distribution</td>
+              <td data-label="What would break it">Already happening. This is a margin-compression race. Ultrahuman grew 5.4&times; to $64M revenue in 2025 but is competing on price against a category leader with 20&times; the install base.</td>
             </tr>
           </tbody>
         </table>
@@ -1580,7 +1610,7 @@
     <div class="prose">
       <div class="compare-lead reveal" style="margin-top: var(--sp-xxl);">The opportunity space</div>
       <p class="reveal" style="margin-top: var(--sp-sm); max-width: 62ch;">Two decisions followed directly from where the dots landed.</p>
-      <div class="compare-grid reveal">
+      <div class="compare-grid reveal" id="cuttingKeepingGrid">
         <div class="compare-card not">
           <div class="icon"><svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M2 2l10 10M12 2L2 12" stroke="#ef4444" stroke-width="1.8" stroke-linecap="round"/></svg></div>
           <h4>What I am cutting</h4>
@@ -1711,24 +1741,24 @@ They tell us what we did, but provide little context for why another signal may 
           <tbody>
             <tr>
               <td class="name">Ring</td>
-              <td>High. Small and comfortable enough that most people keep it on through the night.</td>
-              <td>Strong. The finger artery gives a steady blood flow signal, especially during stillness.</td>
-              <td>Four to seven days. There is no screen drawing power.</td>
-              <td>None. There is no display to check.</td>
+              <td data-label="Overnight wear">High. Small and comfortable enough that most people keep it on through the night.</td>
+              <td data-label="Signal at rest">Strong. The finger artery gives a steady blood flow signal, especially during stillness.</td>
+              <td data-label="Battery life">Four to seven days. There is no screen drawing power.</td>
+              <td data-label="Screen distraction">None. There is no display to check.</td>
             </tr>
             <tr>
               <td class="name">Watch or band</td>
-              <td>Low. The bulk and the charging habit mean many nights go unworn.</td>
-              <td>Weaker. The wrist sees more motion artifact and more variation in skin contact.</td>
-              <td>Eighteen to thirty six hours. Frequent charging breaks the overnight habit.</td>
-              <td>High. An always available screen invites streaks and glances.</td>
+              <td data-label="Overnight wear">Low. The bulk and the charging habit mean many nights go unworn.</td>
+              <td data-label="Signal at rest">Weaker. The wrist sees more motion artifact and more variation in skin contact.</td>
+              <td data-label="Battery life">Eighteen to thirty six hours. Frequent charging breaks the overnight habit.</td>
+              <td data-label="Screen distraction">High. An always available screen invites streaks and glances.</td>
             </tr>
             <tr>
               <td class="name">Chest strap</td>
-              <td>Very low. Almost nobody sleeps in one.</td>
-              <td>Excellent while worn, but essentially never worn overnight.</td>
-              <td>Days, though the point is moot since it is rarely worn to sleep.</td>
-              <td>None, but also unusable for the overnight signals this product needs.</td>
+              <td data-label="Overnight wear">Very low. Almost nobody sleeps in one.</td>
+              <td data-label="Signal at rest">Excellent while worn, but essentially never worn overnight.</td>
+              <td data-label="Battery life">Days, though the point is moot since it is rarely worn to sleep.</td>
+              <td data-label="Screen distraction">None, but also unusable for the overnight signals this product needs.</td>
             </tr>
           </tbody>
         </table>
@@ -4038,19 +4068,19 @@ The hypothesis testing, competitive analysis, and user research provide three di
           <tbody>
             <tr>
               <td class="name">HRV</td>
-              <td>The ring's optical pulse sensor, a light based sensor pressed against the finger artery, reads the tiny gaps between heartbeats through the night. HRV is calculated from how much those gaps vary.</td>
+              <td data-label="Measured with">The ring's optical pulse sensor, a light based sensor pressed against the finger artery, reads the tiny gaps between heartbeats through the night. HRV is calculated from how much those gaps vary.</td>
             </tr>
             <tr>
               <td class="name">Resting heart rate</td>
-              <td>The same optical pulse sensor, averaged across the lowest, steadiest stretch of the night.</td>
+              <td data-label="Measured with">The same optical pulse sensor, averaged across the lowest, steadiest stretch of the night.</td>
             </tr>
             <tr>
               <td class="name">Sleep consistency</td>
-              <td>The ring's motion sensor and skin temperature sensor together, which mark the start and end of sleep each night and compare that timing night to night.</td>
+              <td data-label="Measured with">The ring's motion sensor and skin temperature sensor together, which mark the start and end of sleep each night and compare that timing night to night.</td>
             </tr>
             <tr>
               <td class="name">Cardio age</td>
-              <td>No separate sensor. It is computed entirely from the other two readings against typical adult ranges, so it is a calculation, not a measurement.</td>
+              <td data-label="Measured with">No separate sensor. It is computed entirely from the other two readings against typical adult ranges, so it is a calculation, not a measurement.</td>
             </tr>
           </tbody>
         </table>
