@@ -1235,10 +1235,16 @@
       // the canvas to a size that's too wide by the padding amount, clipping
       // the edge of the diagram once overflow:hidden kicks in
       var wrapStyle = getComputedStyle(wrap);
-      var avail = wrap.clientWidth - parseFloat(wrapStyle.paddingLeft) - parseFloat(wrapStyle.paddingRight);
+      var padX = parseFloat(wrapStyle.paddingLeft) + parseFloat(wrapStyle.paddingRight);
+      var padY = parseFloat(wrapStyle.paddingTop) + parseFloat(wrapStyle.paddingBottom);
+      var avail = wrap.clientWidth - padX;
       var scale = Math.min(1, avail / canvas.scrollWidth);
       canvas.style.transform = 'scale(' + scale + ')';
-      wrap.style.height = Math.round(naturalH * scale) + 'px';
+      // box-sizing:border-box means wrap's own height includes its padding,
+      // so the padding has to be added back on top of the scaled canvas
+      // height or the content area is short by padY and the bottom of the
+      // diagram gets clipped by overflow:hidden
+      wrap.style.height = Math.round(naturalH * scale + padY) + 'px';
     }
     fit();
     window.addEventListener('resize', fit);
