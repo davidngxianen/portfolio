@@ -5,540 +5,482 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>DUO: Headphones &amp; Speaker Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#FFFFFF;
-    --paper-dim:#F5F5F5;
-    --ink:#111111;
-    --ink-soft:#374151;
-    --line:#E5E7EB;
-    --signal:#D2491E;
-    --signal-soft:#F0DCD2;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  ::selection{background:var(--signal);color:var(--paper);}
-  h1,h2,h3{ font-family:'Inter',sans-serif; font-weight:600; letter-spacing:-0.02em; }
-  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
-  a{ color:inherit; text-decoration:none; }
 
-  header{
-    position:sticky; top:0; z-index:40;
-    background:rgba(253,253,252,0.92);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav-inner{
-    padding:18px 6vw;
-    display:flex; justify-content:space-between; align-items:center;
-  }
-  .back-link{
-    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
-    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
-    transition:color .15s;
-  }
-  .back-link:hover{ color:var(--ink); }
-  .logo{ font-weight:600; font-size:15px; }
-  .logo span{ color:var(--signal); }
+  :root {
+    --canvas: #ffffff;
+    --surface-soft: #f8f9fa;
+    --surface-card: #f5f5f5;
+    --surface-strong: #e5e7eb;
+    --surface-dark: #101010;
+    --hairline: #e5e7eb;
+    --hairline-soft: #f3f4f6;
+    --ink: #111111;
+    --body-c: #374151;
+    --muted: #6b7280;
+    --muted-soft: #898989;
+    --on-primary: #ffffff;
+    --on-dark: #ffffff;
+    --on-dark-soft: #a1a1aa;
+    --primary: #111111;
+    --primary-active: #242424;
+    --accent: #d2491e;
 
-  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
+    --sp-xxs: 4px;
+    --sp-xs: 8px;
+    --sp-sm: 12px;
+    --sp-md: 16px;
+    --sp-lg: 24px;
+    --sp-xl: 32px;
+    --sp-xxl: 48px;
+    --sp-section: 96px;
 
-  /* hero */
-  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
-  .cs-eyebrow{
-    display:flex; align-items:center; gap:10px;
-    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
-    margin-bottom:22px;
-  }
-  .cs-hero h1{
-    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
-    max-width:20ch; margin-bottom:24px;
-  }
-  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
-  .cs-meta{ display:flex; gap:32px; margin-top:44px; flex-wrap:wrap; }
-  .cs-meta > div{ flex-shrink:0; }
-  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
-  .cs-meta strong{ display:block; font-family:'Inter',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
-  .cs-meta{ position:relative; }
-  .cs-meta-subtle{ color:var(--ink-soft); }
-  .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
+    --r-xs: 4px;
+    --r-sm: 6px;
+    --r-md: 8px;
+    --r-lg: 12px;
+    --r-xl: 16px;
+    --r-pill: 9999px;
 
-  /* image placeholder / hero */
-  .ph{
-    background:
-      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
-      var(--paper-dim);
-    border:1px solid var(--line);
-    display:flex; align-items:center; justify-content:center;
-    position:relative; overflow:hidden;
-  }
-  .ph span{ font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.7; padding:20px; }
-  .ph .corner{ position:absolute; width:14px; height:14px; opacity:0.5; }
-  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
-  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
-  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
-  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
-  .ph-hero{ aspect-ratio:16/8; margin-top:0; background:#FFFFFF; border:none; }
-  .ph-hero img{ width:100%; height:100%; object-fit:contain; object-position:center; display:block; }
+    --sh-soft: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --sh-elevated: 0 4px 12px rgba(0, 0, 0, 0.08);
 
-  /* section shell */
-  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
-  .cs-section:last-of-type{ border-bottom:none; }
-  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
-  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:24ch; }
-  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; margin-bottom:36px; }
+    --content: 660px;
+    --wide: 1120px;
 
-  /* findings */
-  .finding-block{ margin-top:40px; }
-  .finding-block:first-of-type{ margin-top:0; }
-  .finding-block h3{ font-size:18px; font-weight:600; margin-bottom:10px; }
-  .finding-block p{ font-size:14.5px; line-height:1.75; color:var(--ink-soft); max-width:70ch; }
-
-  /* callout */
-  .callout{ background:var(--signal-soft); border:1px dashed var(--signal); padding:22px 26px; border-radius:3px; margin-top:28px; }
-  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
-  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
-
-  /* video embed */
-  .video-embed{ position:relative; width:100%; aspect-ratio:16/9; margin-top:28px; background:#000; border-radius:6px; overflow:hidden; box-shadow:0 20px 40px -20px rgba(21,23,26,0.35); }
-  .video-embed iframe{ position:absolute; top:0; left:0; width:100%; height:100%; border:0; display:block; }
-
-  /* single figure image */
-  .figure-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:60ch; margin-top:20px; margin-bottom:16px; font-style:italic; }
-  .figure-img{ max-width:360px; }
-  .figure-img-lg{ max-width:460px; }
-  .figure-img-xl{ max-width:640px; }
-  .figure-img-2xl{ max-width:900px; }
-  .figure-img img{ width:100%; display:block; border-radius:6px; }
-
-  /* render grid */
-  .render-grid{ display:grid; gap:24px; margin-top:28px; }
-  .render-grid.cols-1{ grid-template-columns:1fr; }
-  .render-grid.cols-2{ grid-template-columns:1fr 1fr; }
-  .render-grid.cols-3{ grid-template-columns:repeat(3,1fr); }
-  .render-grid img{ width:100%; display:block; border-radius:10px; background:var(--paper-dim); }
-  .render-grid-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:14px; }
-  .render-grid-caption strong{ color:var(--ink); font-family:'Inter',sans-serif; font-weight:600; }
-  @media (max-width:700px){
-    .render-grid.cols-2,.render-grid.cols-3{ grid-template-columns:1fr; max-width:400px; margin-left:auto; margin-right:auto; }
-    .cs-meta{ flex-wrap:wrap; gap:24px; overflow-x:visible; }
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-product: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
   }
 
-  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
-  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; text-wrap:pretty; }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; overflow-x: clip; scroll-behavior: smooth; }
+  [id] { scroll-margin-top: 84px; }
 
-  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
-  .next-project{ font-size:13px; color:var(--ink-soft); }
-  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Inter',sans-serif; margin-top:6px; }
-  .next-project:hover strong{ color:var(--signal); }
-
-  footer.site-footer{
-    background:#101010;
-    border-top:1px solid var(--line);
-    padding:24px 6vw;
-    display:flex; justify-content:space-between;
-    font-size:11px; color:#A1A1AA;
+  body {
+    margin: 0;
+    background: var(--canvas);
+    color: var(--body-c);
+    font-family: var(--font);
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
   }
 
-  /* Reduced-motion safety net: any inline transition set by the reveal
-     script below collapses to an instant, non-animated state change. */
-  @media (prefers-reduced-motion: reduce){
-    * { transition-duration: 0.01ms !important; }
+  ::selection { background: var(--accent); color: #fff; }
+
+  img, video { max-width: 100%; display: block; }
+  a { color: var(--accent); }
+  button { font-family: inherit; }
+
+  .wrap { max-width: var(--wide); margin: 0 auto; padding: 0 var(--sp-xl); }
+  .prose { max-width: var(--content); margin: 0 auto; padding: 0 var(--sp-xl); }
+
+  @media (max-width: 620px) {
+    .wrap, .prose { padding: 0 var(--sp-lg); }
   }
 
-  /* section table of contents — built and populated by script at the
-     bottom of the page, wraps around the existing .cs-section stack */
-  .cs-layout{ display:flex; align-items:flex-start; gap:48px; }
-  .cs-content{ flex:1; min-width:0; }
-  .cs-toc{
-    display:none;
-    position:fixed;
-    top:96px;
-    width:200px;
-    max-height:calc(100vh - 120px);
-    overflow-y:auto;
+  h1, h2, h3, h4 { font-family: var(--font); font-weight: 600; margin: 0; text-wrap: balance; color: var(--ink); }
+
+  .eyebrow { font-weight: 700; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
+  .kicker-row { display: flex; align-items: baseline; gap: var(--sp-sm); margin-bottom: var(--sp-md); }
+
+  p { margin: 0 0 1.15em; color: var(--body-c); }
+  p:last-child { margin-bottom: 0; }
+
+  /* ---------- top nav ---------- */
+  .topnav {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--hairline);
+    height: 64px;
   }
-  .cs-toc ul{ list-style:none; border-left:1px solid var(--line); }
-  .cs-toc a{
-    display:block;
-    padding:9px 0 9px 18px;
-    margin-left:-1px;
-    border-left:2px solid transparent;
-    font-size:12px;
-    line-height:1.4;
-    color:var(--ink-soft);
-    text-decoration:none;
-    transition:color .15s, border-color .15s;
+  .topnav-inner {
+    max-width: var(--wide); margin: 0 auto; padding: 0 var(--sp-xl) 0 118px;
+    height: 100%; display: flex; align-items: center; justify-content: space-between;
   }
-  .cs-toc a:hover{ color:var(--ink); }
-  .cs-toc a.is-active{ color:var(--signal); border-left-color:var(--signal); font-weight:600; }
-  .cs-toc-num{ display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.05em; opacity:0.75; margin-bottom:3px; }
-  .cs-toc-label{ display:block; }
+  .wordmark { font-weight: 700; font-size: 15px; color: var(--ink); letter-spacing: -0.01em; }
+  .wordmark span { font-weight: 500; color: var(--muted); margin-left: 6px; }
+  .nav-pill-group { display: flex; gap: 2px; padding: 6px; border-radius: var(--r-pill); background: var(--surface-soft); }
+  .pill-seg {
+    appearance: none; border: none; background: transparent;
+    padding: 8px 15px; border-radius: var(--r-pill);
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    cursor: pointer; transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+  }
+  .pill-seg[aria-current="true"] { background: var(--canvas); color: var(--ink); box-shadow: var(--sh-soft); }
+  .back-btn {
+    position: fixed; top: 22px; left: 14px; z-index: 50;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    text-decoration: none; white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+  .back-btn:hover { color: var(--muted); }
+  @media (max-width: 560px) {
+    .wordmark span { display: none; }
+    .nav-pill-group { display: none; }
+    .topnav-inner { padding: 0 var(--sp-lg) 0 54px; }
+    .pill-seg { padding: 8px 10px; font-size: 12px; }
+    .back-btn .label { display: none; }
+    .back-btn { top: 20px; left: 10px; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero { padding: var(--sp-section) 0 var(--sp-xxl); background: var(--canvas); }
+  .hero h1 {
+    font-size: clamp(2.4rem, 3vw + 1.2rem, 4rem);
+    line-height: 1.06; letter-spacing: -0.02em; max-width: 24ch;
+  }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: clamp(1.9rem, 9vw, 3rem); }
+  }
+  .hero .sub { margin-top: var(--sp-lg); max-width: none; font-size: 1.1rem; line-height: 1.6; color: var(--body-c); text-align: left; }
+  .meta-strip {
+    margin-top: var(--sp-lg);
+    display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    background: var(--surface-soft); border-radius: var(--r-pill);
+    padding: 10px 20px;
+    font-size: 12.5px; font-weight: 500; color: var(--muted);
+  }
+  .meta-strip .dot { color: var(--muted-soft); }
+  .badge-pill {
+    font-size: 12.5px; font-weight: 500; color: var(--ink);
+    background: var(--surface-card); padding: 5px 13px; border-radius: var(--r-pill);
+  }
+
+  .hero-shot { margin-top: var(--sp-xxl); display: flex; justify-content: center; }
+  .hero-shot figure {
+    margin: 0; width: 100%;
+    border-radius: var(--r-xl); overflow: hidden;
+    border: 1px solid var(--hairline);
+    box-shadow: var(--sh-elevated);
+    background: var(--surface-card);
+  }
+  .hero-shot img { width: 100%; display: block; }
+
+  /* ---------- section shell ---------- */
+  section.block { padding: var(--sp-section) 0; background: var(--canvas); }
+  section.block[data-band="soft"] { background: var(--surface-soft); }
+  .block h2 { font-size: clamp(1.6rem, 1.3vw + 1.2rem, 2.2rem); line-height: 1.16; letter-spacing: -0.015em; }
+  .block .lede-lg { margin-top: var(--sp-md); font-size: 1.05rem; line-height: 1.65; color: var(--body-c); max-width: 60ch; }
+  .section-copy { display: flex; flex-direction: column; gap: var(--sp-lg); margin-top: var(--sp-xl); }
+  .section-copy p { font-size: 1rem; line-height: 1.72; max-width: 62ch; }
+
+  /* ---------- callout: whitespace-card treatment ---------- */
+  .whitespace-card { padding: var(--sp-lg); border-radius: var(--r-lg); background: rgba(210,73,30,0.05); border: 1px solid rgba(210,73,30,0.25); max-width: 62ch; }
+  .whitespace-card .badge { display: inline-block; font-size: 9.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); background: rgba(210,73,30,0.14); padding: 3px 8px; border-radius: 5px; margin-bottom: 10px; }
+  .whitespace-card p { font-size: 13.5px; line-height: 1.6; color: var(--body-c); margin: 0; }
+  .whitespace-card p.italic { font-style: italic; }
+
+  /* ---------- bullet list ---------- */
+  .bullet-list { list-style: none; margin: var(--sp-lg) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-sm); max-width: 62ch; }
+  .bullet-list li { position: relative; padding-left: 22px; font-size: 1rem; line-height: 1.6; color: var(--body-c); }
+  .bullet-list li::before { content: ""; position: absolute; left: 2px; top: 0.55em; width: 6px; height: 6px; border-radius: 50%; background: var(--ink); }
+  .bullet-list.tight li { font-size: 13.5px; }
+
+  /* ---------- compare cards ---------- */
+  .compare-lead { font-size: 15px; font-weight: 600; color: var(--ink); margin-top: var(--sp-xl); }
+  .compare-grid { margin-top: var(--sp-md); display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-lg); }
+  @media (max-width: 700px) { .compare-grid { grid-template-columns: 1fr; max-width: 380px; margin-left: auto; margin-right: auto; } }
+  .compare-card { padding: var(--sp-lg); border-radius: var(--r-lg); background: var(--canvas); border: 1px solid var(--hairline); box-shadow: var(--sh-soft); }
+  .compare-card .icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: var(--sp-md); }
+  .compare-card.not .icon { background: rgba(239, 68, 68, 0.1); }
+  .compare-card.yes .icon { background: rgba(16, 185, 129, 0.1); }
+  .compare-card h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin: 0 0 8px; }
+  .compare-card p { font-size: 0.94rem; line-height: 1.6; color: var(--body-c); margin: 0; }
+  .compare-card .bullet-list { margin-top: var(--sp-sm); max-width: none; }
+  .compare-card .bullet-list li { font-size: 13px; }
+
+  /* ---------- flow diagram ---------- */
+  .flow-diagram { margin-top: var(--sp-lg); display: flex; align-items: stretch; gap: var(--sp-sm); }
+  .flow-step { flex: 1; min-width: 0; padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-lg); background: var(--surface-card); text-align: center; display: flex; flex-direction: column; justify-content: center; }
+  .flow-step .t { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .flow-step .s { margin-top: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .flow-arrow { display: flex; align-items: center; justify-content: center; color: var(--muted-soft); flex: 0 0 auto; }
+  .flow-arrow svg { width: 18px; height: 18px; }
+  @media (max-width: 700px) { .flow-diagram { flex-direction: column; } .flow-arrow svg { transform: rotate(90deg); } }
+
+  /* ---------- media frames (page-specific) ---------- */
+  .shot-frame { background: #000; border: 1px solid var(--hairline); border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--sh-elevated); }
+  .shot-frame img, .shot-frame video { width: 100%; display: block; border-radius: inherit; }
+  .shot-frame-light { background: var(--surface-card); border: 1px solid var(--hairline); border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--sh-elevated); }
+  .shot-frame-light img, .shot-frame-light video { width: 100%; display: block; }
+  .video-solo { max-width: 300px; margin-top: var(--sp-lg); }
+
+  .media-grid { display: grid; gap: var(--sp-lg); margin-top: var(--sp-xl); }
+  .media-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  @media (max-width: 700px) { .media-grid.cols-2 { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; } }
+  .media-caption { font-size: 12px; color: var(--muted); margin-top: var(--sp-sm); line-height: 1.6; font-style: italic; }
+
+  .video-embed { position: relative; width: 100%; aspect-ratio: 16/9; margin-top: var(--sp-xl); background: #000; border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--sh-elevated); border: 1px solid var(--hairline); }
+  .video-embed iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; display: block; }
+
+  .iteration-block { margin-top: var(--sp-xxl); }
+  .iteration-block:first-of-type { margin-top: 0; }
+  .iteration-tag { margin-top: var(--sp-sm); }
+
+  /* ---------- outcome ---------- */
+  .outcome-box { display: flex; flex-direction: column; gap: var(--sp-lg); }
+  .outcome-box p { font-size: 1rem; line-height: 1.75; color: var(--body-c); max-width: 64ch; }
+
+  /* ---------- footer (the only dark surface, per design.md) ---------- */
+  footer.site-footer { padding: 64px 0 88px; background: var(--surface-dark); text-align: center; }
+  footer.site-footer .eyebrow { display: block; margin-bottom: var(--sp-md); color: var(--on-dark-soft); }
+  footer.site-footer h2 { font-size: clamp(1.5rem, 1.5vw + 1.1rem, 2rem); max-width: 26ch; margin: 0 auto; color: var(--on-dark); letter-spacing: -0.015em; }
+  footer.site-footer p { margin-top: var(--sp-md); color: var(--on-dark-soft); max-width: 44ch; margin-left: auto; margin-right: auto; }
+  footer.site-footer .footer-links { margin-top: var(--sp-lg); display: flex; gap: var(--sp-lg); justify-content: center; }
+  footer.site-footer .footer-links a { font-size: 13px; font-weight: 600; color: var(--on-dark-soft); text-decoration: none; }
+  footer.site-footer .footer-links a:hover { color: var(--on-dark); }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="nav-inner">
-    <a href="index.html" class="back-link mono">← Back to work</a>
-    <div class="logo mono">DAVID NG<span>.</span></div>
+<a class="back-btn" href="index.html">
+  <span aria-hidden="true">←</span><span class="label">Back</span>
+</a>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="wordmark">DUO <span>· case study</span></div>
+    <div class="nav-pill-group" id="pillnav">
+      <button class="pill-seg" data-goto="overview-part" aria-current="false" type="button">Overview</button>
+      <button class="pill-seg" data-goto="concept-part" aria-current="false" type="button">Concept</button>
+      <button class="pill-seg" data-goto="final-part" aria-current="false" type="button">Final Design</button>
+      <button class="pill-seg" data-goto="outcome-part" aria-current="false" type="button">Outcome</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>DUO: One Set of Headphones, Two Ways to Listen</h1>
+    <p class="sub">DUO is a pair of headphones that mounts directly onto a speaker, turning two separate products into one system built for both solo and group listening.</p>
+    <div class="meta-strip">
+      <span>2021</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>Industrial Designer</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>KeyShot, Rhino, Photoshop, Premiere Pro</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>10 weeks</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>Last revised 2021</span>
+    </div>
+    <div class="hero-shot">
+      <figure>
+        <img src="duo/duohero.png" alt="DUO headphones mounted onto its speaker, viewed head on against a white background">
+      </figure>
+    </div>
   </div>
 </header>
 
-<main>
+<main id="overview-part">
+  <section class="block" id="overview">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Overview</span></div>
+      <h2 class="reveal">From two products to one system</h2>
+      <p class="lede-lg reveal">DUO takes the two most common ways people listen to music, alone through headphones and together through a speaker, and builds them into a single product. The headphones mount directly onto the speaker body, drawing power and control from it, and detach just as easily for private listening.</p>
 
-  <section class="cs-hero">
-    <div class="cs-eyebrow mono"><span>●</span> Industrial Design</div>
-    <h1>DUO: One Set of Headphones, Two Ways to Listen</h1>
-    <p>DUO is a pair of headphones that mounts directly onto a speaker, turning two separate
-      products into one system built for both solo and group listening.</p>
-    <div class="cs-meta">
-      <div>YEAR <strong>2021</strong></div>
-      <div>ROLE <strong>Industrial Designer</strong></div>
-      <div>TOOLS <strong>KeyShot, Rhino, Photoshop, Premiere Pro</strong></div>
-      <div>TIMELINE <strong>10 weeks</strong></div>
-      <div class="cs-meta-subtle">LAST REVISED <strong>2021</strong></div>
+      <div class="whitespace-card reveal" style="margin-top: var(--sp-xl);">
+        <span class="badge">The Brief</span>
+        <p class="italic">The global earphones and headphones market size was valued at USD 25.1 billion in 2019 and is expected to grow at a CAGR of 20.3% from 2020 to 2027, driven by rising consumer preference for enhanced audio experience, a growing music industry, and increasing mobile technology and internet penetration, from casual listening to use by audiophiles and sound professionals in the music and entertainment industry.</p>
+      </div>
+
+      <div class="whitespace-card reveal" style="margin-top: var(--sp-lg);">
+        <span class="badge">Design Challenge</span>
+        <p>How might we create a system that allows individuals to listen to music individually or in a social group?</p>
+      </div>
+    </div>
+
+    <div class="wrap">
+      <div class="video-embed reveal">
+        <iframe src="https://player.vimeo.com/video/530058594?title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" title="DUO concept video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+      </div>
     </div>
   </section>
+</main>
 
-  <div class="ph ph-hero">
-    <img src="duo/duohero.png" alt="DUO headphones mounted onto its speaker, viewed head on against a white background">
-  </div>
+<main id="concept-part">
+  <section class="block" data-band="soft" id="concept">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Initial Concept &amp; Form Studies</span></div>
+      <h2 class="reveal">Finding the mechanism before the form</h2>
+      <p class="lede-lg reveal">Early work focused less on how DUO should look and more on how the headphones and speaker should physically and electrically connect, testing several mounting and charging mechanisms before a direction was chosen.</p>
 
-  <!-- 01 OVERVIEW -->
-  <section class="cs-section">
-    <div class="cs-num mono">01 / OVERVIEW</div>
-    <h2>From two products to one system</h2>
-    <p class="lede">DUO takes the two most common ways people listen to music, alone through
-      headphones and together through a speaker, and builds them into a single product. The
-      headphones mount directly onto the speaker body, drawing power and control from it, and
-      detach just as easily for private listening.</p>
-
-    <div class="callout">
-      <div class="label mono">The Brief</div>
-      <p style="font-style:italic;">The global earphones and headphones market size was valued at
-        USD 25.1 billion in 2019 and is expected to grow at a CAGR of 20.3% from 2020 to 2027,
-        driven by rising consumer preference for enhanced audio experience, a growing music
-        industry, and increasing mobile technology and internet penetration, from casual listening
-        to use by audiophiles and sound professionals in the music and entertainment industry.</p>
+      <div class="compare-lead reveal">Form and mechanism sketches</div>
+      <p class="reveal" style="margin-top: var(--sp-sm); max-width: 62ch;">Sketching ran alongside quick 3D studies, exploring how a set of headphones could dock onto a speaker body: where the ear cups would sit, how the headband would clear the speaker, and what would hold the two together.</p>
     </div>
 
-    <div class="callout">
-      <div class="label mono">Design Challenge</div>
-      <p>How might we create a system that allows individuals to listen to music individually or
-        in a social group?</p>
+    <div class="wrap">
+      <div class="shot-frame-light reveal" style="margin-top: var(--sp-xl); max-width: 900px; margin-left: auto; margin-right: auto;">
+        <img src="duo/duo initial concepts/image 129.svg" alt="Sketches and a translucent 3D study exploring early DUO form and mechanism directions, labeled Experimental of forms and mechanism">
+      </div>
     </div>
 
-    <div class="video-embed">
-      <iframe src="https://player.vimeo.com/video/530058594?title=0&amp;byline=0&amp;portrait=0&amp;dnt=1" title="DUO concept video" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+    <div class="prose">
+      <div class="compare-lead reveal">Wireless and contact charging</div>
+      <p class="reveal" style="margin-top: var(--sp-sm); max-width: 62ch;">Several charging approaches were prototyped in parallel: electromagnetic induction, a pogo pin contact connector, and a dedicated charging case. Each aimed to charge the headphones automatically, whether docked onto the speaker or stored away, without a separate cable.</p>
+    </div>
+
+    <div class="wrap">
+      <div class="media-grid cols-2 reveal">
+        <div class="shot-frame-light"><img src="duo/duo initial concepts/image 134.svg" alt="Early DUO concept exploring electromagnetic induction charging between the headphones and speaker"></div>
+        <div class="shot-frame-light"><img src="duo/duo initial concepts/image 131.svg" alt="Early DUO concept exploring a pogo pin contact connector between the headphones and speaker"></div>
+        <div class="shot-frame-light"><img src="duo/duo initial concepts/image 130.svg" alt="Early DUO concept exploring a dedicated charging case, with the headphones' battery charged by a power supply inside the case"></div>
+        <div class="shot-frame-light"><img src="duo/duo initial concepts/image 128.svg" alt="Early DUO concept sketch of the charging case, viewed top down"></div>
+      </div>
     </div>
   </section>
+</main>
 
-  <!-- 02 INITIAL CONCEPT & FORM STUDIES -->
-  <section class="cs-section">
-    <div class="cs-num mono">02 / INITIAL CONCEPT &amp; FORM STUDIES</div>
-    <h2>Finding the mechanism before the form</h2>
-    <p class="lede">Early work focused less on how DUO should look and more on how the headphones
-      and speaker should physically and electrically connect, testing several mounting and
-      charging mechanisms before a direction was chosen.</p>
-
-    <div class="finding-block">
-      <h3>Form and mechanism sketches</h3>
-      <p>Sketching ran alongside quick 3D studies, exploring how a set of headphones could dock
-        onto a speaker body: where the ear cups would sit, how the headband would clear the
-        speaker, and what would hold the two together.</p>
-    </div>
-    <div class="figure-img figure-img-2xl">
-      <img src="duo/duo initial concepts/image 129.svg" alt="Sketches and a translucent 3D study exploring early DUO form and mechanism directions, labeled Experimental of forms and mechanism">
+<main id="final-part">
+  <section class="block" id="final">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Final Design</span></div>
+      <h2 class="reveal">A speaker with headphones built in, or the other way around</h2>
+      <p class="lede-lg reveal">The final design keeps the headphones and speaker as two independent products that happen to share a common attachment point, so the system reads correctly whether it is being used apart or together.</p>
     </div>
 
-    <div class="finding-block">
-      <h3>Wireless and contact charging</h3>
-      <p>Several charging approaches were prototyped in parallel: electromagnetic induction, a
-        pogo pin contact connector, and a dedicated charging case. Each aimed to charge the
-        headphones automatically, whether docked onto the speaker or stored away, without a
-        separate cable.</p>
+    <div class="wrap">
+      <div class="shot-frame-light reveal" style="margin-top: var(--sp-xl); max-width: 900px; margin-left: auto; margin-right: auto;">
+        <img src="duo/image 141.svg" alt="DUO headphones and speaker shown together at an angle, labeled Headphone and Speaker">
+      </div>
+      <p class="media-caption reveal" style="max-width: 62ch; margin-left: auto; margin-right: auto; text-align: center;">Apart, DUO works as a standalone speaker and a standalone pair of headphones. Mounted together, the two become one system.</p>
     </div>
-    <div class="render-grid cols-2">
-      <div><img src="duo/duo initial concepts/image 134.svg" alt="Early DUO concept exploring electromagnetic induction charging between the headphones and speaker"></div>
-      <div><img src="duo/duo initial concepts/image 131.svg" alt="Early DUO concept exploring a pogo pin contact connector between the headphones and speaker"></div>
-      <div><img src="duo/duo initial concepts/image 130.svg" alt="Early DUO concept exploring a dedicated charging case, with the headphones' battery charged by a power supply inside the case"></div>
-      <div><img src="duo/duo initial concepts/image 128.svg" alt="Early DUO concept sketch of the charging case, viewed top down"></div>
+
+    <div class="prose">
+      <div class="compare-lead reveal">Detachable ear cups</div>
+      <p class="reveal" style="margin-top: var(--sp-sm); max-width: 62ch;">The ear cups are detachable, allowing easy replacement over the product's life.</p>
+    </div>
+    <div class="wrap">
+      <div class="shot-frame-light reveal" style="margin-top: var(--sp-lg); max-width: 900px; margin-left: auto; margin-right: auto;">
+        <img src="duo/TT+OG.375.228.png" alt="Close up profile of the DUO ear cup and speaker body, showing the detachable ear cup">
+      </div>
+    </div>
+
+    <div class="prose">
+      <div class="compare-lead reveal">Straightforward assembly</div>
+      <p class="reveal" style="margin-top: var(--sp-sm); max-width: 62ch;">The final assembly is straightforward, breaking down into a small number of parts that fit together directly.</p>
+    </div>
+    <div class="wrap">
+      <div class="shot-frame-light reveal" style="margin-top: var(--sp-lg); max-width: 900px; margin-left: auto; margin-right: auto;">
+        <img src="duo/TT.372.121.png" alt="Exploded view of the DUO speaker, showing the small number of parts that make up the final assembly">
+      </div>
+    </div>
+
+    <div class="prose">
+      <div class="compare-lead reveal">Docking, control, and charging</div>
+      <p class="reveal" style="margin-top: var(--sp-sm); max-width: 62ch;">Attaching the headphones onto the speaker lets the knob on the headphones double as a control for the speaker, adjusting its volume and switching tracks. While attached, the headphones charge from a built in charger inside the speaker.</p>
+    </div>
+    <div class="wrap">
+      <div class="shot-frame-light reveal" style="margin-top: var(--sp-lg); max-width: 900px; margin-left: auto; margin-right: auto;">
+        <img src="duo/image 145.svg" alt="DUO headphones attached to the speaker, close up on the knob used to control speaker volume and charge the headphones">
+      </div>
+    </div>
+
+    <div class="prose">
+      <div class="compare-lead reveal">The hook, at a glance</div>
+      <p class="reveal" style="margin-top: var(--sp-sm); max-width: 62ch;">The hook shaped mount creates a strong visual cue that the knob can be turned, communicating the control before it is ever touched.</p>
+    </div>
+    <div class="wrap">
+      <div class="shot-frame-light reveal" style="margin-top: var(--sp-lg); max-width: 900px; margin-left: auto; margin-right: auto;">
+        <img src="duo/image 142.svg" alt="Close up of the hook shaped mount on the DUO headphones, showing how it visually cues that the knob can be turned">
+      </div>
+    </div>
+
+    <div class="prose">
+      <div class="compare-lead reveal">Compatible with smartphones</div>
+      <p class="reveal" style="margin-top: var(--sp-sm); max-width: 62ch;">DUO pairs directly with a smartphone, shown here through a companion screen that displays the battery levels of both the headphones and the speaker.</p>
+    </div>
+    <div class="wrap">
+      <div class="shot-frame-light reveal" style="margin-top: var(--sp-lg); max-width: 900px; margin-left: auto; margin-right: auto;">
+        <img src="duo/image 146.svg" alt="Smartphone screen showing the DUO companion pairing screen, displaying battery levels for the headphones and speaker">
+      </div>
     </div>
   </section>
+</main>
 
-  <!-- 03 FINAL DESIGN -->
-  <section class="cs-section">
-    <div class="cs-num mono">03 / FINAL DESIGN</div>
-    <h2>A speaker with headphones built in, or the other way around</h2>
-    <p class="lede">The final design keeps the headphones and speaker as two independent products
-      that happen to share a common attachment point, so the system reads correctly whether it is
-      being used apart or together.</p>
-
-    <div class="figure-img figure-img-2xl">
-      <img src="duo/image 141.svg" alt="DUO headphones and speaker shown together at an angle, labeled Headphone and Speaker">
-      <p class="figure-caption">Apart, DUO works as a standalone speaker and a standalone pair of
-        headphones. Mounted together, the two become one system.</p>
-    </div>
-
-    <div class="finding-block">
-      <h3>Detachable ear cups</h3>
-      <p>The ear cups are detachable, allowing easy replacement over the product's life.</p>
-    </div>
-    <div class="figure-img figure-img-2xl">
-      <img src="duo/TT+OG.375.228.png" alt="Close up profile of the DUO ear cup and speaker body, showing the detachable ear cup">
-    </div>
-
-    <div class="finding-block">
-      <h3>Straightforward assembly</h3>
-      <p>The final assembly is straightforward, breaking down into a small number of parts that
-        fit together directly.</p>
-    </div>
-    <div class="figure-img figure-img-2xl">
-      <img src="duo/TT.372.121.png" alt="Exploded view of the DUO speaker, showing the small number of parts that make up the final assembly">
-    </div>
-
-    <div class="finding-block">
-      <h3>Docking, control, and charging</h3>
-      <p>Attaching the headphones onto the speaker lets the knob on the headphones double as a
-        control for the speaker, adjusting its volume and switching tracks. While attached, the
-        headphones charge from a built in charger inside the speaker.</p>
-    </div>
-    <div class="figure-img figure-img-2xl">
-      <img src="duo/image 145.svg" alt="DUO headphones attached to the speaker, close up on the knob used to control speaker volume and charge the headphones">
-    </div>
-
-    <div class="finding-block">
-      <h3>The hook, at a glance</h3>
-      <p>The hook shaped mount creates a strong visual cue that the knob can be turned,
-        communicating the control before it is ever touched.</p>
-    </div>
-    <div class="figure-img figure-img-2xl">
-      <img src="duo/image 142.svg" alt="Close up of the hook shaped mount on the DUO headphones, showing how it visually cues that the knob can be turned">
-    </div>
-
-    <div class="finding-block">
-      <h3>Compatible with smartphones</h3>
-      <p>DUO pairs directly with a smartphone, shown here through a companion screen that
-        displays the battery levels of both the headphones and the speaker.</p>
-    </div>
-    <div class="figure-img figure-img-2xl">
-      <img src="duo/image 146.svg" alt="Smartphone screen showing the DUO companion pairing screen, displaying battery levels for the headphones and speaker">
+<main id="outcome-part">
+  <section class="block" data-band="soft" id="outcome">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Outcome</span></div>
+      <h2 class="reveal">What this project made possible</h2>
+      <div class="outcome-box" style="margin-top: var(--sp-xl);">
+        <p class="reveal">DUO reframes headphones and a speaker as one modular system rather than two separate purchases, letting the same pair of headphones move between private and shared listening by docking onto the speaker rather than switching devices entirely. Working through the mechanism first, from induction and pogo pin charging experiments to the final hook and knob attachment, meant the eventual form followed directly from how the two parts needed to lock, charge, and communicate.</p>
+      </div>
     </div>
   </section>
-
-  <!-- 04 OUTCOME & REFLECTION -->
-  <section class="cs-section">
-    <div class="cs-num mono">04 / OUTCOME &amp; REFLECTION</div>
-    <h2>What this project made possible</h2>
-    <div class="outcome-box">
-      <p>DUO reframes headphones and a speaker as one modular system rather than two separate
-        purchases, letting the same pair of headphones move between private and shared listening
-        by docking onto the speaker rather than switching devices entirely. Working through the
-        mechanism first, from induction and pogo pin charging experiments to the final hook and
-        knob attachment, meant the eventual form followed directly from how the two parts needed
-        to lock, charge, and communicate.</p>
-    </div>
-  </section>
-
-  <div class="cs-footer">
-    <a href="index.html" class="back-link mono">← Back to all work</a>
-    <a href="sk620.html" class="next-project mono">
-      MORE WORK
-      <strong>SK620 &amp; SK700: CPU Air Coolers →</strong>
-    </a>
-  </div>
-
 </main>
 
 <footer class="site-footer">
-  <span class="mono">© 2026 DAVID NG</span>
-  <span class="mono">CASE STUDY · DUO</span>
+  <div class="prose">
+    <span class="eyebrow reveal">More work</span>
+    <h2 class="reveal">SK620 &amp; SK700: CPU Air Coolers</h2>
+    <p class="reveal">A pair of CPU air coolers, each with a digital screen showing live system stats.</p>
+    <div class="footer-links">
+      <a href="index.html">← Back to all work</a>
+      <a href="sk620.html">Next case study →</a>
+    </div>
+  </div>
 </footer>
 
 <script>
-  // reveal helpers — purely inline-style driven so there is never a CSS
-  // state where content is hidden without JS having actually run.
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+(function () {
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function revealNow(el, { y = 22, duration = 700, delay = 0 } = {}){
-    if(!el || reduceMotion) return;
-    el.style.opacity = '0';
-    el.style.transform = `translateY(${y}px)`;
-    requestAnimationFrame(() => {
-      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
-      requestAnimationFrame(() => {
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
+  // ---- scroll reveal ----
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
       });
-    });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
   }
 
-  // Bidirectional scroll reveal: replays every time the element crosses in
-  // or out of view, in either scroll direction.
-  function makeScrollReveal(el, opts = {}){
-    if(!el || reduceMotion || !('IntersectionObserver' in window)) return null;
-    const y = opts.y ?? 26;
-    const duration = opts.duration ?? 700;
-    const delay = opts.delay ?? 0;
+  // ---- nav-pill-group scrollspy ----
+  var pillnav = document.getElementById('pillnav');
+  var pillButtons = pillnav.querySelectorAll('button');
+  var sections = ['overview-part', 'concept-part', 'final-part', 'outcome-part'].map(function (id) { return document.getElementById(id); });
 
-    function hide(){
-      el.style.transition = 'none';
-      el.style.opacity = '0';
-      el.style.transform = `translateY(${y}px)`;
-    }
-    function show(){
-      // force a synchronous style flush so the browser commits the current
-      // (transition:none, opacity:0) state before the transition is
-      // re-enabled and the value changes — relying on requestAnimationFrame
-      // timing alone for this is fragile and can silently skip the fade
-      void el.offsetHeight;
-      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
-      void el.offsetHeight;
-      el.style.opacity = '1';
-      el.style.transform = 'translateY(0)';
-    }
+  pillButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = document.getElementById(btn.getAttribute('data-goto'));
+      if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    });
+  });
 
-    hide();
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) show();
-        else hide();
+  if ('IntersectionObserver' in window) {
+    var spyIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var id = e.target.id;
+          pillButtons.forEach(function (btn) {
+            btn.setAttribute('aria-current', btn.getAttribute('data-goto') === id ? 'true' : 'false');
+          });
+        }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    io.observe(el);
-
-    return { replay(){ hide(); show(); } };
+    }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+    sections.forEach(function (s) { if (s) spyIo.observe(s); });
   }
-
-  // hero entrance: eyebrow, heading, lede, meta row, hero image cascade in
-  revealNow(document.querySelector('.cs-eyebrow'), { y: 16, duration: 700, delay: 0 });
-  revealNow(document.querySelector('.cs-hero h1'), { y: 28, duration: 800, delay: 100 });
-  revealNow(document.querySelector('.cs-hero > p'), { delay: 250 });
-  revealNow(document.querySelector('.cs-meta'), { delay: 380 });
-  revealNow(document.querySelector('.ph-hero'), { y: 24, duration: 800, delay: 480 });
-
-  // scroll-triggered reveals for everything below the fold — replay any
-  // time they're scrolled back into or out of view
-  const REVEAL_SELECTOR = '.cs-section h2, .cs-section .lede, .finding-block, .figure-img, .render-grid, .callout, .outcome-box, .video-embed';
-  document.querySelectorAll(REVEAL_SELECTOR).forEach((el, i) => makeScrollReveal(el, { delay: (i % 2) * 60 }));
-
-  // safety net: whatever happens with the animations above, guarantee every
-  // revealed element is fully visible and interactive after a few seconds,
-  // no matter what.
-  setTimeout(() => {
-    document.querySelectorAll('.cs-eyebrow, .cs-hero h1, .cs-hero > p, .cs-meta, .ph-hero')
-      .forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-      });
-  }, 4000);
-
-  // section table of contents — reads the existing .cs-section stack,
-  // wraps it in a sticky sidebar layout, and highlights the section
-  // currently in view. Fully self-generating: no per-page content to edit.
-  (function(){
-    const main = document.querySelector('main');
-    if(!main) return;
-    const sections = Array.from(main.querySelectorAll(':scope > .cs-section'));
-    if(sections.length < 2) return;
-
-    const entries = sections.map((sec, i) => {
-      const numEl = sec.querySelector('.cs-num');
-      const h2 = sec.querySelector('h2');
-      const id = sec.id || ('toc-section-' + (i + 1));
-      sec.id = id;
-      return {
-        id,
-        num: numEl ? numEl.textContent.trim() : '',
-        label: h2 ? h2.textContent.trim() : ('Section ' + (i + 1)),
-        el: sec,
-      };
-    });
-
-    const layout = document.createElement('div');
-    layout.className = 'cs-layout';
-    const content = document.createElement('div');
-    content.className = 'cs-content';
-
-    sections[0].parentNode.insertBefore(layout, sections[0]);
-    sections.forEach(sec => content.appendChild(sec));
-
-    const nav = document.createElement('nav');
-    nav.className = 'cs-toc';
-    nav.setAttribute('aria-label', 'Section navigation');
-    const list = document.createElement('ul');
-    entries.forEach(entry => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = '#' + entry.id;
-      a.dataset.tocFor = entry.id;
-      const numSpan = document.createElement('span');
-      numSpan.className = 'cs-toc-num';
-      numSpan.textContent = entry.num;
-      a.appendChild(numSpan);
-      a.addEventListener('click', (e) => {
-        e.preventDefault();
-        entry.el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-        history.replaceState(null, '', '#' + entry.id);
-      });
-      li.appendChild(a);
-      list.appendChild(li);
-    });
-    nav.appendChild(list);
-
-    layout.appendChild(nav);
-    layout.appendChild(content);
-
-    // align the sidebar with the hero's meta row (YEAR / ROLE / TOOLS...),
-    // both vertically (once, on load) and horizontally (on load + resize,
-    // since horizontal position doesn't depend on scroll)
-    // align the sidebar vertically with the project title, and pin it to
-    // the far left of the viewport — hiding itself if there's ever not
-    // enough room to avoid overlapping the content
-    const titleRef = document.querySelector('.cs-hero h1');
-    const contentRef = document.querySelector('.cs-hero') || content;
-    const setTocTop = () => {
-      if(titleRef){
-        nav.style.top = Math.max(96, titleRef.getBoundingClientRect().top) + 'px';
-      }
-    };
-    setTocTop();
-    // the hero entrance animation is still settling into place when this
-    // first runs, so re-measure once it's done for pixel-accurate alignment
-    setTimeout(setTocTop, 900);
-    const TOC_LEFT = 24;
-    const updateTocVisibility = () => {
-      const contentLeft = contentRef.getBoundingClientRect().left;
-      if(contentLeft - (TOC_LEFT + 200) < 24){
-        nav.style.display = 'none';
-      } else {
-        nav.style.display = 'block';
-        nav.style.left = TOC_LEFT + 'px';
-      }
-    };
-    updateTocVisibility();
-    window.addEventListener('resize', updateTocVisibility);
-
-    if('IntersectionObserver' in window){
-      const spy = new IntersectionObserver((observed) => {
-        observed.forEach(obsEntry => {
-          const link = nav.querySelector(`a[data-toc-for="${obsEntry.target.id}"]`);
-          if(!link || !obsEntry.isIntersecting) return;
-          nav.querySelectorAll('a').forEach(a => a.classList.remove('is-active'));
-          link.classList.add('is-active');
-        });
-      }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
-      sections.forEach(sec => spy.observe(sec));
-    }
-  })();
+})();
 </script>
 
 </body>

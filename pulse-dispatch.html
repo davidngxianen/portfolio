@@ -5,863 +5,780 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Pulse Dispatch: Web Console Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#FFFFFF;
-    --paper-dim:#F5F5F5;
-    --ink:#111111;
-    --ink-soft:#374151;
-    --line:#E5E7EB;
-    --signal:#D2491E;
-    --signal-soft:#F0DCD2;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  ::selection{background:var(--signal);color:var(--paper);}
-  h1,h2,h3{ font-family:'Inter',sans-serif; font-weight:600; letter-spacing:-0.02em; }
-  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
-  a{ color:inherit; text-decoration:none; }
 
-  header{
-    position:sticky; top:0; z-index:40;
-    background:rgba(253,253,252,0.92);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav-inner{
-    padding:18px 6vw;
-    display:flex; justify-content:space-between; align-items:center;
-  }
-  .back-link{
-    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
-    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
-    transition:color .15s;
-  }
-  .back-link:hover{ color:var(--ink); }
-  .logo{ font-weight:600; font-size:15px; }
-  .logo span{ color:var(--signal); }
+  :root {
+    --canvas: #ffffff;
+    --surface-soft: #f8f9fa;
+    --surface-card: #f5f5f5;
+    --surface-strong: #e5e7eb;
+    --surface-dark: #101010;
+    --hairline: #e5e7eb;
+    --hairline-soft: #f3f4f6;
+    --ink: #111111;
+    --body-c: #374151;
+    --muted: #6b7280;
+    --muted-soft: #898989;
+    --on-primary: #ffffff;
+    --on-dark: #ffffff;
+    --on-dark-soft: #a1a1aa;
+    --primary: #111111;
+    --primary-active: #242424;
+    --accent: #1d4ed8;
+    --danger: #dc2626;
+    --danger-soft: rgba(220, 38, 38, 0.1);
 
-  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
+    --sp-xxs: 4px;
+    --sp-xs: 8px;
+    --sp-sm: 12px;
+    --sp-md: 16px;
+    --sp-lg: 24px;
+    --sp-xl: 32px;
+    --sp-xxl: 48px;
+    --sp-section: 96px;
 
-  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
-  .cs-eyebrow{
-    display:flex; align-items:center; gap:10px;
-    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
-    margin-bottom:22px;
-  }
-  .cs-hero h1{
-    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
-    max-width:20ch; margin-bottom:24px;
-  }
-  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
-  .cs-meta{ display:flex; gap:48px; margin-top:44px; flex-wrap:wrap; }
-  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
-  .cs-meta strong{ display:block; font-family:'Inter',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
-  .cs-meta-note{ font-size:11px; color:var(--ink-soft); margin-top:24px; line-height:1.6; }
-  .cs-meta-subtle{ margin-left:auto; color:var(--ink-soft); }
-  .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
+    --r-xs: 4px;
+    --r-sm: 6px;
+    --r-md: 8px;
+    --r-lg: 12px;
+    --r-xl: 16px;
+    --r-pill: 9999px;
 
-  .ph{
-    background:
-      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
-      var(--paper-dim);
-    border:1px solid var(--line);
-    display:flex; align-items:center; justify-content:center;
-    position:relative; overflow:hidden;
-  }
-  .ph span{ font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.7; padding:20px; }
-  .ph .corner{ position:absolute; width:14px; height:14px; opacity:0.5; }
-  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
-  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
-  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
-  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
+    --sh-soft: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --sh-elevated: 0 4px 12px rgba(0, 0, 0, 0.08);
 
-  .ph-hero{ aspect-ratio:16/8; }
-  .ph-hero img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
-  .ph-square{ aspect-ratio:4/5; }
-  .ph-wide{ aspect-ratio:16/9; }
+    --content: 660px;
+    --wide: 1120px;
 
-  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
-  .cs-section:last-of-type{ border-bottom:none; }
-  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
-  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:22ch; }
-  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:62ch; margin-bottom:36px; }
-  .sub-heading{ font-size:16px; font-weight:600; margin:0 0 14px; }
-
-  .two-col{ display:grid; grid-template-columns:1fr 1fr; gap:32px; }
-  @media (max-width:800px){ .two-col{ grid-template-columns:1fr; } }
-
-  .empathy-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--line); border:1px solid var(--line); margin-top:10px; }
-  @media (max-width:800px){ .empathy-grid{ grid-template-columns:1fr; } }
-  .empathy-card{ background:var(--paper); padding:28px; }
-  .empathy-card .tag{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:12px; }
-  .empathy-card h3{ font-size:18px; font-weight:600; margin-bottom:14px; }
-  .empathy-card ul{ list-style:none; display:flex; flex-direction:column; gap:8px; }
-  .empathy-card li{ font-size:13px; color:var(--ink-soft); line-height:1.5; padding-left:14px; position:relative; }
-  .empathy-card li::before{ content:'—'; position:absolute; left:0; color:var(--line); }
-
-  .callout{
-    background:var(--signal-soft);
-    border:1px dashed var(--signal);
-    padding:22px 26px;
-    border-radius:3px;
-    margin-top:28px;
-  }
-  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
-  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
-  .key-decisions{ list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:4px; }
-  .key-decisions li{ font-size:13.5px; line-height:1.5; color:var(--ink); padding-left:16px; position:relative; }
-  .key-decisions li::before{ content:'—'; position:absolute; left:0; color:var(--signal); }
-
-  /* legacy interface example */
-  .legacy-ui-shot{ margin-top:28px; border:1px solid var(--line); }
-  .legacy-ui-shot img{ width:100%; display:block; }
-  .legacy-ui-caption{ font-size:12px; color:var(--ink-soft); line-height:1.6; padding:16px 18px; border-top:1px solid var(--line); background:var(--paper-dim); }
-
-  /* screenshot / video frame */
-  .shot-frame{ box-shadow:0 20px 40px -12px rgba(21,23,26,0.28), 0 4px 14px rgba(21,23,26,0.12); overflow:hidden; }
-  .shot-frame video{ width:100%; height:auto; display:block; }
-  .shot-frame img{ width:100%; height:auto; display:block; }
-
-  /* intake step walkthrough */
-  .intake-step{ margin-top:48px; padding-top:48px; border-top:1px solid var(--line); }
-  .intake-step:first-of-type{ margin-top:32px; padding-top:0; border-top:none; }
-  .intake-step-head{ display:flex; align-items:baseline; gap:14px; margin-bottom:10px; }
-  .intake-step-num{ font-size:12px; color:var(--signal); flex-shrink:0; }
-  .intake-step-head h3{ font-size:19px; font-weight:600; }
-  .intake-step-desc{ font-size:14px; line-height:1.7; color:var(--ink-soft); max-width:70ch; margin-bottom:20px; }
-  .intake-decision{ margin-top:18px; padding:18px 22px; background:var(--signal-soft); border:1px dashed var(--signal); border-radius:3px; font-size:13.5px; line-height:1.6; color:var(--ink); }
-  .intake-decision-label{ display:block; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:8px; }
-
-  /* interview quote */
-  .quote-card{ border-left:3px solid var(--signal); background:var(--paper-dim); padding:24px 28px; margin-top:28px; }
-  .quote-text{ font-size:16px; line-height:1.7; color:var(--ink); font-style:italic; }
-  .quote-src{ margin-top:14px; font-size:11px; color:var(--ink-soft); font-family:'IBM Plex Mono',monospace; text-transform:uppercase; letter-spacing:0.05em; }
-
-  /* research inputs */
-  .research-inputs{ border:1px solid var(--line); padding:26px; display:flex; flex-direction:column; gap:16px; margin-top:28px; }
-  .ri-item{ display:flex; align-items:baseline; gap:16px; border-bottom:1px solid var(--line); padding-bottom:16px; }
-  .ri-item:last-child{ border-bottom:none; padding-bottom:0; }
-  .ri-item strong{ font-family:'Inter',sans-serif; font-size:16px; color:var(--signal); min-width:96px; flex-shrink:0; }
-  .ri-item span{ font-size:12px; color:var(--ink-soft); line-height:1.5; }
-
-  /* persona card */
-  .persona-card{ margin-top:10px; }
-  .persona-name-primary{ font-family:'Inter',sans-serif; font-size:38px; font-weight:600; letter-spacing:-0.01em; margin-bottom:0; line-height:1.1; }
-  .persona-name-secondary{ font-size:14px; color:var(--ink-soft); margin-bottom:16px; }
-  .persona-role{ font-size:11px; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.05em; margin-bottom:18px; }
-  .persona-quote{ font-size:15px; font-style:italic; color:var(--ink); line-height:1.6; border-left:3px solid var(--signal); padding-left:16px; margin-bottom:26px; }
-  .persona-cols{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
-  @media (max-width:700px){ .persona-cols{ grid-template-columns:1fr; } }
-  .persona-label{ font-size:11px; text-transform:uppercase; letter-spacing:0.07em; color:var(--signal); margin-bottom:10px; }
-  .persona-cols ul{ list-style:none; display:flex; flex-direction:column; gap:8px; }
-  .persona-cols li{ font-size:13px; color:var(--ink-soft); line-height:1.5; padding-left:14px; position:relative; }
-  .persona-cols li::before{ content:'—'; position:absolute; left:0; color:var(--line); }
-
-  /* flow diagram */
-  .stakeholder-diagram{ margin-top:20px; overflow-x:auto; }
-  .stakeholder-diagram svg{ width:100%; min-width:720px; height:auto; display:block; }
-
-  .feature-list{ display:flex; flex-direction:column; gap:0; margin-top:10px; }
-  .feature-row{
-    display:grid; grid-template-columns:1fr 2fr; gap:24px;
-    padding:24px 0; border-top:1px solid var(--line);
-  }
-  .feature-list .feature-row:last-child{ border-bottom:1px solid var(--line); }
-  @media (max-width:700px){ .feature-row{ grid-template-columns:1fr; } }
-  .feature-row .f-title{ font-family:'Inter',sans-serif; font-weight:600; font-size:16px; }
-  .feature-row .f-desc{ font-size:14px; color:var(--ink-soft); line-height:1.6; }
-
-  .stat-row{ display:grid; grid-template-columns:repeat(3,1fr); gap:32px; margin-top:10px; }
-  @media (max-width:800px){ .stat-row{ grid-template-columns:1fr 1fr; } }
-  .stat{ border-top:1px solid var(--line); padding-top:16px; }
-  .stat .num{ font-family:'Inter',sans-serif; font-size:clamp(1.8rem,4vw,3rem); font-weight:600; color:var(--signal); }
-  .stat .lbl{ font-size:12px; color:var(--ink-soft); margin-top:8px; line-height:1.4; }
-
-  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
-  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; }
-
-  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
-  .next-project{ font-size:13px; color:var(--ink-soft); }
-  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Inter',sans-serif; margin-top:6px; }
-  .next-project:hover strong{ color:var(--signal); }
-
-  footer.site-footer{
-    background:#101010;
-    border-top:1px solid var(--line);
-    padding:24px 6vw;
-    display:flex; justify-content:space-between;
-    font-size:11px; color:#A1A1AA;
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-product: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
   }
 
-  @media (prefers-reduced-motion: reduce){
-    * { transition-duration: 0.01ms !important; }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; overflow-x: clip; scroll-behavior: smooth; }
+  [id] { scroll-margin-top: 84px; }
+
+  body {
+    margin: 0;
+    background: var(--canvas);
+    color: var(--body-c);
+    font-family: var(--font);
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
   }
 
-  /* section table of contents — built and populated by script at the
-     bottom of the page, wraps around the existing .cs-section stack */
-  .cs-layout{ display:flex; align-items:flex-start; gap:48px; }
-  .cs-content{ flex:1; min-width:0; }
-  .cs-toc{
-    display:none;
-    position:fixed;
-    top:96px;
-    width:200px;
-    max-height:calc(100vh - 120px);
-    overflow-y:auto;
+  ::selection { background: var(--accent); color: #fff; }
+
+  img, video { max-width: 100%; display: block; }
+  a { color: var(--accent); }
+  button { font-family: inherit; }
+
+  .wrap { max-width: var(--wide); margin: 0 auto; padding: 0 var(--sp-xl); }
+  .prose { max-width: var(--content); margin: 0 auto; padding: 0 var(--sp-xl); }
+
+  @media (max-width: 620px) {
+    .wrap, .prose { padding: 0 var(--sp-lg); }
   }
-  .cs-toc ul{ list-style:none; border-left:1px solid var(--line); }
-  .cs-toc a{
-    display:block;
-    padding:9px 0 9px 18px;
-    margin-left:-1px;
-    border-left:2px solid transparent;
-    font-size:12px;
-    line-height:1.4;
-    color:var(--ink-soft);
-    text-decoration:none;
-    transition:color .15s, border-color .15s;
+
+  h1, h2, h3, h4 { font-family: var(--font); font-weight: 600; margin: 0; text-wrap: balance; color: var(--ink); }
+
+  .eyebrow { font-weight: 700; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
+  .kicker-row { display: flex; align-items: baseline; gap: var(--sp-sm); margin-bottom: var(--sp-md); }
+
+  p { margin: 0 0 1.15em; color: var(--body-c); }
+  p:last-child { margin-bottom: 0; }
+
+  /* ---------- top nav ---------- */
+  .topnav {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--hairline);
+    height: 64px;
   }
-  .cs-toc a:hover{ color:var(--ink); }
-  .cs-toc a.is-active{ color:var(--signal); border-left-color:var(--signal); font-weight:600; }
-  .cs-toc-num{ display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.05em; opacity:0.75; margin-bottom:3px; }
-  .cs-toc-label{ display:block; }
+  .topnav-inner {
+    max-width: var(--wide); margin: 0 auto; padding: 0 var(--sp-xl) 0 118px;
+    height: 100%; display: flex; align-items: center; justify-content: space-between;
+  }
+  .wordmark { font-weight: 700; font-size: 15px; color: var(--ink); letter-spacing: -0.01em; }
+  .wordmark span { font-weight: 500; color: var(--muted); margin-left: 6px; }
+  .nav-pill-group { display: flex; gap: 2px; padding: 6px; border-radius: var(--r-pill); background: var(--surface-soft); }
+  .pill-seg {
+    appearance: none; border: none; background: transparent;
+    padding: 8px 15px; border-radius: var(--r-pill);
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    cursor: pointer; transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+  }
+  .pill-seg[aria-current="true"] { background: var(--canvas); color: var(--ink); box-shadow: var(--sh-soft); }
+  .back-btn {
+    position: fixed; top: 22px; left: 14px; z-index: 50;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    text-decoration: none; white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+  .back-btn:hover { color: var(--muted); }
+  @media (max-width: 560px) {
+    .wordmark span { display: none; }
+    .nav-pill-group { display: none; }
+    .topnav-inner { padding: 0 var(--sp-lg) 0 54px; }
+    .pill-seg { padding: 8px 10px; font-size: 12px; }
+    .back-btn .label { display: none; }
+    .back-btn { top: 20px; left: 10px; }
+  }
+
+  /* ---------- hero ---------- */
+  .hero { padding: var(--sp-section) 0 var(--sp-xxl); background: var(--canvas); }
+  .hero h1 {
+    font-size: clamp(2.4rem, 3vw + 1.2rem, 4rem);
+    line-height: 1.06; letter-spacing: -0.02em; max-width: 24ch;
+  }
+  @media (max-width: 600px) {
+    .hero h1 { font-size: clamp(1.9rem, 9vw, 3rem); }
+  }
+  .hero .sub { margin-top: var(--sp-lg); max-width: none; font-size: 1.1rem; line-height: 1.6; color: var(--body-c); text-align: left; }
+  .meta-strip {
+    margin-top: var(--sp-lg);
+    display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    background: var(--surface-soft); border-radius: var(--r-pill);
+    padding: 10px 20px;
+    font-size: 12.5px; font-weight: 500; color: var(--muted);
+  }
+  .meta-strip .dot { color: var(--muted-soft); }
+  .badge-pill {
+    font-size: 12.5px; font-weight: 500; color: var(--ink);
+    background: var(--surface-card); padding: 5px 13px; border-radius: var(--r-pill);
+  }
+
+  .hero-shot { margin-top: var(--sp-xxl); display: flex; justify-content: center; }
+  .hero-shot figure {
+    margin: 0; width: 100%;
+    border-radius: var(--r-xl); overflow: hidden;
+    border: 1px solid var(--hairline);
+    box-shadow: var(--sh-elevated);
+  }
+  .hero-shot img { width: 100%; display: block; }
+
+  /* ---------- section shell ---------- */
+  section.block { padding: var(--sp-section) 0; background: var(--canvas); }
+  section.block[data-band="soft"] { background: var(--surface-soft); }
+  .block h2 { font-size: clamp(1.6rem, 1.3vw + 1.2rem, 2.2rem); line-height: 1.16; letter-spacing: -0.015em; }
+  .block .lede-lg { margin-top: var(--sp-md); font-size: 1.05rem; line-height: 1.65; color: var(--body-c); max-width: 60ch; }
+  .section-copy { display: flex; flex-direction: column; gap: var(--sp-lg); margin-top: var(--sp-xl); }
+  .section-copy p { font-size: 1rem; line-height: 1.72; max-width: 62ch; }
+
+  /* ---------- callout: whitespace-card treatment ---------- */
+  .whitespace-card { padding: var(--sp-lg); border-radius: var(--r-lg); background: rgba(29,78,216,0.05); border: 1px solid rgba(29,78,216,0.25); max-width: 62ch; }
+  .whitespace-card .badge { display: inline-block; font-size: 9.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); background: rgba(29,78,216,0.14); padding: 3px 8px; border-radius: 5px; margin-bottom: 10px; }
+  .whitespace-card.card-green { background: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.28); }
+  .whitespace-card.card-green .badge { color: #059669; background: rgba(16,185,129,0.16); }
+  .whitespace-card p { font-size: 13.5px; line-height: 1.6; color: var(--body-c); margin: 0; }
+
+  /* ---------- bullet list ---------- */
+  .bullet-list { list-style: none; margin: var(--sp-lg) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-sm); max-width: 62ch; }
+  .bullet-list li { position: relative; padding-left: 22px; font-size: 1rem; line-height: 1.6; color: var(--body-c); }
+  .bullet-list li::before { content: ""; position: absolute; left: 2px; top: 0.55em; width: 6px; height: 6px; border-radius: 50%; background: var(--ink); }
+  .bullet-list.tight li { font-size: 13.5px; }
+
+  /* ---------- compare cards ---------- */
+  .compare-lead { font-size: 15px; font-weight: 600; color: var(--ink); margin-top: var(--sp-xl); }
+  .compare-grid { margin-top: var(--sp-md); display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-lg); }
+  @media (max-width: 700px) { .compare-grid { grid-template-columns: 1fr; max-width: 380px; margin-left: auto; margin-right: auto; } }
+  .compare-card { padding: var(--sp-lg); border-radius: var(--r-lg); background: var(--canvas); border: 1px solid var(--hairline); box-shadow: var(--sh-soft); }
+  .compare-card .icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: var(--sp-md); }
+  .compare-card.not .icon { background: rgba(239, 68, 68, 0.1); }
+  .compare-card.yes .icon { background: rgba(16, 185, 129, 0.1); }
+  .compare-card h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin: 0 0 8px; }
+  .compare-card p { font-size: 0.94rem; line-height: 1.6; color: var(--body-c); margin: 0; }
+  .compare-card .bullet-list { margin-top: var(--sp-sm); max-width: none; }
+  .compare-card .bullet-list li { font-size: 13px; }
+
+  /* ---------- flow diagram ---------- */
+  .flow-diagram { margin-top: var(--sp-lg); display: flex; align-items: stretch; gap: var(--sp-sm); }
+  .flow-step { flex: 1; min-width: 0; padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-lg); background: var(--surface-card); text-align: center; display: flex; flex-direction: column; justify-content: center; }
+  .flow-step .t { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .flow-step .s { margin-top: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .flow-arrow { display: flex; align-items: center; justify-content: center; color: var(--muted-soft); flex: 0 0 auto; }
+  .flow-arrow svg { width: 18px; height: 18px; }
+  @media (max-width: 700px) { .flow-diagram { flex-direction: column; } .flow-arrow svg { transform: rotate(90deg); } }
+
+  /* ---------- research inputs + stat row, same components used on the
+     Pulse (Emergency App) case study ---------- */
+  .research-inputs { border: 1px solid var(--hairline); border-radius: var(--r-lg); padding: 24px; display: flex; flex-direction: column; gap: 16px; justify-content: center; }
+  .ri-item { display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--hairline-soft); padding-bottom: 16px; }
+  .ri-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .ri-item strong { font-size: 22px; font-weight: 700; color: var(--ink); min-width: 44px; flex-shrink: 0; }
+  .ri-item span { font-size: 12px; color: var(--muted); line-height: 1.4; }
+
+  .stat-row { display: grid; grid-template-columns: repeat(3,1fr); gap: var(--sp-xl); margin-top: var(--sp-xl); }
+  @media (max-width: 800px) { .stat-row { grid-template-columns: 1fr 1fr; } }
+  .stat { border-top: 1px solid var(--hairline); padding-top: 16px; }
+  .stat .num { font-size: clamp(1.8rem,4vw,3rem); font-weight: 700; color: var(--ink); }
+  .stat .lbl { font-size: 12px; color: var(--muted); margin-top: 8px; line-height: 1.4; }
+
+  /* ---------- SVG diagrams: same neutral box + one highlighted node style
+     used on the Pulse (Emergency App) case study, scaled to fit narrow
+     screens so they stay fully visible on mobile, no zoom interaction ---------- */
+  .diagram-canvas-wrap {
+    position: relative; margin-top: var(--sp-xl); border-radius: var(--r-lg); border: 1px solid var(--hairline);
+    overflow: hidden; background: var(--surface-soft); padding: var(--sp-lg);
+  }
+  .diagram-canvas { position: relative; transform-origin: top left; }
+
+  /* ---------- media frames (page-specific) ---------- */
+  .shot-frame { background: #000; border: 1px solid var(--hairline); border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--sh-elevated); }
+  .shot-frame img, .shot-frame video { width: 100%; display: block; border-radius: inherit; }
+  .video-solo { max-width: 300px; margin-top: var(--sp-lg); }
+
+  .overview-screens { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-lg); margin-top: var(--sp-xl); }
+  .overview-screens .shot-frame { aspect-ratio: 9/19.5; }
+  .overview-screens .shot-frame img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: inherit; }
+  .overview-caption { font-size: 12px; color: var(--muted); text-align: center; margin-top: var(--sp-sm); }
+  @media (max-width: 700px) { .overview-screens { grid-template-columns: 1fr; max-width: 340px; margin-left: auto; margin-right: auto; } }
+
+  .iteration-block { margin-top: var(--sp-xxl); }
+  .iteration-block:first-of-type { margin-top: var(--sp-xl); }
+  .step-header-row { display: flex; align-items: center; gap: var(--sp-sm); }
+  .step-header-row .compare-lead { margin-top: 0; }
+  .iteration-tag { margin-top: 0; flex-shrink: 0; }
+
+  /* ---------- outcome ---------- */
+  .outcome-box { display: flex; flex-direction: column; gap: var(--sp-lg); }
+  .outcome-box p { font-size: 1rem; line-height: 1.75; color: var(--body-c); max-width: 64ch; }
+
+  /* ---------- footer (the only dark surface, per design.md) ---------- */
+  footer.site-footer { padding: 64px 0 88px; background: var(--surface-dark); text-align: center; }
+  footer.site-footer .eyebrow { display: block; margin-bottom: var(--sp-md); color: var(--on-dark-soft); }
+  footer.site-footer h2 { font-size: clamp(1.5rem, 1.5vw + 1.1rem, 2rem); max-width: 26ch; margin: 0 auto; color: var(--on-dark); letter-spacing: -0.015em; }
+  footer.site-footer p { margin-top: var(--sp-md); color: var(--on-dark-soft); max-width: 44ch; margin-left: auto; margin-right: auto; }
+  footer.site-footer .footer-links { margin-top: var(--sp-lg); display: flex; gap: var(--sp-lg); justify-content: center; }
+  footer.site-footer .footer-links a { font-size: 13px; font-weight: 600; color: var(--on-dark-soft); text-decoration: none; }
+  footer.site-footer .footer-links a:hover { color: var(--on-dark); }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="nav-inner">
-    <a href="index.html" class="back-link mono">← Back to work</a>
-    <div class="logo mono">DAVID NG<span>.</span></div>
+<a class="back-btn" href="index.html">
+  <span aria-hidden="true">←</span><span class="label">Back</span>
+</a>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="wordmark">Pulse Dispatch <span>· case study</span></div>
+    <div class="nav-pill-group" id="pillnav">
+      <button class="pill-seg" data-goto="overview-part" aria-current="false" type="button">Overview</button>
+      <button class="pill-seg" data-goto="research-part" aria-current="false" type="button">Research</button>
+      <button class="pill-seg" data-goto="protocol-part" aria-current="false" type="button">Protocol</button>
+      <button class="pill-seg" data-goto="intake-part" aria-current="false" type="button">Intake</button>
+      <button class="pill-seg" data-goto="coordination-part" aria-current="false" type="button">Coordination</button>
+      <button class="pill-seg" data-goto="outcome-part" aria-current="false" type="button">Outcome</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>Pulse Dispatch: Web Console</h1>
+    <p class="sub">The other half of the Pulse system: a streamlined web interface for emergency dispatch teams, built for high call volume, live AI assisted transcripts, and coordinating nearby volunteer responders in real time.</p>
+    <div class="meta-strip">
+      <span>2021</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>UI/UX Designer</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>Figma, Illustrator</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>10 weeks</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>Web (Desktop)</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>Last revised 2026</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <a href="pulse-app.html" style="font-weight:600;">Companion app: Pulse Mobile →</a>
+    </div>
+    <div class="hero-shot">
+      <figure>
+        <img src="EmergencyNowWeb/hero.png" alt="Pulse Dispatch console showing a task list of active incidents ranked by severity, a live map of Singapore's University Town area, and a unit status sidebar tracking fire, police, and ambulance units">
+      </figure>
+    </div>
   </div>
 </header>
 
-<main>
-
-  <section class="cs-hero">
-    <div class="cs-eyebrow mono"><span>●</span> UI/UX · Web Console Case Study</div>
-    <h1>Pulse Dispatch: Web Console</h1>
-    <p>The other half of the Pulse system: a streamlined web interface for emergency dispatch
-      teams, built for high call volume, live AI assisted transcripts, and coordinating nearby
-      volunteer responders in real time.</p>
-    <div class="cs-meta">
-      <div>YEAR <strong>2021</strong></div>
-      <div>ROLE <strong>UI/UX Designer</strong></div>
-      <div>TOOLS <strong>Figma, Illustrator</strong></div>
-      <div>TIMELINE <strong>10 weeks</strong></div>
-      <div>PLATFORM <strong>Web (Desktop)</strong></div>
-      <div>COMPANION APP <strong><a href="pulse-app.html" style="border-bottom:1px solid var(--ink-soft);">Pulse Mobile →</a></strong></div>
-      <div class="cs-meta-subtle">LAST REVISED <strong>2026</strong></div>
-    </div>
-  </section>
-
-  <div class="ph ph-hero">
-    <img src="EmergencyNowWeb/hero.png" alt="Pulse Dispatch console showing a task list of active incidents ranked by severity, a live map of Singapore's University Town area, and a unit status sidebar tracking fire, police, and ambulance units">
-  </div>
-
-  <!-- 01 OVERVIEW -->
-  <section class="cs-section">
-    <div class="cs-num mono">01 / OVERVIEW</div>
-    <h2>Same incident, dispatcher's point of view</h2>
-    <p class="lede">While a bystander experiences an emergency through the
-      <a href="pulse-app.html" style="border-bottom:1px solid var(--ink-soft);">Pulse app</a>, the
-      same incident lands on a dispatcher's screen as one of many simultaneous calls. This console
-      was designed to give dispatchers clarity and speed under that load.</p>
-    <p class="lede">The core problem it solves is cognitive overload. Where ACES surfaces every task
-      and every unit in one dense, undifferentiated view, Pulse Dispatch filters both by default.
-      Tasks split by workflow stage, units split by division. A dispatcher only ever looks at the
-      slice of information relevant to the decision in front of them, not the entire system at
-      once.</p>
-    <div class="shot-frame">
-      <video autoplay muted loop playsinline preload="auto">
-        <source src="EmergencyNowWeb/IMG_4037.MP4" type="video/mp4">
-        Your browser does not support embedded video. <a href="EmergencyNowWeb/IMG_4037.MP4">Download the clip</a> instead.
-      </video>
+<main id="overview-part">
+  <section class="block" id="overview">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Overview</span></div>
+      <h2 class="reveal">Same incident, dispatcher's point of view</h2>
+      <p class="lede-lg reveal">While a bystander experiences an emergency through the <a href="pulse-app.html">Pulse app</a>, the same incident lands on a dispatcher's screen as one of many simultaneous calls. This console was designed to give dispatchers clarity and speed under that load.</p>
+      <p class="reveal" style="margin-top: var(--sp-md); max-width: 62ch;">The core problem it solves is cognitive overload. Where ACES surfaces every task and every unit in one dense, undifferentiated view, Pulse Dispatch filters both by default. Tasks split by workflow stage, units split by division. A dispatcher only ever looks at the slice of information relevant to the decision in front of them, not the entire system at once.</p>
     </div>
 
-    <div class="callout">
-      <div class="label mono">What the clip shows</div>
-      <ul class="key-decisions">
-        <li>Color is functional, not decorative. Red, orange, and gold mark severity, while a
-          separate red, green, and blue code division (fire, ambulance, police), reused
-          consistently across the task list, map, and unit sidebar.</li>
-        <li>Tasks filter by workflow stage: All, New, In Progress, Completed. A dispatcher jumps
-          straight to what is unhandled.</li>
-        <li>Units filter independently by division: All, Police, Firefighter, Ambulance. Narrowing
-          straight to who is free in the division needed.</li>
-        <li>Selecting one task updates the detail card, the map, and the location pin together,
-          from a single click.</li>
-      </ul>
-    </div>
-  </section>
-
-  <!-- 02 RESEARCH & PERSONA -->
-  <section class="cs-section">
-    <div class="cs-num mono">02 / RESEARCH &amp; PERSONA</div>
-    <h2>One conversation that shaped the whole project</h2>
-    <p class="lede">Research centered on an interview with Ren Jie, a Senior Staff Officer in
-      Singapore's Emergency Medical Services. His account of the ageing ACES system, and what it
-      gets wrong from a UI/UX standpoint, became the direct brief for this project: an upgraded,
-      more intuitive replacement for ACES itself.</p>
-
-    <h3 class="sub-heading">Ren Jie</h3>
-    <div class="persona-card">
-      <div class="persona-details">
-      
-        <div class="persona-name-secondary">The Senior Dispatcher</div>
-        <div class="persona-role mono">Composite persona, based on an interview with Ren Jie, Senior Staff Officer, Emergency Medical Services, Singapore</div>
-        <p class="persona-quote">"It has served us well for the past years, but if you're coming from
-          a UI/UX perspective, it's definitely very poorly designed from an interface perspective."</p>
-        <div class="persona-cols">
-          <div>
-            <div class="persona-label mono">Goals</div>
-            <ul>
-              <li>Verify the caller and location fast, without asking again</li>
-              <li>Record accurate incident details under time pressure</li>
-              <li>Dispatch the right division on the first try</li>
-            </ul>
-          </div>
-          <div>
-            <div class="persona-label mono">Frustrations</div>
-            <ul>
-              <li>Information clutter, too much on screen at once</li>
-              <li>An interface built like engineering software, not for people</li>
-              <li>Tools that do not talk to each other, forcing manual checking across systems</li>
-            </ul>
-          </div>
+    <div class="wrap">
+      <div class="video-solo reveal" style="max-width: 900px; margin: var(--sp-xl) auto 0;">
+        <div class="shot-frame">
+          <video autoplay muted loop playsinline preload="auto" aria-label="Pulse Dispatch console demo: task list filtered by workflow stage, unit sidebar filtered by division, and a live map">
+            <source src="EmergencyNowWeb/IMG_4037.MP4" type="video/mp4">
+            Your browser does not support embedded video. <a href="EmergencyNowWeb/IMG_4037.MP4">Download the clip</a> instead.
+          </video>
         </div>
       </div>
     </div>
 
-    <h3 class="sub-heading" style="margin-top:56px;">The platforms he uses at work</h3>
-    <p class="lede" style="margin-bottom:10px;">Three systems, not one. Only the first is in scope for this redesign.</p>
-    <div class="legacy-ui-shot">
-      <img src="EmergencyNowWeb/uiii 1.png" alt="Example of a dated, cluttered legacy dispatch software interface with dense forms, small toolbar icons, and grey Windows era styling">
-      <p class="legacy-ui-caption">Not a screenshot of ACES itself. Ren Jie was not able to show the
-        actual platform for confidentiality reasons. This is a comparable legacy dispatch interface
-        from elsewhere, included to show, concretely, the kind of engineering solution looking
-        software he was describing.</p>
-    </div>
-
-    <div class="research-inputs">
-      <div class="ri-item"><strong>ACES</strong><span>Advanced C3 Emergency System, the current dispatch platform. Functional, but built with an engineering mindset, not a usability one.</span></div>
-      <div class="ri-item"><strong>PowerPhone</strong><span>SCDF's own medical triaging system, distinct from ProQA, the more widely known industry triage tool.</span></div>
-      <div class="ri-item"><strong>Separate</strong><span>SCDF's video calling capability for the 995 control room, still in progress, is being built as its own standalone system, not integrated into ACES.</span></div>
-    </div>
-
-    <div class="callout">
-      <div class="label mono">What this means for the console</div>
-      <p>Pulse Dispatch is designed as a modern replacement for ACES itself, not another tool
-        layered on top of it. PowerPhone, the medical triage system, and the upcoming video calling
-        tool stay separate. They solve different problems. But the core dispatch platform, the
-        screen a dispatcher lives in for every call, is exactly what this project set out to
-        redesign from the ground up.</p>
-    </div>
-  </section>
-
-  <!-- 03 EMPATHY MAP -->
-  <section class="cs-section">
-    <div class="cs-num mono">03 / EMPATHY MAP</div>
-    <h2>Calm under a flood of information</h2>
-    <p class="lede">Ren Jie's account of ACES lines up almost exactly with what a UX teardown would
-      flag on its own: information clutter, no visual hierarchy, an interface that reads as an
-      engineering artifact rather than something designed for a person under pressure.</p>
-    <div class="empathy-grid">
-      <div class="empathy-card">
-        <div class="tag mono">The Dispatcher</div>
-        <h3>Trained around a flawed tool, not by choice</h3>
-        <ul>
-          <li>Has used ACES for years. Muscle memory compensates for what the interface does not do</li>
-          <li>Describes the current system, in his own words, as "poorly designed from an interface perspective"</li>
-          <li>Juggling ACES, PowerPhone, and soon a separate video tool: three systems, not one</li>
-          <li>Needs to verify, record, and dispatch within seconds, every single call</li>
-        </ul>
-      </div>
-      <div class="empathy-card">
-        <div class="tag mono">The System</div>
-        <h3>What the console must protect against</h3>
-        <ul>
-          <li>Replace ACES's clutter without losing the protocol muscle memory built up over years</li>
-          <li>Surface only what changes the next decision, not everything the system knows</li>
-          <li>Respect protocol muscle memory: verify, then record, then dispatch, in that order, every time</li>
-          <li>Read as built for a person, not as "engineering solution looking"</li>
+    <div class="prose">
+      <div class="whitespace-card reveal" style="margin-top: var(--sp-xl);">
+        <span class="badge">What the clip shows</span>
+        <ul class="bullet-list tight" style="margin-top: var(--sp-sm);">
+          <li>Color is functional, not decorative. Red, orange, and gold mark severity, while a separate red, green, and blue code marks division (fire, ambulance, police), reused consistently across the task list, map, and unit sidebar.</li>
+          <li>Tasks filter by workflow stage: All, New, In Progress, Completed. A dispatcher jumps straight to what is unhandled.</li>
+          <li>Units filter independently by division: All, Police, Firefighter, Ambulance. Narrowing straight to who is free in the division needed.</li>
+          <li>Selecting one task updates the detail card, the map, and the location pin together, from a single click.</li>
         </ul>
       </div>
     </div>
   </section>
+</main>
 
-  <!-- 04 DISPATCH PROTOCOL -->
-  <section class="cs-section">
-    <div class="cs-num mono">04 / DISPATCH PROTOCOL</div>
-    <h2>The three steps that never change</h2>
-    <p class="lede">Whatever the interface looks like, the underlying protocol Ren Jie described stays
-      fixed: answer and verify, record, then dispatch. This console is designed to move through
-      those three steps faster, not to reinvent them.</p>
+<main id="research-part">
+  <section class="block" data-band="soft" id="research">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Research &amp; Persona</span></div>
+      <h2 class="reveal">One conversation that shaped the whole project</h2>
+      <p class="lede-lg reveal">Research centered on an interview with Ren Jie, a Senior Staff Officer in Singapore's Emergency Medical Services. His account of the ageing ACES system, and what it gets wrong from a UI/UX standpoint, became the direct brief for this project: an upgraded, more intuitive replacement for ACES itself.</p>
 
-    <div class="stakeholder-diagram">
-      <svg viewBox="0 0 830 280" role="img" aria-label="Flow diagram: the dispatcher answers and verifies the caller, records incident details, then dispatches the required division, ambulance, firefighter, or police, through the EMS Tiered Response Framework">
-        <defs>
-          <marker id="dp-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-soft)"/>
-          </marker>
-        </defs>
+      <div class="compare-lead reveal">Ren Jie — The Senior Dispatcher</div>
+      <p class="reveal" style="margin-top: var(--sp-xs); font-size: 12.5px; color: var(--muted-soft);">Composite persona, based on an interview with Ren Jie, Senior Staff Officer, Emergency Medical Services, Singapore</p>
+      <p class="reveal" style="margin-top: var(--sp-md); padding-left: var(--sp-md); border-left: 3px solid var(--danger); font-style: italic; max-width: 62ch;">"It has served us well for the past years, but if you're coming from a UI/UX perspective, it's definitely very poorly designed from an interface perspective."</p>
 
-        <line x1="190" y1="92" x2="246" y2="92" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#dp-arrow)"/>
-        <line x1="420" y1="92" x2="476" y2="92" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#dp-arrow)"/>
-
-        <line x1="565" y1="124" x2="445" y2="196" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#dp-arrow)"/>
-        <line x1="565" y1="124" x2="595" y2="196" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#dp-arrow)"/>
-        <line x1="565" y1="124" x2="745" y2="196" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#dp-arrow)"/>
-
-        <g>
-          <rect x="20" y="60" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="105" y="87" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Answer &amp; Verify</text>
-          <text x="105" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Confirms caller &amp; location</text>
-        </g>
-        <g>
-          <rect x="250" y="60" width="170" height="64" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="335" y="87" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Record Incident</text>
-          <text x="335" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Captures details for triage</text>
-        </g>
-        <g>
-          <rect x="480" y="60" width="170" height="64" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
-          <text x="565" y="87" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Dispatch Division</text>
-          <text x="565" y="104" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">EMS Tiered Response Framework</text>
-        </g>
-
-        <g>
-          <rect x="380" y="196" width="130" height="50" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
-          <text x="445" y="226" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="12" fill="var(--ink)">Ambulance</text>
-        </g>
-        <g>
-          <rect x="530" y="196" width="130" height="50" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
-          <text x="595" y="226" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="12" fill="var(--ink)">Firefighter</text>
-        </g>
-        <g>
-          <rect x="680" y="196" width="130" height="50" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
-          <text x="745" y="226" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="12" fill="var(--ink)">Police</text>
-        </g>
-      </svg>
-    </div>
-  </section>
-
-  <!-- 05 KEY DESIGN DECISIONS -->
-  <section class="cs-section">
-    <div class="cs-num mono">05 / KEY DESIGN DECISIONS</div>
-    <h2>Streamlining call intake</h2>
-    <p class="lede">The intake flow follows Ren Jie's own protocol: verify, record, dispatch. It is
-      broken into four screens instead of one long form, with Pulse Dispatch stepping in at step
-      three to suggest a classification before the dispatcher has to guess one.</p>
-
-    <div class="intake-step">
-      <div class="intake-step-head">
-        <div class="intake-step-num mono">STEP 01</div>
-        <h3>Capture the location</h3>
-      </div>
-      <p class="intake-step-desc">The dispatcher starts the report here. GPS tracking pins the
-        caller's location on the map the moment the call connects, so the address form only has to
-        ask for what GPS cannot already infer: unit number and any extra detail the caller gives.</p>
-      <div class="shot-frame"><img src="EmergencyNowWeb/step 1.png" alt="Address tab of the call intake form showing GPS tracked location on the map, street address, unit number, and postal code fields"></div>
-      <div class="intake-decision">
-        <span class="intake-decision-label mono">Design decision</span>
-        GPS auto fill handles the verify half of the protocol without making the dispatcher type or
-        confirm coordinates by hand while a caller is in the middle of a panic. One less thing to
-        get wrong in the first ten seconds.
+      <div class="section-copy">
+        <div>
+          <div class="compare-lead reveal" style="margin-top: 0;">Goals</div>
+          <ul class="bullet-list reveal">
+            <li>Verify the caller and location fast, without asking again</li>
+            <li>Record accurate incident details under time pressure</li>
+            <li>Dispatch the right division on the first try</li>
+          </ul>
+        </div>
+        <div>
+          <div class="compare-lead reveal" style="margin-top: 0;">Frustrations</div>
+          <ul class="bullet-list reveal">
+            <li>Information clutter, too much on screen at once</li>
+            <li>An interface built like engineering software, not for people</li>
+            <li>Tools that do not talk to each other, forcing manual checking across systems</li>
+          </ul>
+        </div>
       </div>
     </div>
 
-    <div class="intake-step">
-      <div class="intake-step-head">
-        <div class="intake-step-num mono">STEP 02</div>
-        <h3>Record what happened</h3>
-      </div>
-      <p class="intake-step-desc">With location locked in, the dispatcher moves to the Information
-        tab and writes down what the caller is describing in a single open field, not a form of
-        dropdowns to pick through during the call.</p>
-      <div class="shot-frame"><img src="EmergencyNowWeb/step 2.png" alt="Information tab of the call intake form showing an open text field for the dispatcher to record what happened"></div>
-      <div class="intake-decision">
-        <span class="intake-decision-label mono">Design decision</span>
-        A free text box instead of structured fields lets the dispatcher write the way they already
-        think, in a sentence, at the caller's pace, rather than translating a live account into a
-        database record in real time.
+    <div class="wrap">
+      <div class="reveal" style="max-width: 900px; margin: var(--sp-xl) auto 0;">
+        <div class="shot-frame">
+          <img src="EmergencyNowWeb/uiii 1.png" alt="Example of a dated, cluttered legacy dispatch software interface with dense forms, small toolbar icons, and grey Windows era styling">
+        </div>
+        <p class="overview-caption">Not a screenshot of ACES itself. Ren Jie was not able to show the actual platform for confidentiality reasons. This is a comparable legacy dispatch interface from elsewhere, included to show, concretely, the kind of engineering solution looking software he was describing.</p>
       </div>
     </div>
 
-    <div class="intake-step">
-      <div class="intake-step-head">
-        <div class="intake-step-num mono">STEP 03</div>
-        <h3>Get a suggested classification</h3>
-      </div>
-      <p class="intake-step-desc">Pulse Dispatch reads the report just written and highlights in
-        advance the most likely incident type, here, Cardiac Arrest, among the full set of
-        categories. The dispatcher is not starting from a blank decision. They are confirming or
-        correcting one already made for them, which is what actually determines who gets dispatched
-        next.</p>
-      <div class="shot-frame"><img src="EmergencyNowWeb/step 3.png" alt="Risk analysis screen showing incident category tiles with Cardiac Arrest already highlighted in green as the suggested classification"></div>
-      <div class="intake-decision">
-        <span class="intake-decision-label mono">Design decision</span>
-        The suggested tile is highlighted in the same green used for Active and Dispatched
-        elsewhere in the console. A suggestion reads as already confirmed, not just another button
-        among nine. One tap accepts it. Tapping a different tile overrules it just as fast.
-      </div>
-    </div>
-
-    <div class="intake-step">
-      <div class="intake-step-head">
-        <div class="intake-step-num mono">STEP 04</div>
-        <h3>Dispatch, then hand off</h3>
-      </div>
-      <p class="intake-step-desc">Once the dispatcher confirms, the selected unit is deployed to the
-        ground and the call itself is transferred to the receiving hospital. The hospital and the
-        responder already on scene can take over the case directly, without the dispatcher relaying
-        details a second time.</p>
-      <div class="shot-frame"><img src="EmergencyNowWeb/step 4.png" alt="Confirmed intake screen showing the call transferred to National University Hospital and the dispatched ambulance unit AA456 marked active and en route"></div>
-      <div class="intake-decision">
-        <span class="intake-decision-label mono">Design decision</span>
-        The Confirm button locks into a greyed Confirmed state to prevent an accidental second
-        submission during the call, while the same call card updates in place to show Call
-        Transferred and the dispatched unit turns green with an Ongoing status in the sidebar.
-        Nothing about the handoff requires the dispatcher to leave the screen they are already on.
-      </div>
-    </div>
-  </section>
-
-  <!-- 06 COORDINATION VIEW -->
-  <section class="cs-section">
-    <div class="cs-num mono">06 / COORDINATION VIEW</div>
-    <h2>Watching help converge in real time</h2>
-    <p class="lede">This is the moment the two products actually meet. Everything happening on a
-      bystander's phone through the <a href="pulse-app.html" style="border-bottom:1px solid var(--ink-soft);">Pulse app</a>
-      becomes a live position on this map inside Pulse Dispatch, watched by the emergency dispatcher
-      in real time, until every party is standing in the same place.</p>
-
-    <div class="stakeholder-diagram">
-      <svg viewBox="0 0 820 470" role="img" aria-label="Diagram showing the immediate responder and secondary responder sending live location from the Pulse app, and the dispatched ambulance sending GPS position, all converging into the Coordination View inside Pulse Dispatch, watched by the emergency dispatcher">
-        <defs>
-          <marker id="cv-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M0,0 L10,5 L0,10 Z" fill="var(--ink-soft)"/>
-          </marker>
-        </defs>
-
-        <line x1="140" y1="100" x2="365" y2="203" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#cv-arrow)"/>
-        <text x="200" y="150" font-family="'IBM Plex Mono',monospace" font-size="10" fill="var(--ink-soft)">live location</text>
-
-        <line x1="680" y1="100" x2="455" y2="203" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#cv-arrow)"/>
-        <text x="565" y="150" text-anchor="end" font-family="'IBM Plex Mono',monospace" font-size="10" fill="var(--ink-soft)">location + AED status</text>
-
-        <line x1="410" y1="370" x2="410" y2="290" stroke="var(--ink-soft)" stroke-width="1.5" marker-end="url(#cv-arrow)"/>
-        <text x="422" y="335" font-family="'IBM Plex Mono',monospace" font-size="10" fill="var(--ink-soft)">live GPS</text>
-
-        <g>
-          <rect x="20" y="30" width="190" height="70" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="115" y="60" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Immediate Responder</text>
-          <text x="115" y="78" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Pulse App · reports &amp; shares location</text>
-        </g>
-        <g>
-          <rect x="610" y="30" width="190" height="70" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="705" y="60" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Secondary Responder</text>
-          <text x="705" y="78" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Pulse App · AED status &amp; location</text>
-        </g>
-        <g>
-          <rect x="315" y="370" width="190" height="70" rx="4" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.2"/>
-          <text x="410" y="400" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Dispatched Unit</text>
-          <text x="410" y="418" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Ambulance · live GPS en route</text>
-        </g>
-        <g>
-          <rect x="315" y="195" width="190" height="90" rx="4" fill="var(--signal-soft)" stroke="var(--signal)" stroke-width="1.2"/>
-          <text x="410" y="230" text-anchor="middle" font-family="'Inter',sans-serif" font-weight="600" font-size="13" fill="var(--ink)">Coordination View</text>
-          <text x="410" y="248" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Pulse Dispatch</text>
-          <text x="410" y="264" text-anchor="middle" font-family="'Inter',sans-serif" font-size="10" fill="var(--ink-soft)">Watched by the Emergency Dispatcher</text>
-        </g>
-      </svg>
-    </div>
-    <p class="lede" style="margin-top:20px; margin-bottom:0;">Four individuals show up on this one map: the immediate responder who reported the
-      incident, the secondary responder converging with an AED, the ambulance crew already
-      dispatched, and the emergency dispatcher watching all three from Pulse Dispatch.</p>
-
-    <div class="callout">
-      <div class="label mono">Design decision</div>
-      <p>The coordination view favors clarity of movement: who is arriving, from where, in how
-        long, over dense geographic detail. It uses the same muted, low color map style as the rest
-        of the console. Incident and unit markers get the only saturated color on screen, because
-        that is the only thing a dispatcher needs to track once units are already en route.</p>
-    </div>
-  </section>
-
-  <!-- 07 USABILITY TESTING -->
-  <section class="cs-section">
-    <div class="cs-num mono">07 / USABILITY TESTING</div>
-    <h2>Testing under heavy call load</h2>
-    <p class="lede">Tested with five classmates over two rounds. One took the dispatcher seat while
-      the others fed scripted calls back to back, mixing severities to recreate real call volume
-      pressure rather than testing one clean incident at a time.</p>
-
-    <div class="research-inputs" style="margin-bottom:36px;">
-      <div class="ri-item"><strong>5</strong><span>Classmates involved: one dispatcher per round, the rest playing callers</span></div>
-      <div class="ri-item"><strong>3</strong><span>Scripted scenarios: a critical structure fire, two overlapping medium severity calls, and five calls inside three minutes</span></div>
-      <div class="ri-item"><strong>2</strong><span>Rounds tested: an early build, then the current version</span></div>
-    </div>
-
-    <div class="stat-row">
-      <div class="stat">
-        <div class="num mono">3.6s</div>
-        <div class="lbl">Avg. time to triage per call, down from 9.2s with the ACES style layout</div>
-      </div>
-      <div class="stat">
-        <div class="num mono">80%</div>
-        <div class="lbl">Fewer missed follow up actions during the five call rapid scenario</div>
-      </div>
-      <div class="stat">
-        <div class="num mono">4.4/5</div>
-        <div class="lbl">Dispatcher confidence rating after the current version</div>
-      </div>
-    </div>
-
-    <div class="callout">
-      <div class="label mono">What got faster</div>
-      <p>Most of the gain came from the second round, after tasks and units both got their own
-        filters. In the first round, the classmate playing dispatcher kept scrolling past the fire
-        to find the two medium severity calls. In the second, the New tab surfaced them
-        immediately, and time to triage dropped by more than half.</p>
-    </div>
-  </section>
-
-  <!-- 08 OUTCOME -->
-  <section class="cs-section">
-    <div class="cs-num mono">08 / OUTCOME &amp; REFLECTION</div>
-    <h2>Closing the loop between app and console</h2>
-    <div class="outcome-box">
-      <h3 class="sub-heading">Summary</h3>
-      <p>Pulse Dispatch and the
-        <a href="pulse-app.html" style="border-bottom:1px solid var(--ink-soft);">Pulse app</a>
-        are not two products that happen to share a name. They are the same system built for two
-        opposite jobs. The immediate and secondary responder need the interface to disappear: one
-        button, one glance, nothing competing for attention. The dispatcher needs the opposite:
-        every live call, every unit, every incident visible at once, because missing one is the
-        real risk. Simplicity on the phone and complexity on the console are not a contradiction.
-        They are the same design decision, applied twice, once for a person who has seconds and
-        once for a person who has calls stacking up behind them. The two meet in real time on the
-        Coordination View, where a bystander's report, a secondary responder's location, and a
-        dispatched unit's GPS position all become one shared picture.</p>
-      <p>Testing with classmates under simulated call volume backed the direction: time to triage
-        per call dropped from 9.2 to 3.6 seconds, missed follow up actions during the busiest
-        scenario fell by 80%, and dispatcher confidence landed at 4.4 out of 5 with the current
-        version.</p>
-
-      <h3 class="sub-heading" style="margin-top:20px;">What Comes Next</h3>
-      <ul class="key-decisions">
-        <li>Training simulations for new dispatchers: a safe queue of practice calls to build
-          muscle memory before a live shift, instead of learning the console during a real
-          incident.</li>
-        <li>Response time analytics: aggregate data across incidents to show which divisions or
-          areas are consistently slower to dispatch, the kind of pattern a single case study
-          cannot surface on its own.</li>
-        <li>Both of these depend on real operational data. Building them properly would mean
-          collaborating directly with an emergency dispatch team, not designing from the outside
-          looking in.</li>
+    <div class="prose">
+      <div class="compare-lead reveal">The platforms he uses at work</div>
+      <p class="reveal" style="margin-top: var(--sp-xs); max-width: 62ch;">Three systems, not one. Only the first is in scope for this redesign.</p>
+      <ul class="bullet-list reveal">
+        <li><strong>ACES</strong> — Advanced C3 Emergency System, the current dispatch platform. Functional, but built with an engineering mindset, not a usability one.</li>
+        <li><strong>PowerPhone</strong> — SCDF's own medical triaging system, distinct from ProQA, the more widely known industry triage tool.</li>
+        <li><strong>Separate</strong> — SCDF's video calling capability for the 995 control room, still in progress, is being built as its own standalone system, not integrated into ACES.</li>
       </ul>
+
+      <div class="whitespace-card reveal" style="margin-top: var(--sp-xl);">
+        <span class="badge">What this means for the console</span>
+        <p>Pulse Dispatch is designed as a modern replacement for ACES itself, not another tool layered on top of it. PowerPhone, the medical triage system, and the upcoming video calling tool stay separate. They solve different problems. But the core dispatch platform, the screen a dispatcher lives in for every call, is exactly what this project set out to redesign from the ground up.</p>
+      </div>
+
+      <div class="compare-lead reveal">Calm under a flood of information</div>
+      <p class="reveal" style="margin-top: var(--sp-sm); max-width: 62ch;">Ren Jie's account of ACES lines up almost exactly with what a UX teardown would flag on its own: information clutter, no visual hierarchy, an interface that reads as an engineering artifact rather than something designed for a person under pressure.</p>
+    </div>
+
+    <div class="wrap">
+      <div class="compare-grid reveal" style="max-width: 800px; margin-left: auto; margin-right: auto;">
+        <div class="compare-card not">
+          <h4>The Dispatcher</h4>
+          <p>Trained around a flawed tool, not by choice</p>
+          <ul class="bullet-list">
+            <li>Has used ACES for years. Muscle memory compensates for what the interface does not do</li>
+            <li>Describes the current system, in his own words, as "poorly designed from an interface perspective"</li>
+            <li>Juggling ACES, PowerPhone, and soon a separate video tool: three systems, not one</li>
+            <li>Needs to verify, record, and dispatch within seconds, every single call</li>
+          </ul>
+        </div>
+        <div class="compare-card yes">
+          <h4>The System</h4>
+          <p>What the console must protect against</p>
+          <ul class="bullet-list">
+            <li>Replace ACES's clutter without losing the protocol muscle memory built up over years</li>
+            <li>Surface only what changes the next decision, not everything the system knows</li>
+            <li>Respect protocol muscle memory: verify, then record, then dispatch, in that order, every time</li>
+            <li>Read as built for a person, not as "engineering solution looking"</li>
+          </ul>
+        </div>
+      </div>
     </div>
   </section>
+</main>
 
-  <div class="cs-footer">
-    <a href="index.html" class="back-link mono">← Back to all work</a>
-    <a href="pulse-app.html" class="next-project mono">
-      COMPANION PROJECT
-      <strong>Pulse · Emergency Response App →</strong>
-    </a>
-  </div>
+<main id="protocol-part">
+  <section class="block" id="protocol">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Dispatch Protocol</span></div>
+      <h2 class="reveal">The three steps that never change</h2>
+      <p class="lede-lg reveal">Whatever the interface looks like, the underlying protocol Ren Jie described stays fixed: answer and verify, record, then dispatch. This console is designed to move through those three steps faster, not to reinvent them.</p>
 
+    </div>
+
+    <div class="wrap">
+      <div class="diagram-canvas-wrap reveal" id="protocolWrap">
+      <div class="diagram-canvas" id="protocolCanvas" style="width: 1000px;">
+        <svg viewBox="0 0 1000 400" width="1000" height="400" role="img" aria-label="Diagram: Answer and Verify leads to Record Incident, which leads to Dispatch Division. Dispatch Division, the EMS Tiered Response Framework, branches into Ambulance, Firefighter, and Police">
+          <defs>
+            <marker id="protocolArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 Z" fill="var(--muted)"/>
+            </marker>
+          </defs>
+
+          <line x1="250" y1="65" x2="303" y2="65" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#protocolArrow)"/>
+          <line x1="530" y1="65" x2="603" y2="65" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#protocolArrow)"/>
+
+          <line x1="695" y1="100" x2="580" y2="280" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#protocolArrow)"/>
+          <line x1="730" y1="100" x2="740" y2="280" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#protocolArrow)"/>
+          <line x1="765" y1="100" x2="905" y2="280" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#protocolArrow)"/>
+
+          <g>
+            <rect x="30" y="30" width="220" height="70" rx="8" fill="var(--canvas)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="140" y="60" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="15" fill="var(--ink)">Answer &amp; Verify</text>
+            <text x="140" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" fill="var(--muted)">Confirms caller &amp; location</text>
+          </g>
+          <g>
+            <rect x="310" y="30" width="220" height="70" rx="8" fill="var(--canvas)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="420" y="60" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="15" fill="var(--ink)">Record Incident</text>
+            <text x="420" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" fill="var(--muted)">Captures details for triage</text>
+          </g>
+          <g>
+            <rect x="610" y="30" width="240" height="70" rx="8" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="1.5"/>
+            <text x="730" y="60" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="15" fill="var(--ink)">Dispatch Division</text>
+            <text x="730" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="11.5" fill="var(--muted)">EMS Tiered Response Framework</text>
+          </g>
+
+          <g>
+            <rect x="500" y="280" width="150" height="70" rx="8" fill="var(--canvas)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="575" y="322" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="15" fill="var(--ink)">Ambulance</text>
+          </g>
+          <g>
+            <rect x="665" y="280" width="150" height="70" rx="8" fill="var(--canvas)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="740" y="322" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="15" fill="var(--ink)">Firefighter</text>
+          </g>
+          <g>
+            <rect x="830" y="280" width="150" height="70" rx="8" fill="var(--canvas)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="905" y="322" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="15" fill="var(--ink)">Police</text>
+          </g>
+        </svg>
+      </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main id="intake-part">
+  <section class="block" data-band="soft" id="intake">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Key Design Decisions</span></div>
+      <h2 class="reveal">Streamlining call intake</h2>
+      <p class="lede-lg reveal">The intake flow follows Ren Jie's own protocol: verify, record, dispatch. It is broken into four screens instead of one long form, with Pulse Dispatch stepping in at step three to suggest a classification before the dispatcher has to guess one.</p>
+    </div>
+
+    <div class="wrap">
+      <div class="iteration-block">
+        <div class="prose">
+          <div class="step-header-row">
+            <span class="badge-pill reveal iteration-tag">Step 01</span>
+            <div class="compare-lead reveal">Capture the location</div>
+          </div>
+          <p class="reveal" style="margin-top: var(--sp-md); max-width: 62ch;">The dispatcher starts the report here. GPS tracking pins the caller's location on the map the moment the call connects, so the address form only has to ask for what GPS cannot already infer: unit number and any extra detail the caller gives.</p>
+        </div>
+        <div class="video-solo reveal" style="max-width: 900px; margin: var(--sp-xl) auto 0;">
+          <div class="shot-frame"><img src="EmergencyNowWeb/step 1.png" alt="Address tab of the call intake form showing GPS tracked location on the map, street address, unit number, and postal code fields"></div>
+        </div>
+        <div class="prose">
+          <div class="whitespace-card reveal" style="margin-top: var(--sp-lg);">
+            <span class="badge">Design decision</span>
+            <p>GPS auto fill handles the verify half of the protocol without making the dispatcher type or confirm coordinates by hand while a caller is in the middle of a panic. One less thing to get wrong in the first ten seconds.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="iteration-block">
+        <div class="prose">
+          <div class="step-header-row">
+            <span class="badge-pill reveal iteration-tag">Step 02</span>
+            <div class="compare-lead reveal">Record what happened</div>
+          </div>
+          <p class="reveal" style="margin-top: var(--sp-md); max-width: 62ch;">With location locked in, the dispatcher moves to the Information tab and writes down what the caller is describing in a single open field, not a form of dropdowns to pick through during the call.</p>
+        </div>
+        <div class="video-solo reveal" style="max-width: 900px; margin: var(--sp-xl) auto 0;">
+          <div class="shot-frame"><img src="EmergencyNowWeb/step 2.png" alt="Information tab of the call intake form showing an open text field for the dispatcher to record what happened"></div>
+        </div>
+        <div class="prose">
+          <div class="whitespace-card reveal" style="margin-top: var(--sp-lg);">
+            <span class="badge">Design decision</span>
+            <p>A free text box instead of structured fields lets the dispatcher write the way they already think, in a sentence, at the caller's pace, rather than translating a live account into a database record in real time.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="iteration-block">
+        <div class="prose">
+          <div class="step-header-row">
+            <span class="badge-pill reveal iteration-tag">Step 03</span>
+            <div class="compare-lead reveal">Get a suggested classification</div>
+          </div>
+          <p class="reveal" style="margin-top: var(--sp-md); max-width: 62ch;">Pulse Dispatch reads the report just written and highlights in advance the most likely incident type, here, Cardiac Arrest, among the full set of categories. The dispatcher is not starting from a blank decision. They are confirming or correcting one already made for them, which is what actually determines who gets dispatched next.</p>
+        </div>
+        <div class="video-solo reveal" style="max-width: 900px; margin: var(--sp-xl) auto 0;">
+          <div class="shot-frame"><img src="EmergencyNowWeb/step 3.png" alt="Risk analysis screen showing incident category tiles with Cardiac Arrest already highlighted in green as the suggested classification"></div>
+        </div>
+        <div class="prose">
+          <div class="whitespace-card reveal" style="margin-top: var(--sp-lg);">
+            <span class="badge">Design decision</span>
+            <p>The suggested tile is highlighted in the same green used for Active and Dispatched elsewhere in the console. A suggestion reads as already confirmed, not just another button among nine. One tap accepts it. Tapping a different tile overrules it just as fast.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="iteration-block">
+        <div class="prose">
+          <div class="step-header-row">
+            <span class="badge-pill reveal iteration-tag">Step 04</span>
+            <div class="compare-lead reveal">Dispatch, then hand off</div>
+          </div>
+          <p class="reveal" style="margin-top: var(--sp-md); max-width: 62ch;">Once the dispatcher confirms, the selected unit is deployed to the ground and the call itself is transferred to the receiving hospital. The hospital and the responder already on scene can take over the case directly, without the dispatcher relaying details a second time.</p>
+        </div>
+        <div class="video-solo reveal" style="max-width: 900px; margin: var(--sp-xl) auto 0;">
+          <div class="shot-frame"><img src="EmergencyNowWeb/step 4.png" alt="Confirmed intake screen showing the call transferred to National University Hospital and the dispatched ambulance unit AA456 marked active and en route"></div>
+        </div>
+        <div class="prose">
+          <div class="whitespace-card reveal" style="margin-top: var(--sp-lg);">
+            <span class="badge">Design decision</span>
+            <p>The Confirm button locks into a greyed Confirmed state to prevent an accidental second submission during the call, while the same call card updates in place to show Call Transferred and the dispatched unit turns green with an Ongoing status in the sidebar. Nothing about the handoff requires the dispatcher to leave the screen they are already on.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main id="coordination-part">
+  <section class="block" id="coordination">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Coordination View</span></div>
+      <h2 class="reveal">Watching help converge in real time</h2>
+      <p class="lede-lg reveal">This is the moment the two products actually meet. Everything happening on a bystander's phone through the <a href="pulse-app.html">Pulse app</a> becomes a live position on this map inside Pulse Dispatch, watched by the emergency dispatcher in real time, until every party is standing in the same place.</p>
+
+      <div class="compare-lead reveal">Who shows up on the map</div>
+      <p class="reveal" style="margin-top: var(--sp-xs); max-width: 62ch;">Four individuals show up on this one map: the immediate responder who reported the incident, the secondary responder converging with an AED, the ambulance crew already dispatched, and the emergency dispatcher watching all three from Pulse Dispatch.</p>
+    </div>
+
+    <div class="wrap">
+      <div class="diagram-canvas-wrap reveal" id="coordinationWrap">
+      <div class="diagram-canvas" id="coordinationCanvas" style="width: 900px;">
+        <svg viewBox="0 0 900 700" width="900" height="700" role="img" aria-label="Diagram: Immediate Responder and Secondary Responder both send live location to the Coordination View in Pulse Dispatch, watched by the emergency dispatcher. Dispatched Unit sends live GPS up to the Coordination View">
+          <defs>
+            <marker id="coordArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 Z" fill="var(--muted)"/>
+            </marker>
+          </defs>
+
+          <line x1="160" y1="110" x2="420" y2="280" stroke="var(--muted)" stroke-width="1.5"/>
+          <text x="330" y="205" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" fill="var(--muted)">live location</text>
+
+          <line x1="740" y1="110" x2="540" y2="280" stroke="var(--muted)" stroke-width="1.5"/>
+          <text x="640" y="205" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" fill="var(--muted)">location + AED status</text>
+
+          <line x1="480" y1="520" x2="480" y2="393" stroke="var(--muted)" stroke-width="1.5" marker-end="url(#coordArrow)"/>
+          <text x="480" y="465" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" fill="var(--muted)">live GPS</text>
+
+          <g>
+            <rect x="20" y="20" width="280" height="90" rx="8" fill="rgba(16,185,129,0.14)" stroke="#059669" stroke-width="1.2"/>
+            <text x="160" y="58" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="16" fill="var(--ink)">Immediate Responder</text>
+            <text x="160" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" fill="var(--muted)">Pulse App &middot; reports &amp; shares location</text>
+          </g>
+          <g>
+            <rect x="600" y="20" width="280" height="90" rx="8" fill="rgba(245,158,11,0.16)" stroke="#b45309" stroke-width="1.2"/>
+            <text x="740" y="58" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="16" fill="var(--ink)">Secondary Responder</text>
+            <text x="740" y="80" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" fill="var(--muted)">Pulse App &middot; AED status &amp; location</text>
+          </g>
+          <g>
+            <rect x="340" y="280" width="280" height="110" rx="8" fill="var(--danger-soft)" stroke="var(--danger)" stroke-width="1.5"/>
+            <text x="480" y="318" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="17" fill="var(--ink)">Coordination View</text>
+            <text x="480" y="342" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" fill="var(--muted)">Pulse Dispatch</text>
+            <text x="480" y="362" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" fill="var(--muted)">Watched by the Emergency Dispatcher</text>
+          </g>
+          <g>
+            <rect x="340" y="520" width="280" height="90" rx="8" fill="var(--canvas)" stroke="var(--ink)" stroke-width="1.2"/>
+            <text x="480" y="558" text-anchor="middle" font-family="Inter,sans-serif" font-weight="700" font-size="16" fill="var(--ink)">Dispatched Unit</text>
+            <text x="480" y="580" text-anchor="middle" font-family="Inter,sans-serif" font-size="12.5" fill="var(--muted)">Ambulance &middot; live GPS en route</text>
+          </g>
+        </svg>
+      </div>
+      </div>
+    </div>
+
+    <div class="prose">
+
+      <div class="whitespace-card reveal" style="margin-top: var(--sp-xl);">
+        <span class="badge">Design decision</span>
+        <p>The coordination view favors clarity of movement: who is arriving, from where, in how long, over dense geographic detail. It uses the same muted, low color map style as the rest of the console. Incident and unit markers get the only saturated color on screen, because that is the only thing a dispatcher needs to track once units are already en route.</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<main id="outcome-part">
+  <section class="block" data-band="soft" id="outcome">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Usability Testing &amp; Outcome</span></div>
+      <h2 class="reveal">Testing under heavy call load, closing the loop</h2>
+      <p class="lede-lg reveal">Tested with five classmates over two rounds. One took the dispatcher seat while the others fed scripted calls back to back, mixing severities to recreate real call volume pressure rather than testing one clean incident at a time.</p>
+
+      <div class="research-inputs reveal" style="margin-top: var(--sp-xl);">
+        <div class="ri-item"><strong>5</strong><span>Classmates involved: one dispatcher per round, the rest playing callers</span></div>
+        <div class="ri-item"><strong>3</strong><span>Scripted scenarios: a critical structure fire, two overlapping medium severity calls, and five calls inside three minutes</span></div>
+        <div class="ri-item"><strong>2</strong><span>Rounds tested: an early build, then the current version</span></div>
+      </div>
+
+      <div class="stat-row reveal">
+        <div class="stat">
+          <div class="num">3.6s</div>
+          <div class="lbl">Avg. time to triage per call, down from 9.2s with the ACES style layout</div>
+        </div>
+        <div class="stat">
+          <div class="num">80%</div>
+          <div class="lbl">Fewer missed follow up actions during the five call rapid scenario</div>
+        </div>
+        <div class="stat">
+          <div class="num">4.4/5</div>
+          <div class="lbl">Dispatcher confidence rating after the current version</div>
+        </div>
+      </div>
+
+      <div class="whitespace-card card-green reveal" style="margin-top: var(--sp-xl);">
+        <span class="badge">What got faster</span>
+        <p>Most of the gain came from the second round, after tasks and units both got their own filters. In the first round, the classmate playing dispatcher kept scrolling past the fire to find the two medium severity calls. In the second, the New tab surfaced them immediately, and time to triage dropped by more than half.</p>
+      </div>
+
+      <div class="outcome-box" style="margin-top: var(--sp-xxl);">
+        <div>
+          <div class="compare-lead reveal" style="margin-top: 0;">Summary</div>
+          <p class="reveal" style="margin-top: var(--sp-sm);">Pulse Dispatch and the <a href="pulse-app.html">Pulse app</a> are not two products that happen to share a name. They are the same system built for two opposite jobs. The immediate and secondary responder need the interface to disappear: one button, one glance, nothing competing for attention. The dispatcher needs the opposite: every live call, every unit, every incident visible at once, because missing one is the real risk. Simplicity on the phone and complexity on the console are not a contradiction. They are the same design decision, applied twice, once for a person who has seconds and once for a person who has calls stacking up behind them. The two meet in real time on the Coordination View, where a bystander's report, a secondary responder's location, and a dispatched unit's GPS position all become one shared picture.</p>
+          <p class="reveal" style="margin-top: var(--sp-md);">Testing with classmates under simulated call volume backed the direction: time to triage per call dropped from 9.2 to 3.6 seconds, missed follow up actions during the busiest scenario fell by 80%, and dispatcher confidence landed at 4.4 out of 5 with the current version.</p>
+        </div>
+        <div>
+          <div class="compare-lead reveal">What Comes Next</div>
+          <ul class="bullet-list reveal">
+            <li>Training simulations for new dispatchers: a safe queue of practice calls to build muscle memory before a live shift, instead of learning the console during a real incident.</li>
+            <li>Response time analytics: aggregate data across incidents to show which divisions or areas are consistently slower to dispatch, the kind of pattern a single case study cannot surface on its own.</li>
+            <li>Both of these depend on real operational data. Building them properly would mean collaborating directly with an emergency dispatch team, not designing from the outside looking in.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="site-footer">
-  <span class="mono">© 2026 DAVID NG</span>
-  <span class="mono">CASE STUDY · PULSE DISPATCH</span>
+  <div class="prose">
+    <span class="eyebrow reveal">More work</span>
+    <h2 class="reveal">Pulse: Emergency Response App</h2>
+    <p class="reveal">The companion mobile app in the Pulse system, built for bystanders and volunteer responders to report an emergency, share live location, and coordinate with dispatch in real time.</p>
+    <div class="footer-links">
+      <a href="index.html">← Back to all work</a>
+      <a href="pulse-app.html">Next case study →</a>
+    </div>
+  </div>
 </footer>
 
 <script>
-  // reveal helpers — purely inline-style driven so there is never a CSS
-  // state where content is hidden without JS having actually run.
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+(function () {
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function revealNow(el, { y = 22, duration = 700, delay = 0 } = {}){
-    if(!el || reduceMotion) return;
-    el.style.opacity = '0';
-    el.style.transform = `translateY(${y}px)`;
-    requestAnimationFrame(() => {
-      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
-      requestAnimationFrame(() => {
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
+  // ---- scroll reveal ----
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
       });
-    });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
   }
 
-  // Bidirectional scroll reveal: replays every time the element crosses in
-  // or out of view, in either scroll direction.
-  function makeScrollReveal(el, opts = {}){
-    if(!el || reduceMotion || !('IntersectionObserver' in window)) return null;
-    const y = opts.y ?? 26;
-    const duration = opts.duration ?? 700;
-    const delay = opts.delay ?? 0;
+  // ---- nav-pill-group scrollspy ----
+  var pillnav = document.getElementById('pillnav');
+  var pillButtons = pillnav.querySelectorAll('button');
+  var sections = ['overview-part', 'research-part', 'protocol-part', 'intake-part', 'coordination-part', 'outcome-part'].map(function (id) { return document.getElementById(id); });
 
-    function hide(){
-      el.style.transition = 'none';
-      el.style.opacity = '0';
-      el.style.transform = `translateY(${y}px)`;
-    }
-    function show(){
-      // force a synchronous style flush so the browser commits the current
-      // (transition:none, opacity:0) state before the transition is
-      // re-enabled and the value changes — relying on requestAnimationFrame
-      // timing alone for this is fragile and can silently skip the fade
-      void el.offsetHeight;
-      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
-      void el.offsetHeight;
-      el.style.opacity = '1';
-      el.style.transform = 'translateY(0)';
-    }
+  pillButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = document.getElementById(btn.getAttribute('data-goto'));
+      if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    });
+  });
 
-    hide();
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) show();
-        else hide();
+  if ('IntersectionObserver' in window) {
+    var spyIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var id = e.target.id;
+          pillButtons.forEach(function (btn) {
+            btn.setAttribute('aria-current', btn.getAttribute('data-goto') === id ? 'true' : 'false');
+          });
+        }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    io.observe(el);
-
-    return { replay(){ hide(); show(); } };
+    }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+    sections.forEach(function (s) { if (s) spyIo.observe(s); });
   }
 
-  // hero entrance: eyebrow, heading, lede, meta row, hero image cascade in
-  revealNow(document.querySelector('.cs-eyebrow'), { y: 16, duration: 700, delay: 0 });
-  revealNow(document.querySelector('.cs-hero h1'), { y: 28, duration: 800, delay: 100 });
-  revealNow(document.querySelector('.cs-hero > p'), { delay: 250 });
-  revealNow(document.querySelector('.cs-meta'), { delay: 380 });
-  revealNow(document.querySelector('.ph-hero'), { y: 24, duration: 800, delay: 480 });
+  // ---- scale-to-fit diagrams: scale the fixed-width SVG diagrams down to
+  // fit narrow screens so they stay fully visible on mobile, no zoom ----
+  function makeScaleRow(wrapId, canvasId) {
+    var wrap = document.getElementById(wrapId);
+    var canvas = document.getElementById(canvasId);
+    if (!wrap || !canvas) return;
 
-  // scroll-triggered reveals for everything below the fold — replay any
-  // time they're scrolled back into or out of view
-  const REVEAL_SELECTOR = '.cs-section h2, .cs-section .lede, .sub-heading, .cs-section > .shot-frame, .persona-card, .legacy-ui-shot, .research-inputs, .callout, .empathy-card, .stakeholder-diagram, .intake-step, .stat-row, .outcome-box';
-  document.querySelectorAll(REVEAL_SELECTOR).forEach((el, i) => makeScrollReveal(el, { delay: (i % 2) * 60 }));
-
-  // safety net: whatever happens with the animations above, guarantee every
-  // revealed element is fully visible and interactive after a few seconds,
-  // no matter what.
-  setTimeout(() => {
-    document.querySelectorAll('.cs-eyebrow, .cs-hero h1, .cs-hero > p, .cs-meta, .ph-hero')
-      .forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-      });
-  }, 4000);
-
-  // section table of contents — reads the existing .cs-section stack,
-  // wraps it in a sticky sidebar layout, and highlights the section
-  // currently in view. Fully self-generating: no per-page content to edit.
-  (function(){
-    const main = document.querySelector('main');
-    if(!main) return;
-    const sections = Array.from(main.querySelectorAll(':scope > .cs-section'));
-    if(sections.length < 2) return;
-
-    const entries = sections.map((sec, i) => {
-      const numEl = sec.querySelector('.cs-num');
-      const h2 = sec.querySelector('h2');
-      const id = sec.id || ('toc-section-' + (i + 1));
-      sec.id = id;
-      return {
-        id,
-        num: numEl ? numEl.textContent.trim() : '',
-        label: h2 ? h2.textContent.trim() : ('Section ' + (i + 1)),
-        el: sec,
-      };
-    });
-
-    const layout = document.createElement('div');
-    layout.className = 'cs-layout';
-    const content = document.createElement('div');
-    content.className = 'cs-content';
-
-    sections[0].parentNode.insertBefore(layout, sections[0]);
-    sections.forEach(sec => content.appendChild(sec));
-
-    const nav = document.createElement('nav');
-    nav.className = 'cs-toc';
-    nav.setAttribute('aria-label', 'Section navigation');
-    const list = document.createElement('ul');
-    entries.forEach(entry => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = '#' + entry.id;
-      a.dataset.tocFor = entry.id;
-      const numSpan = document.createElement('span');
-      numSpan.className = 'cs-toc-num';
-      numSpan.textContent = entry.num;
-      a.appendChild(numSpan);
-      a.addEventListener('click', (e) => {
-        e.preventDefault();
-        entry.el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-        history.replaceState(null, '', '#' + entry.id);
-      });
-      li.appendChild(a);
-      list.appendChild(li);
-    });
-    nav.appendChild(list);
-
-    layout.appendChild(nav);
-    layout.appendChild(content);
-
-    // align the sidebar with the hero's meta row (YEAR / ROLE / TOOLS...),
-    // both vertically (once, on load) and horizontally (on load + resize,
-    // since horizontal position doesn't depend on scroll)
-    // align the sidebar vertically with the project title, and pin it to
-    // the far left of the viewport — hiding itself if there's ever not
-    // enough room to avoid overlapping the content
-    const titleRef = document.querySelector('.cs-hero h1');
-    const contentRef = document.querySelector('.cs-hero') || content;
-    const setTocTop = () => {
-      if(titleRef){
-        nav.style.top = Math.max(96, titleRef.getBoundingClientRect().top) + 'px';
-      }
-    };
-    setTocTop();
-    // the hero entrance animation is still settling into place when this
-    // first runs, so re-measure once it's done for pixel-accurate alignment
-    setTimeout(setTocTop, 900);
-    const TOC_LEFT = 24;
-    const updateTocVisibility = () => {
-      const contentLeft = contentRef.getBoundingClientRect().left;
-      if(contentLeft - (TOC_LEFT + 200) < 24){
-        nav.style.display = 'none';
-      } else {
-        nav.style.display = 'block';
-        nav.style.left = TOC_LEFT + 'px';
-      }
-    };
-    updateTocVisibility();
-    window.addEventListener('resize', updateTocVisibility);
-
-    if('IntersectionObserver' in window){
-      const spy = new IntersectionObserver((observed) => {
-        observed.forEach(obsEntry => {
-          const link = nav.querySelector(`a[data-toc-for="${obsEntry.target.id}"]`);
-          if(!link || !obsEntry.isIntersecting) return;
-          nav.querySelectorAll('a').forEach(a => a.classList.remove('is-active'));
-          link.classList.add('is-active');
-        });
-      }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
-      sections.forEach(sec => spy.observe(sec));
+    function fit() {
+      canvas.style.transform = 'none';
+      var naturalH = canvas.scrollHeight;
+      var avail = wrap.clientWidth;
+      var scale = Math.min(1, avail / canvas.scrollWidth);
+      canvas.style.transform = 'scale(' + scale + ')';
+      wrap.style.height = Math.round(naturalH * scale) + 'px';
     }
-  })();
+    fit();
+    window.addEventListener('resize', fit);
+  }
+  makeScaleRow('protocolWrap', 'protocolCanvas');
+  makeScaleRow('coordinationWrap', 'coordinationCanvas');
+})();
 </script>
 
 </body>

@@ -5,561 +5,521 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SK620 &amp; SK700: CPU Air Coolers Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#FFFFFF;
-    --paper-dim:#F5F5F5;
-    --ink:#111111;
-    --ink-soft:#374151;
-    --line:#E5E7EB;
-    --signal:#D2491E;
-    --signal-soft:#F0DCD2;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  ::selection{background:var(--signal);color:var(--paper);}
-  h1,h2,h3{ font-family:'Inter',sans-serif; font-weight:600; letter-spacing:-0.02em; }
-  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
-  a{ color:inherit; text-decoration:none; }
 
-  header{
-    position:sticky; top:0; z-index:40;
-    background:rgba(253,253,252,0.92);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav-inner{
-    padding:18px 6vw;
-    display:flex; justify-content:space-between; align-items:center;
-  }
-  .back-link{
-    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
-    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
-    transition:color .15s;
-  }
-  .back-link:hover{ color:var(--ink); }
-  .logo{ font-weight:600; font-size:15px; }
-  .logo span{ color:var(--signal); }
+  :root {
+    --canvas: #ffffff;
+    --surface-soft: #f8f9fa;
+    --surface-card: #f5f5f5;
+    --surface-strong: #e5e7eb;
+    --surface-dark: #101010;
+    --hairline: #e5e7eb;
+    --hairline-soft: #f3f4f6;
+    --ink: #111111;
+    --body-c: #374151;
+    --muted: #6b7280;
+    --muted-soft: #898989;
+    --on-primary: #ffffff;
+    --on-dark: #ffffff;
+    --on-dark-soft: #a1a1aa;
+    --primary: #111111;
+    --primary-active: #242424;
+    --accent: #d2491e;
 
-  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
+    --sp-xxs: 4px;
+    --sp-xs: 8px;
+    --sp-sm: 12px;
+    --sp-md: 16px;
+    --sp-lg: 24px;
+    --sp-xl: 32px;
+    --sp-xxl: 48px;
+    --sp-section: 96px;
 
-  /* hero */
-  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
-  .cs-eyebrow{
-    display:flex; align-items:center; gap:10px;
-    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
-    margin-bottom:22px;
-  }
-  .cs-hero h1{
-    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
-    max-width:22ch; margin-bottom:24px;
-  }
-  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:60ch; }
-  .cs-meta{ display:flex; gap:32px; margin-top:44px; flex-wrap:wrap; }
-  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
-  .cs-meta strong{ display:block; font-family:'Inter',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
-  .cs-meta-subtle{ color:var(--ink-soft); }
-  .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
+    --r-xs: 4px;
+    --r-sm: 6px;
+    --r-md: 8px;
+    --r-lg: 12px;
+    --r-xl: 16px;
+    --r-pill: 9999px;
 
-  /* image placeholder / hero */
-  .ph{
-    background:
-      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
-      var(--paper-dim);
-    border:1px solid var(--line);
-    display:flex; align-items:center; justify-content:center;
-    position:relative; overflow:hidden;
-  }
-  .ph span{ font-size:11px; color:var(--ink-soft); text-align:center; line-height:1.7; padding:20px; }
-  .ph .corner{ position:absolute; width:14px; height:14px; opacity:0.5; }
-  .corner.tl{ top:10px; left:10px; border-top:1px solid var(--ink); border-left:1px solid var(--ink); }
-  .corner.tr{ top:10px; right:10px; border-top:1px solid var(--ink); border-right:1px solid var(--ink); }
-  .corner.bl{ bottom:10px; left:10px; border-bottom:1px solid var(--ink); border-left:1px solid var(--ink); }
-  .corner.br{ bottom:10px; right:10px; border-bottom:1px solid var(--ink); border-right:1px solid var(--ink); }
-  .ph-hero{ aspect-ratio:16/9; margin-top:0; background:#0B0B0C; border:none; }
-  .ph-hero img{ width:100%; height:100%; object-fit:contain; object-position:center; display:block; }
+    --sh-soft: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --sh-elevated: 0 4px 12px rgba(0, 0, 0, 0.08);
 
-  /* section shell */
-  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
-  .cs-section:last-of-type{ border-bottom:none; }
-  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
-  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:26ch; }
-  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:66ch; margin-bottom:36px; text-wrap:pretty; }
+    --content: 660px;
+    --wide: 1120px;
 
-  /* findings */
-  .finding-block{ margin-top:40px; }
-  .finding-block:first-of-type{ margin-top:0; }
-  .finding-block h3{ font-size:18px; font-weight:600; margin-bottom:10px; }
-  .finding-block p{ font-size:14.5px; line-height:1.75; color:var(--ink-soft); max-width:70ch; text-wrap:pretty; }
-
-  /* callout */
-  .callout{ background:var(--signal-soft); border:1px dashed var(--signal); padding:22px 26px; border-radius:3px; margin-top:28px; }
-  a.callout{ display:block; cursor:pointer; transition:filter .15s; }
-  a.callout:hover{ filter:brightness(0.97); }
-  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
-  .callout.callout-green{ background:#DCF0E2; border-color:#1E7A42; }
-  .callout.callout-green .label{ color:#1E7A42; }
-  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
-  .callout a{ border-bottom:1px solid var(--ink); }
-
-  /* single figure image */
-  .figure-img{ max-width:360px; margin-top:32px; }
-  .figure-img-lg{ max-width:460px; }
-  .figure-img-xl{ max-width:640px; }
-  .figure-img-2xl{ max-width:900px; }
-  .figure-img-full{ max-width:100%; }
-  .figure-img img{ width:100%; display:block; border-radius:6px; }
-  .figure-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:60ch; margin-top:16px; }
-
-  /* render grid */
-  .render-grid{ display:grid; gap:24px; margin-top:28px; }
-  .render-grid.cols-2{ grid-template-columns:1fr 1fr; }
-  .render-grid.tight{ gap:6px; }
-  .render-grid img{ width:100%; display:block; border-radius:10px; background:var(--paper-dim); }
-  .render-grid-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:14px; }
-  .render-grid-caption strong{ color:var(--ink); font-family:'Inter',sans-serif; font-weight:600; }
-  @media (max-width:700px){
-    .render-grid.cols-2{ grid-template-columns:1fr; max-width:480px; margin-left:auto; margin-right:auto; }
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-product: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
   }
 
-  /* match-height variant: images share a fixed height, width scales with each image's own ratio */
-  .render-grid.match-height{ align-items:center; }
-  .render-grid.match-height > div{ display:flex; align-items:center; justify-content:center; height:320px; }
-  .render-grid.match-height img{ width:auto; max-width:100%; height:100%; object-fit:contain; }
-  .render-grid.match-height.flush-left{ display:flex; }
-  .render-grid.match-height.flush-left > div{ flex:0 0 auto; width:auto; justify-content:flex-start; }
-  .render-grid.match-height.lg > div{ height:420px; }
-  @media (max-width:700px){
-    .render-grid.match-height > div{ height:220px; }
-    .render-grid.match-height.lg > div{ height:260px; }
-    .render-grid.match-height.flush-left{ flex-wrap:wrap; gap:20px; }
-    .render-grid.match-height.flush-left > div{ flex:0 1 auto; max-width:100%; }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; overflow-x: clip; scroll-behavior: smooth; }
+  [id] { scroll-margin-top: 84px; }
+
+  body {
+    margin: 0;
+    background: var(--canvas);
+    color: var(--body-c);
+    font-family: var(--font);
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
   }
 
-  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
-  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; text-wrap:pretty; }
+  ::selection { background: var(--accent); color: #fff; }
 
-  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
-  .next-project{ font-size:13px; color:var(--ink-soft); }
-  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Inter',sans-serif; margin-top:6px; }
-  .next-project:hover strong{ color:var(--signal); }
+  img, video { max-width: 100%; display: block; }
+  a { color: var(--accent); }
+  button { font-family: inherit; }
 
-  footer.site-footer{
-    background:#101010;
-    border-top:1px solid var(--line);
-    padding:24px 6vw;
-    display:flex; justify-content:space-between;
-    font-size:11px; color:#A1A1AA;
+  .wrap { max-width: var(--wide); margin: 0 auto; padding: 0 var(--sp-xl); }
+  .prose { max-width: var(--content); margin: 0 auto; padding: 0 var(--sp-xl); }
+
+  @media (max-width: 620px) {
+    .wrap, .prose { padding: 0 var(--sp-lg); }
   }
 
-  /* Reduced-motion safety net: any inline transition set by the reveal
-     script below collapses to an instant, non-animated state change. */
-  @media (prefers-reduced-motion: reduce){
-    * { transition-duration: 0.01ms !important; }
+  h1, h2, h3, h4 { font-family: var(--font); font-weight: 600; margin: 0; text-wrap: balance; color: var(--ink); }
+
+  .eyebrow { font-weight: 700; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
+  .kicker-row { display: flex; align-items: baseline; gap: var(--sp-sm); margin-bottom: var(--sp-md); }
+
+  p { margin: 0 0 1.15em; color: var(--body-c); }
+  p:last-child { margin-bottom: 0; }
+
+  /* ---------- top nav ---------- */
+  .topnav {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--hairline);
+    height: 64px;
+  }
+  .topnav-inner {
+    max-width: var(--wide); margin: 0 auto; padding: 0 var(--sp-xl) 0 118px;
+    height: 100%; display: flex; align-items: center; justify-content: space-between;
+  }
+  .wordmark { font-weight: 700; font-size: 15px; color: var(--ink); letter-spacing: -0.01em; }
+  .wordmark span { font-weight: 500; color: var(--muted); margin-left: 6px; }
+  .nav-pill-group { display: flex; gap: 2px; padding: 6px; border-radius: var(--r-pill); background: var(--surface-soft); }
+  .pill-seg {
+    appearance: none; border: none; background: transparent;
+    padding: 8px 15px; border-radius: var(--r-pill);
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    cursor: pointer; transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+  }
+  .pill-seg[aria-current="true"] { background: var(--canvas); color: var(--ink); box-shadow: var(--sh-soft); }
+  .back-btn {
+    position: fixed; top: 22px; left: 14px; z-index: 50;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    text-decoration: none; white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+  .back-btn:hover { color: var(--muted); }
+  @media (max-width: 560px) {
+    .wordmark span { display: none; }
+    .nav-pill-group { display: none; }
+    .topnav-inner { padding: 0 var(--sp-lg) 0 54px; }
+    .pill-seg { padding: 8px 10px; font-size: 12px; }
+    .back-btn .label { display: none; }
+    .back-btn { top: 20px; left: 10px; }
   }
 
-  /* section table of contents — built and populated by script at the
-     bottom of the page, wraps around the existing .cs-section stack */
-  .cs-layout{ display:flex; align-items:flex-start; gap:48px; }
-  .cs-content{ flex:1; min-width:0; }
-  .cs-toc{
-    display:none;
-    position:fixed;
-    top:96px;
-    width:200px;
-    max-height:calc(100vh - 120px);
-    overflow-y:auto;
+  /* ---------- hero ---------- */
+  .hero { padding: var(--sp-section) 0 var(--sp-xxl); background: var(--canvas); }
+  .hero h1 {
+    font-size: clamp(2.4rem, 3vw + 1.2rem, 4rem);
+    line-height: 1.06; letter-spacing: -0.02em; max-width: 24ch;
   }
-  .cs-toc ul{ list-style:none; border-left:1px solid var(--line); }
-  .cs-toc a{
-    display:block;
-    padding:9px 0 9px 18px;
-    margin-left:-1px;
-    border-left:2px solid transparent;
-    font-size:12px;
-    line-height:1.4;
-    color:var(--ink-soft);
-    text-decoration:none;
-    transition:color .15s, border-color .15s;
+  @media (max-width: 600px) {
+    .hero h1 { font-size: clamp(1.9rem, 9vw, 3rem); }
   }
-  .cs-toc a:hover{ color:var(--ink); }
-  .cs-toc a.is-active{ color:var(--signal); border-left-color:var(--signal); font-weight:600; }
-  .cs-toc-num{ display:block; font-family:'IBM Plex Mono',monospace; font-size:10px; letter-spacing:0.05em; opacity:0.75; margin-bottom:3px; }
-  .cs-toc-label{ display:block; }
+  .hero .sub { margin-top: var(--sp-lg); max-width: none; font-size: 1.1rem; line-height: 1.6; color: var(--body-c); text-align: left; }
+  .meta-strip {
+    margin-top: var(--sp-lg);
+    display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px;
+    background: var(--surface-soft); border-radius: var(--r-pill);
+    padding: 10px 20px;
+    font-size: 12.5px; font-weight: 500; color: var(--muted);
+  }
+  .meta-strip .dot { color: var(--muted-soft); }
+  .badge-pill {
+    font-size: 12.5px; font-weight: 500; color: var(--ink);
+    background: var(--surface-card); padding: 5px 13px; border-radius: var(--r-pill);
+  }
+
+  .hero-shot { margin-top: var(--sp-xxl); display: flex; justify-content: center; }
+  .hero-shot figure {
+    margin: 0; width: 100%;
+    border-radius: var(--r-xl); overflow: hidden;
+    border: 1px solid var(--hairline);
+    box-shadow: var(--sh-elevated);
+  }
+  .hero-shot img { width: 100%; display: block; }
+
+  /* ---------- section shell ---------- */
+  section.block { padding: var(--sp-section) 0; background: var(--canvas); }
+  section.block[data-band="soft"] { background: var(--surface-soft); }
+  .block h2 { font-size: clamp(1.6rem, 1.3vw + 1.2rem, 2.2rem); line-height: 1.16; letter-spacing: -0.015em; }
+  .block .lede-lg { margin-top: var(--sp-md); font-size: 1.05rem; line-height: 1.65; color: var(--body-c); max-width: 60ch; }
+  .section-copy { display: flex; flex-direction: column; gap: var(--sp-lg); margin-top: var(--sp-xl); }
+  .section-copy p { font-size: 1rem; line-height: 1.72; max-width: 62ch; }
+
+  /* ---------- callout: whitespace-card treatment ---------- */
+  .whitespace-card { padding: var(--sp-lg); border-radius: var(--r-lg); background: rgba(210,73,30,0.05); border: 1px solid rgba(210,73,30,0.25); max-width: 62ch; }
+  .whitespace-card .badge { display: inline-block; font-size: 9.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); background: rgba(210,73,30,0.14); padding: 3px 8px; border-radius: 5px; margin-bottom: 10px; }
+  .whitespace-card p { font-size: 13.5px; line-height: 1.6; color: var(--body-c); margin: 0; }
+  .whitespace-card.green { background: rgba(16,185,129,0.06); border-color: rgba(16,185,129,0.28); }
+  .whitespace-card.green .badge { color: #0e8a5f; background: rgba(16,185,129,0.14); }
+  .whitespace-card a { color: var(--ink); text-decoration: underline; text-underline-offset: 2px; }
+
+  /* ---------- bullet list ---------- */
+  .bullet-list { list-style: none; margin: var(--sp-lg) 0 0; padding: 0; display: flex; flex-direction: column; gap: var(--sp-sm); max-width: 62ch; }
+  .bullet-list li { position: relative; padding-left: 22px; font-size: 1rem; line-height: 1.6; color: var(--body-c); }
+  .bullet-list li::before { content: ""; position: absolute; left: 2px; top: 0.55em; width: 6px; height: 6px; border-radius: 50%; background: var(--ink); }
+  .bullet-list.tight li { font-size: 13.5px; }
+
+  /* ---------- compare cards ---------- */
+  .compare-lead { font-size: 15px; font-weight: 600; color: var(--ink); margin-top: var(--sp-xl); }
+  .compare-grid { margin-top: var(--sp-md); display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-lg); }
+  @media (max-width: 700px) { .compare-grid { grid-template-columns: 1fr; max-width: 380px; margin-left: auto; margin-right: auto; } }
+  .compare-card { padding: var(--sp-lg); border-radius: var(--r-lg); background: var(--canvas); border: 1px solid var(--hairline); box-shadow: var(--sh-soft); }
+  .compare-card .icon { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-bottom: var(--sp-md); }
+  .compare-card.not .icon { background: rgba(239, 68, 68, 0.1); }
+  .compare-card.yes .icon { background: rgba(16, 185, 129, 0.1); }
+  .compare-card h4 { font-size: 15px; font-weight: 600; color: var(--ink); margin: 0 0 8px; }
+  .compare-card p { font-size: 0.94rem; line-height: 1.6; color: var(--body-c); margin: 0; }
+  .compare-card .bullet-list { margin-top: var(--sp-sm); max-width: none; }
+  .compare-card .bullet-list li { font-size: 13px; }
+
+  /* ---------- flow diagram ---------- */
+  .flow-diagram { margin-top: var(--sp-lg); display: flex; align-items: stretch; gap: var(--sp-sm); }
+  .flow-step { flex: 1; min-width: 0; padding: var(--sp-md) var(--sp-lg); border-radius: var(--r-lg); background: var(--surface-card); text-align: center; display: flex; flex-direction: column; justify-content: center; }
+  .flow-step .t { font-size: 14px; font-weight: 600; color: var(--ink); }
+  .flow-step .s { margin-top: 4px; font-size: 11px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+  .flow-arrow { display: flex; align-items: center; justify-content: center; color: var(--muted-soft); flex: 0 0 auto; }
+  .flow-arrow svg { width: 18px; height: 18px; }
+  @media (max-width: 700px) { .flow-diagram { flex-direction: column; } .flow-arrow svg { transform: rotate(90deg); } }
+
+  /* ---------- media frames (page-specific) ---------- */
+  .shot-frame { background: #000; border: 1px solid var(--hairline); border-radius: var(--r-xl); overflow: hidden; box-shadow: var(--sh-elevated); }
+  .shot-frame img, .shot-frame video { width: 100%; display: block; border-radius: inherit; }
+  .shot-frame.light { background: var(--surface-soft); }
+  .shot-frame.pad { padding: var(--sp-lg); }
+  .shot-frame.pad img { border-radius: var(--r-md); }
+  .video-solo { max-width: 300px; margin-top: var(--sp-lg); }
+
+  .overview-screens { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--sp-lg); margin-top: var(--sp-xl); }
+  .overview-screens .shot-frame { aspect-ratio: 9/19.5; }
+  .overview-screens .shot-frame img { width: 100%; height: 100%; object-fit: cover; display: block; border-radius: inherit; }
+  .overview-caption { font-size: 12px; color: var(--muted); text-align: center; margin-top: var(--sp-sm); }
+  @media (max-width: 700px) { .overview-screens { grid-template-columns: 1fr; max-width: 340px; margin-left: auto; margin-right: auto; } }
+
+  /* ---------- render grid (product photography pairs) ---------- */
+  .render-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-lg); margin-top: var(--sp-xl); }
+  .render-grid figure { margin: 0; }
+  .render-caption { font-size: 12px; color: var(--muted); text-align: center; margin-top: var(--sp-sm); }
+  @media (max-width: 700px) { .render-grid { grid-template-columns: 1fr; max-width: 480px; margin-left: auto; margin-right: auto; } }
+
+  .iteration-block { margin-top: var(--sp-xxl); }
+  .iteration-block:first-of-type { margin-top: 0; }
+  .iteration-tag { margin-top: var(--sp-sm); }
+
+  /* ---------- outcome ---------- */
+  .outcome-box { display: flex; flex-direction: column; gap: var(--sp-lg); }
+  .outcome-box p { font-size: 1rem; line-height: 1.75; color: var(--body-c); max-width: 64ch; }
+
+  /* ---------- footer (the only dark surface, per design.md) ---------- */
+  footer.site-footer { padding: 64px 0 88px; background: var(--surface-dark); text-align: center; }
+  footer.site-footer .eyebrow { display: block; margin-bottom: var(--sp-md); color: var(--on-dark-soft); }
+  footer.site-footer h2 { font-size: clamp(1.5rem, 1.5vw + 1.1rem, 2rem); max-width: 26ch; margin: 0 auto; color: var(--on-dark); letter-spacing: -0.015em; }
+  footer.site-footer p { margin-top: var(--sp-md); color: var(--on-dark-soft); max-width: 44ch; margin-left: auto; margin-right: auto; }
+  footer.site-footer .footer-links { margin-top: var(--sp-lg); display: flex; gap: var(--sp-lg); justify-content: center; }
+  footer.site-footer .footer-links a { font-size: 13px; font-weight: 600; color: var(--on-dark-soft); text-decoration: none; }
+  footer.site-footer .footer-links a:hover { color: var(--on-dark); }
+
+  /* ---------- reveal on scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
+  }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="nav-inner">
-    <a href="index.html" class="back-link mono">← Back to work</a>
-    <div class="logo mono">DAVID NG<span>.</span></div>
+<a class="back-btn" href="index.html">
+  <span aria-hidden="true">←</span><span class="label">Back</span>
+</a>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="wordmark">SK620 &amp; SK700 <span>· case study</span></div>
+    <div class="nav-pill-group" id="pillnav">
+      <button class="pill-seg" data-goto="overview-part" aria-current="false" type="button">Overview</button>
+      <button class="pill-seg" data-goto="research-part" aria-current="false" type="button">Research</button>
+      <button class="pill-seg" data-goto="design-part" aria-current="false" type="button">Design</button>
+      <button class="pill-seg" data-goto="engineering-part" aria-current="false" type="button">Engineering</button>
+      <button class="pill-seg" data-goto="recognition-part" aria-current="false" type="button">Recognition</button>
+      <button class="pill-seg" data-goto="outcome-part" aria-current="false" type="button">Outcome</button>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <h1>SK620 &amp; SK700: Reimagining the CPU Air Cooler</h1>
+    <p class="sub">Designed for Sudokoo, the SK620 and SK700 are dual tower CPU air coolers built around a bold geometric form, a live stats display, and a mounting system engineered to fix the everyday frustrations of building a PC. This is the first flagship product taken from initial concept all the way to shelf.</p>
+    <div class="meta-strip">
+      <span>2024 / 2025</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>Lead Industrial Designer</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>KeyShot, Rhino, Photoshop, Illustrator</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>7 months</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>Red Dot &amp; iF Design Award 2026</span>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <span>Last revised 2025</span>
+    </div>
+    <div class="hero-shot">
+      <figure>
+        <img src="sk620/sk620hero.png" alt="Sudokoo SK620 air cooler installed inside a PC build, its digital screen showing live fan speed, load, CPU temperature, and power draw">
+      </figure>
+    </div>
   </div>
 </header>
 
-<main>
+<main id="overview-part">
+  <section class="block" id="overview">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Overview</span></div>
+      <h2 class="reveal">A flagship product, built end to end</h2>
+      <p class="lede-lg reveal">The SK620 and SK700 were designed for Sudokoo, the company brand this project was built under. The work ran across roughly seven months, covering the full process end to end: initial draft concepts, pain point research, form and engineering development, design for manufacturing, and liaising directly with engineers in China to bring the design to production. It is the first flagship product designed from the ground up that has since been released to market.</p>
 
-  <section class="cs-hero">
-    <div class="cs-eyebrow mono"><span>●</span> Industrial Design · Red Dot &amp; iF Design Award 2026</div>
-    <h1>SK620 &amp; SK700: Reimagining the CPU Air Cooler</h1>
-    <p>Designed for Sudokoo, the SK620 and SK700 are dual tower CPU air coolers built around a
-      bold geometric form, a live stats display, and a mounting system engineered to fix the
-      everyday frustrations of building a PC. This is the first flagship product taken from
-      initial concept all the way to shelf.</p>
-    <div class="cs-meta">
-      <div>YEAR <strong>2024 / 2025</strong></div>
-      <div>ROLE <strong>Lead Industrial Designer</strong></div>
-      <div>TOOLS <strong>KeyShot, Rhino, Photoshop, Illustrator</strong></div>
-      <div>TIMELINE <strong>7 months</strong></div>
-      <div>RECOGNITION <strong>Red Dot &amp; iF Design Award 2026</strong></div>
-      <div class="cs-meta-subtle">LAST REVISED <strong>2025</strong></div>
+      <div class="whitespace-card green reveal" style="margin-top: var(--sp-xl);">
+        <span class="badge">See it live</span>
+        <p>The SK620 and SK700 are available on the Sudokoo company website: <a href="https://sudokoo.com/products/Cooling/cpuaircoolers/SK620V-AM5-Designated-Dual-Tower-Air-Cooler-with-Digital-Screen/2025/21248.shtml?type=Overview_Products" target="_blank" rel="noopener">view the product page →</a></p>
+      </div>
     </div>
   </section>
+</main>
 
-  <div class="ph ph-hero">
-    <img src="sk620/sk620hero.png" alt="Sudokoo SK620 air cooler installed inside a PC build, its digital screen showing live fan speed, load, CPU temperature, and power draw">
-  </div>
+<main id="research-part">
+  <section class="block" data-band="soft" id="research">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Research</span></div>
+      <h2 class="reveal">What actually goes wrong when building a PC</h2>
+      <p class="lede-lg reveal">Before any form was drawn, the research looked at where people actually get stuck while installing a CPU cooler, not just what a finished cooler should look like.</p>
 
-  <!-- 01 OVERVIEW -->
-  <section class="cs-section">
-    <div class="cs-num mono">01 / OVERVIEW</div>
-    <h2>A flagship product, built end to end</h2>
-    <p class="lede">The SK620 and SK700 were designed for Sudokoo, the company brand this project
-      was built under. The work ran across roughly seven months, covering the full process end to
-      end: initial draft concepts, pain point research, form and engineering development,
-      design for manufacturing, and liaising directly with engineers in China to bring the design
-      to production. It is the first flagship product designed from the ground up that has since
-      been released to market.</p>
-
-    <a class="callout callout-green" href="https://sudokoo.com/products/Cooling/cpuaircoolers/SK620V-AM5-Designated-Dual-Tower-Air-Cooler-with-Digital-Screen/2025/21248.shtml?type=Overview_Products" target="_blank" rel="noopener">
-      <div class="label mono">See it live</div>
-      <p>The SK620 and SK700 are available on the Sudokoo company website: view the product page →</p>
-    </a>
-  </section>
-
-  <!-- 02 RESEARCH -->
-  <section class="cs-section">
-    <div class="cs-num mono">02 / RESEARCH</div>
-    <h2>What actually goes wrong when building a PC</h2>
-    <p class="lede">Before any form was drawn, the research looked at where people actually get
-      stuck while installing a CPU cooler, not just what a finished cooler should look like.</p>
-
-    <div class="finding-block">
-      <h3>Mounting brackets are fiddly</h3>
-      <p>Fitting a heatsink and fan around a motherboard's mounting bracket is a multi step,
-        fine motor task, tightening spring loaded screws in the right order, engaging wire clips
-        under tension, all while working blind around a tower of fins. Small misalignments here
-        are one of the most common points where a build stalls.</p>
+      <div class="section-copy">
+        <div class="iteration-block">
+          <div class="compare-lead reveal" style="margin-top: 0;">Mounting brackets are fiddly</div>
+          <p class="reveal" style="margin-top: var(--sp-sm);">Fitting a heatsink and fan around a motherboard's mounting bracket is a multi step, fine motor task, tightening spring loaded screws in the right order, engaging wire clips under tension, all while working blind around a tower of fins. Small misalignments here are one of the most common points where a build stalls.</p>
+        </div>
+      </div>
     </div>
-    <div class="figure-img figure-img-xl">
-      <img src="sk620/cpucoolerpainpoint1.png" alt="Diagram of the preparation and fan clip installation steps for a conventional CPU air cooler, showing the fiddly wire clip retention step">
+    <div class="wrap">
+      <div class="hero-shot reveal" style="margin-top: var(--sp-xl); max-width: 640px; margin-left: auto; margin-right: auto;">
+        <figure class="shot-frame light">
+          <img src="sk620/cpucoolerpainpoint1.png" alt="Diagram of the preparation and fan clip installation steps for a conventional CPU air cooler, showing the fiddly wire clip retention step">
+        </figure>
+      </div>
     </div>
-
-    <div class="finding-block">
-      <h3>RAM clearance is a physical blocker</h3>
-      <p>Tall air coolers routinely collide with tall RAM heatsinks, especially on the fin closest
-        to the socket. Builders often discover this only after the cooler is already seated,
-        forcing them to remove the fan, swap RAM slots, or abandon their preferred sticks
-        entirely.</p>
+    <div class="prose">
+      <div class="section-copy">
+        <div class="iteration-block">
+          <div class="compare-lead reveal" style="margin-top: 0;">RAM clearance is a physical blocker</div>
+          <p class="reveal" style="margin-top: var(--sp-sm);">Tall air coolers routinely collide with tall RAM heatsinks, especially on the fin closest to the socket. Builders often discover this only after the cooler is already seated, forcing them to remove the fan, swap RAM slots, or abandon their preferred sticks entirely.</p>
+        </div>
+      </div>
     </div>
-    <div class="figure-img figure-img-xl">
-      <img src="sk620/cpucoolerpainpoint2.png" alt="Diagram showing a CPU air cooler fin physically blocked by tall RAM sticks during installation">
+    <div class="wrap">
+      <div class="hero-shot reveal" style="margin-top: var(--sp-xl); max-width: 640px; margin-left: auto; margin-right: auto;">
+        <figure class="shot-frame light">
+          <img src="sk620/cpucoolerpainpoint2.png" alt="Diagram showing a CPU air cooler fin physically blocked by tall RAM sticks during installation">
+        </figure>
+      </div>
     </div>
   </section>
+</main>
 
-  <!-- 03 THE DESIGN -->
-  <section class="cs-section">
-    <div class="cs-num mono">03 / THE DESIGN</div>
-    <h2>A geometric cooler with a screen of its own</h2>
-    <p class="lede">The Sudokoo SK700 and SK620 are high performance air coolers built for
-      superior thermal efficiency and ultra quiet operation. The SK620 reimagines CPU cooling
-      with a bold, geometric dual tower design, while the SK700 carries the same design language
-      into a single tower form. Both share a sleek full black or white finish and a distinctive
-      digital screen that displays real time system stats.</p>
-    <div class="figure-img figure-img-2xl">
-      <img src="sk620/Picture8.png" alt="Sudokoo SK700 single tower CPU air cooler in black and white finishes, side by side, each showing the digital screen display">
-      <p class="figure-caption">The SK700, single tower, in black and white.</p>
+<main id="design-part">
+  <section class="block" id="design">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">The Design</span></div>
+      <h2 class="reveal">A geometric cooler with a screen of its own</h2>
+      <p class="lede-lg reveal">The Sudokoo SK700 and SK620 are high performance air coolers built for superior thermal efficiency and ultra quiet operation. The SK620 reimagines CPU cooling with a bold, geometric dual tower design, while the SK700 carries the same design language into a single tower form. Both share a sleek full black or white finish and a distinctive digital screen that displays real time system stats.</p>
     </div>
-    <div class="figure-img figure-img-2xl">
-      <img src="sk620/Picture9.png" alt="Sudokoo SK620 dual tower CPU air cooler in black and white finishes, side by side, each showing the digital screen display">
-      <p class="figure-caption">The SK620, dual tower, in black and white.</p>
-    </div>
-  </section>
-
-  <!-- 04 DESIGN DETAILS -->
-  <section class="cs-section">
-    <div class="cs-num mono">04 / DESIGN DETAILS</div>
-    <h2>Angular surfaces, built for the hand as much as the eye</h2>
-    <p class="lede">The SK700 and SK620 feature angular, mecha inspired surfaces that reflect
-      ambient light for a dynamic, modern look that complements today's custom PC builds. Both
-      models include ergonomic features such as recessed grip zones for easy fan removal and
-      installation.</p>
-    <div class="render-grid cols-2 match-height tight flush-left lg">
-      <div><img src="sk620/image 214.svg" alt="Close up of the angular, mecha inspired shroud surface on the Sudokoo SK620 and SK700 air coolers"></div>
-      <div><img src="sk620/image 216.svg" alt="Recessed grip zone on the Sudokoo SK620 and SK700 air coolers, designed for easy fan removal and installation"></div>
-    </div>
-  </section>
-
-  <!-- 05 ENGINEERING FEATURES -->
-  <section class="cs-section">
-    <div class="cs-num mono">05 / ENGINEERING FEATURES</div>
-    <h2>Solving mounting and RAM clearance at the source</h2>
-    <p class="lede">The two pain points identified in research, fiddly mounting and blocked RAM,
-      were designed against directly rather than left as tradeoffs.</p>
-
-    <div class="finding-block">
-      <h3>Rail lock fan mount</h3>
-      <p>The innovative rail lock fan mount allows tool free, height adjustable installation,
-        enhancing both usability and RAM compatibility. Instead of wrestling with wire clips, the
-        fan slides into position along a rail and locks in place, with height adjustment built in
-        to clear taller RAM heatsinks.</p>
-    </div>
-    <div class="figure-img figure-img-2xl">
-      <img src="sk620/Picture6.png" alt="Exploded view of the Sudokoo SK620 fan detaching from the rail lock mount, showing the tool free release">
+    <div class="wrap">
+      <div class="hero-shot reveal" style="margin-top: var(--sp-xl); flex-direction: column;">
+        <figure class="shot-frame light">
+          <img src="sk620/Picture8.png" alt="Sudokoo SK700 single tower CPU air cooler in black and white finishes, side by side, each showing the digital screen display">
+        </figure>
+        <p class="overview-caption">The SK700, single tower, in black and white.</p>
+      </div>
+      <div class="hero-shot reveal" style="margin-top: var(--sp-xl); flex-direction: column;">
+        <figure class="shot-frame light">
+          <img src="sk620/Picture9.png" alt="Sudokoo SK620 dual tower CPU air cooler in black and white finishes, side by side, each showing the digital screen display">
+        </figure>
+        <p class="overview-caption">The SK620, dual tower, in black and white.</p>
+      </div>
     </div>
 
-    <div class="finding-block">
-      <h3>Side vents on the SK620</h3>
-      <p>On the SK620, side vents are added to enhance air inflow to the central fan, improving
-        thermal performance.</p>
+    <div class="prose">
+      <div class="compare-lead reveal">Angular surfaces, built for the hand as much as the eye</div>
+      <p class="reveal" style="margin-top: var(--sp-sm); max-width: 62ch;">The SK700 and SK620 feature angular, mecha inspired surfaces that reflect ambient light for a dynamic, modern look that complements today's custom PC builds. Both models include ergonomic features such as recessed grip zones for easy fan removal and installation.</p>
     </div>
-    <div class="figure-img figure-img-2xl">
-      <img src="sk620/Picture7.png" alt="Sudokoo SK620 shown with the fan removed, revealing the side vents added to enhance air inflow to the central fan">
+    <div class="wrap">
+      <div class="render-grid reveal">
+        <figure class="shot-frame light">
+          <img src="sk620/image 214.svg" alt="Close up of the angular, mecha inspired shroud surface on the Sudokoo SK620 and SK700 air coolers">
+        </figure>
+        <figure class="shot-frame light">
+          <img src="sk620/image 216.svg" alt="Recessed grip zone on the Sudokoo SK620 and SK700 air coolers, designed for easy fan removal and installation">
+        </figure>
+      </div>
     </div>
   </section>
+</main>
 
-  <!-- 06 RECOGNITION -->
-  <section class="cs-section">
-    <div class="cs-num mono">06 / RECOGNITION</div>
-    <h2>On the show floor at Computex and CES</h2>
-    <p class="lede">Sudokoo presented the SK620 and SK700 at Computex 2025 and CES 2026, with the
-      design personally presented on the show floor at both events.</p>
-    <div class="render-grid cols-2 match-height tight flush-left">
-      <div><img src="sk620/image 221.svg" alt="Sudokoo SK620 and SK700 air coolers presented at Computex 2025"></div>
-      <div><img src="sk620/image 222.svg" alt="Sudokoo SK620 and SK700 air coolers presented at CES 2026"></div>
+<main id="engineering-part">
+  <section class="block" data-band="soft" id="engineering">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Engineering Features</span></div>
+      <h2 class="reveal">Solving mounting and RAM clearance at the source</h2>
+      <p class="lede-lg reveal">The two pain points identified in research, fiddly mounting and blocked RAM, were designed against directly rather than left as tradeoffs.</p>
+
+      <div class="section-copy">
+        <div class="iteration-block">
+          <div class="compare-lead reveal" style="margin-top: 0;">Rail lock fan mount</div>
+          <p class="reveal" style="margin-top: var(--sp-sm);">The innovative rail lock fan mount allows tool free, height adjustable installation, enhancing both usability and RAM compatibility. Instead of wrestling with wire clips, the fan slides into position along a rail and locks in place, with height adjustment built in to clear taller RAM heatsinks.</p>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="hero-shot reveal" style="margin-top: var(--sp-xl);">
+        <figure class="shot-frame light">
+          <img src="sk620/Picture6.png" alt="Exploded view of the Sudokoo SK620 fan detaching from the rail lock mount, showing the tool free release">
+        </figure>
+      </div>
+    </div>
+    <div class="prose">
+      <div class="section-copy">
+        <div class="iteration-block">
+          <div class="compare-lead reveal" style="margin-top: 0;">Side vents on the SK620</div>
+          <p class="reveal" style="margin-top: var(--sp-sm);">On the SK620, side vents are added to enhance air inflow to the central fan, improving thermal performance.</p>
+        </div>
+      </div>
+    </div>
+    <div class="wrap">
+      <div class="hero-shot reveal" style="margin-top: var(--sp-xl);">
+        <figure class="shot-frame light">
+          <img src="sk620/Picture7.png" alt="Sudokoo SK620 shown with the fan removed, revealing the side vents added to enhance air inflow to the central fan">
+        </figure>
+      </div>
     </div>
   </section>
+</main>
 
-  <!-- 07 OUTCOME & REFLECTION -->
-  <section class="cs-section">
-    <div class="cs-num mono">07 / OUTCOME &amp; REFLECTION</div>
-    <h2>What this project made possible</h2>
-    <div class="outcome-box">
-      <p>The SK620 and SK700 turned two everyday PC building frustrations, a fiddly mounting
-        process and RAM clearance conflicts, into the starting point for the entire design,
-        rather than an afterthought solved once the form was already fixed. Carrying the project
-        from early sketches through DFM and production liaison in China, then onto the show floor
-        at Computex and CES, resulted in Sudokoo's first flagship product to reach market, going
-        on to win both a Red Dot and an iF Design Award in 2026.</p>
+<main id="recognition-part">
+  <section class="block" id="recognition">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Recognition</span></div>
+      <h2 class="reveal">On the show floor at Computex and CES</h2>
+      <p class="lede-lg reveal">Sudokoo presented the SK620 and SK700 at Computex 2025 and CES 2026, with the design personally presented on the show floor at both events.</p>
     </div>
-
-    <div class="callout">
-      <div class="label mono">More work</div>
-      <p>More of this project, including further product developments, archive work, and process
-        documentation, is available in the
-        <a href="index.html#confidential" style="border-bottom:1px solid var(--ink);">confidential work</a>
-        section of this portfolio.</p>
+    <div class="wrap">
+      <figure class="reveal" style="margin: var(--sp-xxl) auto 0; max-width: 520px;">
+        <img src="sk620/image 221.svg" alt="Sudokoo SK620 and SK700 air coolers presented at Computex 2025" style="width: 100%; display: block; border-radius: var(--r-xl);">
+      </figure>
+      <figure class="reveal" style="margin: var(--sp-lg) auto 0; max-width: 520px;">
+        <img src="sk620/image 222.svg" alt="Sudokoo SK620 and SK700 air coolers presented at CES 2026" style="width: 100%; display: block; border-radius: var(--r-xl);">
+      </figure>
     </div>
   </section>
+</main>
 
-  <div class="cs-footer">
-    <a href="index.html" class="back-link mono">← Back to all work</a>
-    <a href="eclipur.html" class="next-project mono">
-      MORE WORK
-      <strong>Eclipur: Sleep Wellness Lamp →</strong>
-    </a>
-  </div>
+<main id="outcome-part">
+  <section class="block" data-band="soft" id="outcome">
+    <div class="prose">
+      <div class="kicker-row reveal"><span class="eyebrow">Outcome &amp; Reflection</span></div>
+      <h2 class="reveal">What this project made possible</h2>
+      <div class="outcome-box" style="margin-top: var(--sp-xl);">
+        <p class="reveal">The SK620 and SK700 turned two everyday PC building frustrations, a fiddly mounting process and RAM clearance conflicts, into the starting point for the entire design, rather than an afterthought solved once the form was already fixed. Carrying the project from early sketches through DFM and production liaison in China, then onto the show floor at Computex and CES, resulted in Sudokoo's first flagship product to reach market, going on to win both a Red Dot and an iF Design Award in 2026.</p>
+      </div>
 
+      <div class="whitespace-card reveal" style="margin-top: var(--sp-xl);">
+        <span class="badge">More work</span>
+        <p>More of this project, including further product developments, archive work, and process documentation, is available in the <a href="index.html#confidential">confidential work</a> section of this portfolio.</p>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="site-footer">
-  <span class="mono">© 2026 DAVID NG</span>
-  <span class="mono">CASE STUDY · SK620 &amp; SK700</span>
+  <div class="prose">
+    <span class="eyebrow reveal">More work</span>
+    <h2 class="reveal">Eclipur: Sleep Wellness Lamp</h2>
+    <p class="reveal">A bedside lamp that folds shut like a lunar eclipse, pairing warm light, an inbuilt essential oil diffuser, and a built in speaker into one wind down ritual.</p>
+    <div class="footer-links">
+      <a href="index.html">← Back to all work</a>
+      <a href="eclipur.html">Next case study →</a>
+    </div>
+  </div>
 </footer>
 
 <script>
-  // reveal helpers — purely inline-style driven so there is never a CSS
-  // state where content is hidden without JS having actually run.
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+(function () {
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function revealNow(el, { y = 22, duration = 700, delay = 0 } = {}){
-    if(!el || reduceMotion) return;
-    el.style.opacity = '0';
-    el.style.transform = `translateY(${y}px)`;
-    requestAnimationFrame(() => {
-      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
-      requestAnimationFrame(() => {
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
+  // ---- scroll reveal ----
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
       });
-    });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
   }
 
-  // Bidirectional scroll reveal: replays every time the element crosses in
-  // or out of view, in either scroll direction.
-  function makeScrollReveal(el, opts = {}){
-    if(!el || reduceMotion || !('IntersectionObserver' in window)) return null;
-    const y = opts.y ?? 26;
-    const duration = opts.duration ?? 700;
-    const delay = opts.delay ?? 0;
+  // ---- nav-pill-group scrollspy ----
+  var pillnav = document.getElementById('pillnav');
+  var pillButtons = pillnav.querySelectorAll('button');
+  var sections = ['overview-part', 'research-part', 'design-part', 'engineering-part', 'recognition-part', 'outcome-part'].map(function (id) { return document.getElementById(id); });
 
-    function hide(){
-      el.style.transition = 'none';
-      el.style.opacity = '0';
-      el.style.transform = `translateY(${y}px)`;
-    }
-    function show(){
-      // force a synchronous style flush so the browser commits the current
-      // (transition:none, opacity:0) state before the transition is
-      // re-enabled and the value changes — relying on requestAnimationFrame
-      // timing alone for this is fragile and can silently skip the fade
-      void el.offsetHeight;
-      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
-      void el.offsetHeight;
-      el.style.opacity = '1';
-      el.style.transform = 'translateY(0)';
-    }
+  pillButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = document.getElementById(btn.getAttribute('data-goto'));
+      if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+    });
+  });
 
-    hide();
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) show();
-        else hide();
+  if ('IntersectionObserver' in window) {
+    var spyIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var id = e.target.id;
+          pillButtons.forEach(function (btn) {
+            btn.setAttribute('aria-current', btn.getAttribute('data-goto') === id ? 'true' : 'false');
+          });
+        }
       });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    io.observe(el);
-
-    return { replay(){ hide(); show(); } };
+    }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+    sections.forEach(function (s) { if (s) spyIo.observe(s); });
   }
-
-  // hero entrance: eyebrow, heading, lede, meta row, hero image cascade in
-  revealNow(document.querySelector('.cs-eyebrow'), { y: 16, duration: 700, delay: 0 });
-  revealNow(document.querySelector('.cs-hero h1'), { y: 28, duration: 800, delay: 100 });
-  revealNow(document.querySelector('.cs-hero > p'), { delay: 250 });
-  revealNow(document.querySelector('.cs-meta'), { delay: 380 });
-  revealNow(document.querySelector('.ph-hero'), { y: 24, duration: 800, delay: 480 });
-
-  // scroll-triggered reveals for everything below the fold — replay any
-  // time they're scrolled back into or out of view
-  const REVEAL_SELECTOR = '.cs-section h2, .cs-section .lede, .finding-block, .figure-img, .render-grid, .callout, .outcome-box';
-  document.querySelectorAll(REVEAL_SELECTOR).forEach((el, i) => makeScrollReveal(el, { delay: (i % 2) * 60 }));
-
-  // safety net: whatever happens with the animations above, guarantee every
-  // revealed element is fully visible and interactive after a few seconds,
-  // no matter what.
-  setTimeout(() => {
-    document.querySelectorAll('.cs-eyebrow, .cs-hero h1, .cs-hero > p, .cs-meta, .ph-hero')
-      .forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-      });
-  }, 4000);
-
-  // section table of contents — reads the existing .cs-section stack,
-  // wraps it in a sticky sidebar layout, and highlights the section
-  // currently in view. Fully self-generating: no per-page content to edit.
-  (function(){
-    const main = document.querySelector('main');
-    if(!main) return;
-    const sections = Array.from(main.querySelectorAll(':scope > .cs-section'));
-    if(sections.length < 2) return;
-
-    const entries = sections.map((sec, i) => {
-      const numEl = sec.querySelector('.cs-num');
-      const h2 = sec.querySelector('h2');
-      const id = sec.id || ('toc-section-' + (i + 1));
-      sec.id = id;
-      return {
-        id,
-        num: numEl ? numEl.textContent.trim() : '',
-        label: h2 ? h2.textContent.trim() : ('Section ' + (i + 1)),
-        el: sec,
-      };
-    });
-
-    const layout = document.createElement('div');
-    layout.className = 'cs-layout';
-    const content = document.createElement('div');
-    content.className = 'cs-content';
-
-    sections[0].parentNode.insertBefore(layout, sections[0]);
-    sections.forEach(sec => content.appendChild(sec));
-
-    const nav = document.createElement('nav');
-    nav.className = 'cs-toc';
-    nav.setAttribute('aria-label', 'Section navigation');
-    const list = document.createElement('ul');
-    entries.forEach(entry => {
-      const li = document.createElement('li');
-      const a = document.createElement('a');
-      a.href = '#' + entry.id;
-      a.dataset.tocFor = entry.id;
-      const numSpan = document.createElement('span');
-      numSpan.className = 'cs-toc-num';
-      numSpan.textContent = entry.num;
-      a.appendChild(numSpan);
-      a.addEventListener('click', (e) => {
-        e.preventDefault();
-        entry.el.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-        history.replaceState(null, '', '#' + entry.id);
-      });
-      li.appendChild(a);
-      list.appendChild(li);
-    });
-    nav.appendChild(list);
-
-    layout.appendChild(nav);
-    layout.appendChild(content);
-
-    // align the sidebar with the hero's meta row (YEAR / ROLE / TOOLS...),
-    // both vertically (once, on load) and horizontally (on load + resize,
-    // since horizontal position doesn't depend on scroll)
-    // align the sidebar vertically with the project title, and pin it to
-    // the far left of the viewport — hiding itself if there's ever not
-    // enough room to avoid overlapping the content
-    const titleRef = document.querySelector('.cs-hero h1');
-    const contentRef = document.querySelector('.cs-hero') || content;
-    const setTocTop = () => {
-      if(titleRef){
-        nav.style.top = Math.max(96, titleRef.getBoundingClientRect().top) + 'px';
-      }
-    };
-    setTocTop();
-    // the hero entrance animation is still settling into place when this
-    // first runs, so re-measure once it's done for pixel-accurate alignment
-    setTimeout(setTocTop, 900);
-    const TOC_LEFT = 24;
-    const updateTocVisibility = () => {
-      const contentLeft = contentRef.getBoundingClientRect().left;
-      if(contentLeft - (TOC_LEFT + 200) < 24){
-        nav.style.display = 'none';
-      } else {
-        nav.style.display = 'block';
-        nav.style.left = TOC_LEFT + 'px';
-      }
-    };
-    updateTocVisibility();
-    window.addEventListener('resize', updateTocVisibility);
-
-    if('IntersectionObserver' in window){
-      const spy = new IntersectionObserver((observed) => {
-        observed.forEach(obsEntry => {
-          const link = nav.querySelector(`a[data-toc-for="${obsEntry.target.id}"]`);
-          if(!link || !obsEntry.isIntersecting) return;
-          nav.querySelectorAll('a').forEach(a => a.classList.remove('is-active'));
-          link.classList.add('is-active');
-        });
-      }, { rootMargin: '-20% 0px -70% 0px', threshold: 0 });
-      sections.forEach(sec => spy.observe(sec));
-    }
-  })();
+})();
 </script>
 
 </body>

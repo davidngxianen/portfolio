@@ -5,281 +5,371 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sudokoo &amp; DeepCool: Extended Work Portfolio Case Study</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper:#101010;
-    --paper-dim:#1A1A1A;
-    --ink:#FFFFFF;
-    --ink-soft:#A1A1AA;
-    --line:#262626;
-    --signal:#E2582B;
-    --signal-soft:#2E1B12;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:'Inter',sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-  body.no-scroll{ overflow:hidden; }
-  ::selection{background:var(--signal);color:var(--paper);}
-  h1,h2,h3{ font-family:'Inter',sans-serif; font-weight:600; letter-spacing:-0.02em; }
-  .mono{ font-family:'IBM Plex Mono',monospace; letter-spacing:0.02em; }
-  a{ color:inherit; text-decoration:none; }
 
-  header{
-    position:sticky; top:0; z-index:40;
-    background:rgba(18,19,22,0.88);
-    backdrop-filter:blur(6px);
-    border-bottom:1px solid var(--line);
-  }
-  .nav-inner{
-    padding:18px 6vw;
-    display:flex; justify-content:space-between; align-items:center;
-  }
-  .back-link{
-    font-size:12px; text-transform:uppercase; letter-spacing:0.08em;
-    color:var(--ink-soft); display:flex; align-items:center; gap:8px;
-    transition:color .15s;
-  }
-  .back-link:hover{ color:var(--ink); }
-  .logo{ font-weight:600; font-size:15px; }
-  .logo span{ color:var(--signal); }
+  :root {
+    --canvas: #ffffff;
+    --surface-soft: #f8f9fa;
+    --surface-card: #f5f5f5;
+    --surface-strong: #e5e7eb;
+    --surface-dark: #101010;
+    --hairline: #e5e7eb;
+    --hairline-soft: #f3f4f6;
+    --ink: #111111;
+    --body-c: #374151;
+    --muted: #6b7280;
+    --muted-soft: #898989;
+    --on-primary: #ffffff;
+    --on-dark: #ffffff;
+    --on-dark-soft: #a1a1aa;
+    --primary: #111111;
+    --primary-active: #242424;
+    --accent: #e2582b;
+    --success: #10b981;
+    --success-soft: rgba(16,185,129,0.1);
+    --success-tint: rgba(16,185,129,0.08);
 
-  main{ max-width:1200px; margin:0 auto; padding:0 6vw; }
+    --sp-xxs: 4px;
+    --sp-xs: 8px;
+    --sp-sm: 12px;
+    --sp-md: 16px;
+    --sp-lg: 24px;
+    --sp-xl: 32px;
+    --sp-xxl: 48px;
+    --sp-section: 96px;
 
-  /* hero */
-  .cs-hero{ padding:9vh 0 7vh; border-bottom:1px solid var(--line); }
-  .cs-eyebrow{
-    display:flex; align-items:center; gap:10px;
-    font-size:12px; color:var(--signal); text-transform:uppercase; letter-spacing:0.1em;
-    margin-bottom:22px;
-  }
-  .cs-hero h1{
-    font-size:clamp(2.2rem,6vw,4.4rem); line-height:1.02; font-weight:600;
-    max-width:24ch; margin-bottom:24px;
-  }
-  .cs-hero p{ font-size:17px; line-height:1.65; color:var(--ink-soft); max-width:64ch; }
-  .cs-hero p + p{ margin-top:14px; }
-  .cs-meta{ display:flex; gap:32px; margin-top:44px; flex-wrap:wrap; }
-  .cs-meta div{ font-size:12px; color:var(--ink-soft); }
-  .cs-meta strong{ display:block; font-family:'Inter',sans-serif; font-size:14px; color:var(--ink); margin-top:4px; }
-  .cs-meta-subtle{ color:var(--ink-soft); }
-  .cs-meta-subtle strong{ color:var(--ink-soft); font-weight:400; }
+    --r-xs: 4px;
+    --r-sm: 6px;
+    --r-md: 8px;
+    --r-lg: 12px;
+    --r-xl: 16px;
+    --r-pill: 9999px;
 
-  /* hero image / general showcase image */
-  .ph{
-    background:
-      repeating-linear-gradient(135deg, transparent, transparent 8px, rgba(21,23,26,0.035) 8px, rgba(21,23,26,0.035) 9px),
-      var(--paper-dim);
-    border:1px solid var(--line);
-    display:flex; align-items:center; justify-content:center;
-    position:relative; overflow:hidden;
-  }
-  .ph-hero{ aspect-ratio:16/8; margin-top:0; background:#0E0E0E; border:none; }
-  .ph-hero img{ width:100%; height:100%; object-fit:cover; object-position:center; display:block; }
+    --sh-soft: 0 1px 2px rgba(0, 0, 0, 0.05);
+    --sh-elevated: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --sh-modal: 0 30px 80px rgba(0, 0, 0, 0.25);
 
-  /* section shell */
-  .cs-section{ padding:80px 0; border-bottom:1px solid var(--line); }
-  .cs-section:last-of-type{ border-bottom:none; }
-  .cs-num{ font-size:12px; color:var(--ink-soft); margin-bottom:14px; }
-  .cs-section h2{ font-size:clamp(1.5rem,3vw,2.1rem); font-weight:600; margin-bottom:26px; max-width:30ch; }
-  .cs-section .lede{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:70ch; margin-bottom:36px; }
+    --content: 660px;
+    --wide: 1120px;
 
-  .status-tag{
-    display:inline-block; font-size:11px; text-transform:uppercase; letter-spacing:0.08em;
-    padding:5px 10px; border-radius:20px; margin-bottom:16px;
-  }
-  .status-tag.shipped{ color:#4CAF6D; background:#16301F; }
-  .status-tag.archive{ color:var(--ink-soft); background:var(--paper-dim); }
-
-  /* findings */
-  .finding-block{ margin-top:40px; }
-  .finding-block:first-of-type{ margin-top:0; }
-  .finding-block h3{ font-size:18px; font-weight:600; margin-bottom:10px; }
-  .finding-block p{ font-size:14.5px; line-height:1.75; color:var(--ink-soft); max-width:70ch; }
-
-  .callout{ background:var(--signal-soft); border:1px dashed var(--signal); padding:22px 26px; border-radius:3px; margin-top:28px; }
-  a.callout{ display:block; cursor:pointer; transition:filter .15s; }
-  a.callout:hover{ filter:brightness(0.9); }
-  .callout .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--signal); margin-bottom:10px; }
-  .callout p{ font-size:14px; line-height:1.6; color:var(--ink); }
-  .callout.callout-green{ background:#16301F; border-color:#4CAF6D; }
-  .callout.callout-green .label{ color:#4CAF6D; }
-
-  .nda-notice{
-    max-width:1200px; margin:0 auto; padding:20px 6vw;
-    display:flex; align-items:flex-start; gap:14px;
-    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
-    background:var(--paper-dim);
-  }
-  .nda-notice .icon{ flex:0 0 auto; font-size:15px; line-height:1.3; color:var(--ink-soft); }
-  .nda-notice .label{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink); margin-bottom:6px; }
-  .nda-notice p{ font-size:13px; line-height:1.65; color:var(--ink-soft); max-width:80ch; }
-  .key-decisions{ list-style:none; display:flex; flex-direction:column; gap:8px; margin-top:4px; }
-  .key-decisions li{ font-size:13.5px; line-height:1.6; color:var(--ink); padding-left:16px; position:relative; }
-  .key-decisions li::before{ content:'—'; position:absolute; left:0; color:var(--signal); }
-
-  /* single figure image */
-  .figure-caption{ font-size:13px; color:var(--ink-soft); line-height:1.6; max-width:60ch; margin-top:20px; margin-bottom:16px; font-style:italic; }
-  .figure-img{ max-width:360px; }
-  .figure-img-lg{ max-width:460px; }
-  .figure-img-xl{ max-width:640px; }
-  .figure-img-2xl{ max-width:900px; }
-  .figure-img img{ width:100%; display:block; border-radius:6px; background:#0E0E0E; }
-
-  /* render grid */
-  .render-grid{ display:grid; gap:24px; margin-top:28px; }
-  .render-grid.cols-1{ grid-template-columns:1fr; }
-  .render-grid.cols-2{ grid-template-columns:1fr 1fr; }
-  .render-grid.cols-3{ grid-template-columns:repeat(3,1fr); }
-  .render-grid img{ width:100%; display:block; border-radius:10px; background:#0E0E0E; }
-  .render-grid-caption{ font-size:13px; line-height:1.6; color:var(--ink-soft); margin-top:14px; }
-  .render-grid.tight{ gap:6px; }
-  @media (max-width:700px){
-    .render-grid.cols-2,.render-grid.cols-3{ grid-template-columns:1fr; max-width:400px; margin-left:auto; margin-right:auto; }
+    --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-product: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
   }
 
-  /* match-height variant, reproduced from sk620.html for the embedded SK620 story */
-  .render-grid.match-height{ align-items:center; }
-  .render-grid.match-height > div{ display:flex; align-items:center; justify-content:center; height:320px; }
-  .render-grid.match-height img{ width:auto; max-width:100%; height:100%; object-fit:contain; }
-  .render-grid.match-height.flush-left{ display:flex; }
-  .render-grid.match-height.flush-left > div{ flex:0 0 auto; width:auto; justify-content:flex-start; }
-  .render-grid.match-height.lg > div{ height:420px; }
-  @media (max-width:700px){
-    .render-grid.match-height > div{ height:220px; }
-    .render-grid.match-height.lg > div{ height:260px; }
-    .render-grid.match-height.flush-left{ flex-wrap:wrap; gap:20px; }
-    .render-grid.match-height.flush-left > div{ flex:0 1 auto; max-width:100%; }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; overflow-x: clip; scroll-behavior: smooth; }
+  [id] { scroll-margin-top: 84px; }
+
+  body {
+    margin: 0;
+    background: var(--canvas);
+    color: var(--body-c);
+    font-family: var(--font);
+    font-weight: 400;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+  body.no-scroll { overflow: hidden; }
+
+  ::selection { background: var(--accent); color: #fff; }
+
+  img, video { max-width: 100%; display: block; }
+  a { color: var(--accent); }
+  button { font-family: inherit; }
+
+  .wrap { max-width: var(--wide); margin: 0 auto; padding: 0 var(--sp-xl); }
+  .prose { max-width: var(--content); margin: 0 auto; padding: 0 var(--sp-xl); }
+  .prose-wide { max-width: 780px; margin: 0 auto; padding: 0 var(--sp-xl); }
+
+  @media (max-width: 620px) {
+    .wrap, .prose, .prose-wide { padding: 0 var(--sp-lg); }
+  }
+
+  h1, h2, h3, h4 { font-family: var(--font); font-weight: 600; margin: 0; text-wrap: balance; color: var(--ink); }
+
+  .eyebrow { font-weight: 700; font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink); }
+  .eyebrow.accent { color: var(--accent); }
+  .kicker-row { display: flex; align-items: baseline; gap: var(--sp-sm); margin-bottom: var(--sp-md); }
+
+  p { margin: 0 0 1.15em; color: var(--body-c); }
+  p:last-child { margin-bottom: 0; }
+
+  /* labels that formerly ran in a monospace face — now Inter, uppercase, tracked */
+  .mono { font-family: var(--font); font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; }
+
+  /* ---------- back button + top nav (design-system standard) ---------- */
+  .back-btn {
+    position: fixed; top: 22px; left: 14px; z-index: 50;
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; font-weight: 600; color: var(--ink);
+    text-decoration: none; white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+  .back-btn:hover { color: var(--muted); }
+
+  .topnav {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border-bottom: 1px solid var(--hairline);
+    height: 64px;
+  }
+  .topnav-inner {
+    max-width: var(--wide); margin: 0 auto; padding: 0 var(--sp-xl) 0 118px;
+    height: 100%; display: flex; align-items: center; justify-content: space-between;
+  }
+  .wordmark { font-weight: 700; font-size: 15px; color: var(--ink); letter-spacing: -0.01em; }
+  .wordmark span { font-weight: 500; color: var(--muted); margin-left: 6px; text-transform: none; letter-spacing: 0; }
+  .nav-pill-group { display: flex; gap: 2px; padding: 6px; border-radius: var(--r-pill); background: var(--surface-soft); }
+  .pill-seg {
+    appearance: none; border: none; background: transparent;
+    padding: 8px 15px; border-radius: var(--r-pill);
+    font-size: 13px; font-weight: 600; color: var(--muted);
+    cursor: pointer; transition: background 0.2s ease, color 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap;
+  }
+  .pill-seg[aria-current="true"] { background: var(--canvas); color: var(--ink); box-shadow: var(--sh-soft); }
+  @media (max-width: 560px) {
+    .wordmark span { display: none; }
+    .nav-pill-group { display: none; }
+    .topnav-inner { padding: 0 var(--sp-lg) 0 54px; }
+    .pill-seg { padding: 8px 10px; font-size: 12px; }
+    .back-btn .label { display: none; }
+    .back-btn { top: 20px; left: 10px; }
+  }
+
+  /* ---------- hero ---------- */
+  .cs-hero { padding: var(--sp-section) 0 var(--sp-xxl); background: var(--canvas); }
+  .cs-eyebrow {
+    display: flex; align-items: center; gap: 10px;
+    font-size: 12px; color: var(--accent); text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
+    margin-bottom: var(--sp-md);
+  }
+  .cs-hero h1 {
+    font-size: clamp(2.4rem, 3vw + 1.2rem, 4rem);
+    line-height: 1.06; letter-spacing: -0.02em; max-width: 24ch;
+  }
+  @media (max-width: 600px) {
+    .cs-hero h1 { font-size: clamp(1.9rem, 9vw, 3rem); }
+  }
+  .cs-hero p { margin-top: var(--sp-lg); font-size: 1.1rem; line-height: 1.6; color: var(--body-c); max-width: 74ch; }
+  .cs-hero p + p { margin-top: 14px; }
+
+  .cs-meta {
+    margin-top: var(--sp-lg);
+    display: flex; flex-wrap: wrap; gap: var(--sp-xl);
+    background: var(--surface-soft); border-radius: var(--r-lg);
+    padding: var(--sp-lg) var(--sp-xl);
+  }
+  .cs-meta div { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+  .cs-meta strong { display: block; font-family: var(--font); font-weight: 600; font-size: 14px; letter-spacing: 0; text-transform: none; color: var(--ink); margin-top: 6px; }
+  .cs-meta-subtle strong { color: var(--muted); font-weight: 500; }
+  @media (max-width: 700px) { .cs-meta { gap: var(--sp-lg); } }
+
+  .confidential-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+    color: var(--accent); background: rgba(226,88,43,0.1);
+    padding: 6px 14px; border-radius: var(--r-pill);
+    margin-top: var(--sp-lg);
+  }
+  .confidential-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  /* ---------- NDA notice: whitespace-card treatment ---------- */
+  .nda-notice {
+    max-width: var(--wide); margin: var(--sp-xxl) auto 0; padding: var(--sp-lg) var(--sp-xl);
+    display: flex; align-items: flex-start; gap: var(--sp-md);
+    border-radius: var(--r-lg);
+    background: rgba(226,88,43,0.05); border: 1px solid rgba(226,88,43,0.25);
+  }
+  .nda-notice .icon { flex: 0 0 auto; font-size: 16px; line-height: 1.3; color: var(--accent); }
+  .nda-notice .label { font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--accent); margin-bottom: 6px; }
+  .nda-notice p { font-size: 13.5px; line-height: 1.65; color: var(--body-c); max-width: 80ch; margin: 0; }
+  @media (max-width: 700px) { .nda-notice { margin-top: var(--sp-xl); } }
+
+  /* ---------- section shell ---------- */
+  .cs-section { padding: var(--sp-section) 0; background: var(--canvas); }
+  .cs-section[data-band="soft"] { background: var(--surface-soft); }
+  .cs-num { font-size: 12px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: var(--sp-md); }
+  .cs-section h2 { font-size: clamp(1.6rem, 1.3vw + 1.2rem, 2.2rem); line-height: 1.16; letter-spacing: -0.015em; font-weight: 600; margin-bottom: var(--sp-lg); max-width: 30ch; }
+  .cs-section .lede { margin-top: var(--sp-md); font-size: 1.05rem; line-height: 1.65; color: var(--body-c); max-width: 68ch; margin-bottom: var(--sp-xl); }
+
+  .status-tag {
+    display: inline-block; font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
+    padding: 4px 10px; border-radius: var(--r-pill); margin-bottom: 0;
+  }
+  .status-tag.shipped { color: var(--success); background: var(--success-soft); }
+  .status-tag.archive { color: var(--muted); background: var(--surface-strong); }
+
+  /* ---------- findings ---------- */
+  .finding-block { margin-top: var(--sp-xl); }
+  .finding-block:first-of-type { margin-top: 0; }
+  .finding-block h3 { font-size: 17px; font-weight: 600; color: var(--ink); margin-bottom: 8px; }
+  .finding-block p { font-size: 14.5px; line-height: 1.75; color: var(--body-c); max-width: 70ch; margin: 0; }
+
+  .callout { background: rgba(226,88,43,0.05); border: 1px solid rgba(226,88,43,0.25); padding: var(--sp-lg); border-radius: var(--r-lg); margin-top: var(--sp-xl); }
+  a.callout { display: block; cursor: pointer; transition: box-shadow .15s, border-color .15s; text-decoration: none; }
+  a.callout:hover { box-shadow: var(--sh-soft); border-color: rgba(226,88,43,0.4); }
+  .callout .label { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 8px; }
+  .callout p { font-size: 14px; line-height: 1.6; color: var(--ink); margin: 0; }
+  .callout.callout-green { background: var(--success-tint); border-color: rgba(16,185,129,0.3); }
+  .callout.callout-green .label { color: var(--success); }
+
+  .key-decisions { list-style: none; display: flex; flex-direction: column; gap: var(--sp-sm); margin: var(--sp-md) 0 0; padding: 0; max-width: 62ch; }
+  .key-decisions li { font-size: 1rem; line-height: 1.6; color: var(--body-c); padding-left: 22px; position: relative; }
+  .key-decisions li::before { content: ''; position: absolute; left: 2px; top: 0.55em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); }
+
+  /* ---------- figures ---------- */
+  .figure-caption { font-size: 13px; color: var(--muted); line-height: 1.6; max-width: 60ch; margin-top: var(--sp-sm); margin-bottom: var(--sp-xs); font-style: italic; }
+  .figure-img { max-width: 360px; }
+  .figure-img-lg { max-width: 460px; }
+  .figure-img-xl { max-width: 640px; }
+  .figure-img-2xl { max-width: 900px; }
+  .figure-img img { width: 100%; display: block; border-radius: var(--r-md); background: var(--surface-card); border: 1px solid var(--hairline); }
+
+  /* ---------- render grid ---------- */
+  .render-grid { display: grid; gap: var(--sp-lg); margin-top: var(--sp-xl); }
+  .render-grid.cols-1 { grid-template-columns: 1fr; }
+  .render-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .render-grid.cols-3 { grid-template-columns: repeat(3,1fr); }
+  .render-grid img { width: 100%; display: block; border-radius: var(--r-md); background: var(--surface-card); border: 1px solid var(--hairline); }
+  .render-grid-caption { font-size: 13px; line-height: 1.6; color: var(--muted); margin-top: var(--sp-md); }
+  .render-grid.tight { gap: var(--sp-xs); }
+  @media (max-width: 700px) {
+    .render-grid.cols-2, .render-grid.cols-3 { grid-template-columns: 1fr; max-width: 400px; margin-left: auto; margin-right: auto; }
+  }
+
+  .render-grid.match-height { align-items: center; }
+  .render-grid.match-height > div { display: flex; align-items: center; justify-content: center; height: 320px; }
+  .render-grid.match-height img { width: auto; max-width: 100%; height: 100%; object-fit: contain; background: none; border: none; }
+  .render-grid.match-height.flush-left { display: flex; }
+  .render-grid.match-height.flush-left > div { flex: 0 0 auto; width: auto; justify-content: flex-start; }
+  .render-grid.match-height.lg > div { height: 420px; }
+  @media (max-width: 700px) {
+    .render-grid.match-height > div { height: 220px; }
+    .render-grid.match-height.lg > div { height: 260px; }
+    .render-grid.match-height.flush-left { flex-wrap: wrap; gap: var(--sp-lg); }
+    .render-grid.match-height.flush-left > div { flex: 0 1 auto; max-width: 100%; }
   }
   .sk620-repro .figure-img img,
-  .sk620-repro .render-grid img{ background:#F3F3F1; }
+  .sk620-repro .render-grid img { background: #F3F3F1; }
 
-  /* project cards */
-  .proj-stack-bleed{
-    width:100vw;
-    position:relative;
-    left:50%;
-    right:50%;
-    margin-left:-50vw;
-    margin-right:-50vw;
-    margin-top:32px;
-    padding:40px 6vw;
-    background:
-      radial-gradient(circle at 10% 15%, rgba(255,255,255,0.28), transparent 42%),
-      radial-gradient(circle at 90% 10%, rgba(255,255,255,0.22), transparent 42%),
-      radial-gradient(circle at 20% 90%, rgba(0,0,0,0.65), transparent 42%),
-      radial-gradient(circle at 92% 85%, rgba(255,255,255,0.18), transparent 42%),
-      var(--paper-dim);
+  /* ---------- project cards ---------- */
+  .proj-stack-bleed {
+    width: 100vw; position: relative; left: 50%; right: 50%;
+    margin-left: -50vw; margin-right: -50vw; margin-top: var(--sp-xl);
+    padding: var(--sp-xxl) var(--sp-xl);
+    background: var(--surface-soft);
   }
-  .proj-stack{
-    display:flex; flex-direction:column; gap:20px;
-    max-width:1200px; margin:0 auto;
+  .proj-stack { display: flex; flex-direction: column; gap: var(--sp-lg); max-width: var(--wide); margin: 0 auto; }
+  .proj-card {
+    border: 1px solid var(--hairline); border-radius: var(--r-xl);
+    background: var(--canvas); box-shadow: var(--sh-soft);
+    transition: box-shadow .2s ease;
   }
-  .proj-card{
-    border:1px solid rgba(255,255,255,0.12);
-    border-radius:20px;
-    background:rgba(255,255,255,0.06);
-    backdrop-filter:blur(24px) saturate(160%);
-    -webkit-backdrop-filter:blur(24px) saturate(160%);
-    box-shadow:0 8px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.08);
+  .proj-card:hover { box-shadow: var(--sh-elevated); }
+  .proj-card-summary {
+    display: flex; align-items: center; gap: var(--sp-lg); width: 100%; padding: var(--sp-lg);
+    background: none; border: none; font: inherit; color: inherit; text-align: left;
+    cursor: pointer; transition: background .15s; border-radius: var(--r-xl);
   }
-  .proj-card-summary{
-    display:flex; align-items:center; gap:24px; width:100%; padding:22px 26px;
-    background:none; border:none; font:inherit; color:inherit; text-align:left;
-    cursor:pointer; transition:background .15s; border-radius:20px;
-  }
-  .proj-card-summary:hover{ background:rgba(255,255,255,0.08); }
-  .proj-card-summary:focus-visible{ outline:2px solid var(--signal); outline-offset:-2px; }
-  .proj-card-thumb{ flex:0 0 auto; width:84px; height:84px; border-radius:8px; overflow:hidden; background:#0E0E0E; }
-  .proj-card-thumb img{ width:100%; height:100%; object-fit:cover; display:block; }
-  .proj-card-head{ flex:1 1 auto; min-width:0; }
-  .proj-card-eyebrow{ display:flex; align-items:center; gap:12px; font-size:11px; color:var(--ink-soft); margin-bottom:10px; flex-wrap:wrap; text-transform:uppercase; letter-spacing:0.08em; }
-  .proj-card-eyebrow .status-tag{ margin-bottom:0; }
-  .proj-card-head h3{ font-size:clamp(1.1rem,2.2vw,1.45rem); font-weight:600; margin-bottom:8px; letter-spacing:-0.01em; }
-  .proj-card-toggle{ flex:0 0 auto; display:flex; align-items:center; gap:8px; font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-soft); }
-  .proj-card-toggle .toggle-label::before{ content:'View project'; }
-  .proj-card.is-expanded .proj-card-toggle .toggle-label::before{ content:'Collapse'; }
-  .proj-card-toggle .chevron{ display:inline-block; transition:transform .2s; font-size:14px; }
-  .proj-card.is-expanded .proj-card-toggle .chevron{ transform:rotate(180deg); }
-  .proj-card-scroll{ display:none; }
-  .proj-card-body{ padding:10px 26px 44px; }
-  .proj-card-body .finding-block:first-of-type{ margin-top:0; }
-  .proj-designer{ font-size:11px; text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-soft); margin-bottom:22px; }
+  .proj-card-summary:hover { background: var(--surface-soft); }
+  .proj-card-summary:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+  .proj-card-thumb { flex: 0 0 auto; width: 84px; height: 84px; border-radius: var(--r-md); overflow: hidden; background: var(--surface-card); border: 1px solid var(--hairline); }
+  .proj-card-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .proj-card-head { flex: 1 1 auto; min-width: 0; }
+  .proj-card-eyebrow { display: flex; align-items: center; gap: 12px; font-size: 11px; font-weight: 700; color: var(--muted); margin-bottom: var(--sp-xs); flex-wrap: wrap; text-transform: uppercase; letter-spacing: 0.06em; }
+  .proj-card-head h3 { font-size: clamp(1.1rem,2.2vw,1.45rem); font-weight: 600; margin-bottom: 0; letter-spacing: -0.01em; color: var(--ink); }
+  .proj-card-toggle { flex: 0 0 auto; display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .proj-card-toggle .toggle-label::before { content: 'View project'; }
+  .proj-card.is-expanded .proj-card-toggle .toggle-label::before { content: 'Collapse'; }
+  .proj-card-toggle .chevron { display: inline-block; transition: transform .2s; font-size: 14px; }
+  .proj-card.is-expanded .proj-card-toggle .chevron { transform: rotate(180deg); }
+  .proj-card-scroll { display: none; }
+  .proj-card-body { padding: var(--sp-sm) var(--sp-lg) var(--sp-xxl); border-top: 1px solid var(--hairline); }
+  .proj-card-body .finding-block:first-of-type { margin-top: var(--sp-lg); }
+  .proj-designer { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-bottom: var(--sp-lg); margin-top: var(--sp-lg); }
 
-  /* expanded state: card lifts off the stack and overlaps the page like a modal */
-  .proj-backdrop{
-    position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:190;
-    opacity:0; pointer-events:none; transition:opacity .4s ease;
+  /* expanded state: card lifts into a light modal */
+  .proj-backdrop {
+    position: fixed; inset: 0; background: rgba(17,17,17,0.5); z-index: 190;
+    opacity: 0; pointer-events: none; transition: opacity .3s ease;
   }
-  .proj-backdrop.is-visible{ opacity:1; pointer-events:auto; }
-  .proj-card.is-expanded{
-    position:fixed; top:4vh; left:0; right:0; margin:0 auto;
-    width:min(1120px,94vw); max-height:92vh;
-    display:flex; flex-direction:column;
-    z-index:200; border-radius:16px; overflow:hidden;
-    background:#141414;
-    backdrop-filter:none;
-    -webkit-backdrop-filter:none;
-    box-shadow:0 30px 80px rgba(0,0,0,0.6);
-    animation:projCardZoomIn .22s ease;
+  .proj-backdrop.is-visible { opacity: 1; pointer-events: auto; }
+  .proj-card.is-expanded {
+    position: fixed; top: 4vh; left: 0; right: 0; margin: 0 auto;
+    width: min(1120px,94vw); max-height: 92vh;
+    display: flex; flex-direction: column;
+    z-index: 200; border-radius: var(--r-xl); overflow: hidden;
+    background: var(--canvas);
+    box-shadow: var(--sh-modal);
+    animation: projCardZoomIn .22s ease;
   }
-  .proj-card.is-expanded .proj-card-summary{ flex:0 0 auto; border-bottom:1px solid var(--line); border-radius:16px 16px 0 0; }
-  .proj-card.is-expanded .proj-card-summary:hover{ background:none; }
-  .proj-card.is-expanded .proj-card-scroll{ display:block; flex:1 1 auto; overflow-y:auto; -webkit-overflow-scrolling:touch; }
-  @keyframes projCardZoomIn{
-    from{ opacity:0; transform:scale(.96); }
-    to{ opacity:1; transform:scale(1); }
+  .proj-card.is-expanded .proj-card-summary { flex: 0 0 auto; border-bottom: 1px solid var(--hairline); border-radius: var(--r-xl) var(--r-xl) 0 0; }
+  .proj-card.is-expanded .proj-card-summary:hover { background: none; }
+  .proj-card.is-expanded .proj-card-scroll { display: block; flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+  .proj-card.is-expanded .proj-card-body { border-top: none; }
+  @keyframes projCardZoomIn {
+    from { opacity: 0; transform: scale(.96); }
+    to { opacity: 1; transform: scale(1); }
   }
-  @media (max-width:700px){
-    .proj-card-summary{ flex-wrap:wrap; gap:14px; padding:16px 18px; }
-    .proj-card-thumb{ width:56px; height:56px; }
-    .proj-card-body{ padding:8px 18px 36px; }
-    .proj-card.is-expanded{ top:0; left:0; right:0; width:100%; max-height:100%; height:100%; border-radius:0; margin:0; }
-    .proj-card.is-expanded .proj-card-summary{ border-radius:0; }
+  @media (max-width: 700px) {
+    .proj-card-summary { flex-wrap: wrap; gap: var(--sp-md); padding: var(--sp-md); }
+    .proj-card-thumb { width: 56px; height: 56px; }
+    .proj-card-body { padding: var(--sp-xs) var(--sp-md) var(--sp-xl); }
+    .proj-card.is-expanded { top: 0; left: 0; right: 0; width: 100%; max-height: 100%; height: 100%; border-radius: 0; margin: 0; }
+    .proj-card.is-expanded .proj-card-summary { border-radius: 0; }
   }
 
-  .outcome-box{ display:flex; flex-direction:column; gap:18px; }
-  .outcome-box p{ font-size:16px; line-height:1.75; color:var(--ink-soft); max-width:64ch; text-wrap:pretty; }
+  /* ---------- outcome ---------- */
+  .outcome-box { display: flex; flex-direction: column; gap: var(--sp-lg); }
+  .outcome-box p { font-size: 1rem; line-height: 1.75; color: var(--body-c); max-width: 64ch; }
 
-  .cs-footer{ padding:60px 0 90px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px; }
-  .next-project{ font-size:13px; color:var(--ink-soft); }
-  .next-project strong{ display:block; font-size:20px; color:var(--ink); font-family:'Inter',sans-serif; margin-top:6px; }
-  .next-project:hover strong{ color:var(--signal); }
+  .cs-footer { padding: var(--sp-xl) 0; display: flex; justify-content: flex-start; }
 
-  footer.site-footer{
-    border-top:1px solid var(--line);
-    padding:24px 6vw;
-    display:flex; justify-content:space-between;
-    font-size:11px; color:var(--ink-soft);
-  }
+  /* ---------- footer (the only dark surface, per design.md) ---------- */
+  footer.site-footer { padding: 64px 0 88px; background: var(--surface-dark); text-align: center; }
+  footer.site-footer .eyebrow { display: block; margin-bottom: var(--sp-md); color: var(--on-dark-soft); }
+  footer.site-footer h2 { font-size: clamp(1.5rem, 1.5vw + 1.1rem, 2rem); max-width: 32ch; margin: 0 auto; color: var(--on-dark); letter-spacing: -0.015em; }
+  footer.site-footer p { margin-top: var(--sp-md); color: var(--on-dark-soft); max-width: 52ch; margin-left: auto; margin-right: auto; }
+  footer.site-footer .footer-links { margin-top: var(--sp-lg); display: flex; gap: var(--sp-lg); justify-content: center; }
+  footer.site-footer .footer-links a { font-size: 13px; font-weight: 600; color: var(--on-dark-soft); text-decoration: none; }
+  footer.site-footer .footer-links a:hover { color: var(--on-dark); }
 
-  @media (max-width:700px){ .cs-meta{ flex-wrap:wrap; gap:24px; } }
+  /* ---------- reveal on scroll ---------- */
+  .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.6s ease, transform 0.6s ease; }
+  .reveal.in { opacity: 1; transform: translateY(0); }
 
-  /* Reduced-motion safety net: any inline transition set by the reveal
-     script below collapses to an instant, non-animated state change. */
-  @media (prefers-reduced-motion: reduce){
+  @media (prefers-reduced-motion: reduce) {
+    .reveal { opacity: 1; transform: none; transition: none; }
     * { transition-duration: 0.01ms !important; }
   }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="nav-inner">
-    <a href="index.html" class="back-link mono">← Back to work</a>
-    <div class="logo mono">DAVID NG<span>.</span></div>
+<a class="back-btn" href="index.html#confidential">
+  <span aria-hidden="true">←</span><span class="label">Back</span>
+</a>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <div class="wordmark">David Ng <span>· confidential portfolio</span></div>
+    <div class="nav-pill-group" id="pillnav">
+      <button class="pill-seg" data-goto="overview-part" aria-current="false" type="button">Overview</button>
+      <button class="pill-seg" data-goto="projects-part" aria-current="false" type="button">Projects</button>
+      <button class="pill-seg" data-goto="outcome-part" aria-current="false" type="button">Outcome</button>
+    </div>
   </div>
-</header>
+</nav>
 
-<main>
-
-  <section class="cs-hero">
-    <div class="cs-eyebrow mono"><span>●</span> Industrial Design</div>
+<header class="cs-hero">
+  <div class="wrap">
+    <div class="cs-eyebrow"><span>&#9679;</span> Industrial Design</div>
     <h1>Sudokoo &amp; DeepCool: Extended Work Portfolio</h1>
     <p>This portfolio spans both shipped products and the exploratory work behind them, covering
       the full scope of design work carried out for Sudokoo and DeepCool between 2024 and 2026:
@@ -288,63 +378,73 @@
       shape the direction of products still to come. I designed award winning solutions that
       won both the Red Dot and iF Award, and showcased work on the show floor at Computex 2025
       and CES 2026.</p>
+    <span class="confidential-badge">Confidential &middot; NDA Protected</span>
     <div class="cs-meta">
-      <div>YEAR <strong>2024 - 2026</strong></div>
-      <div>ROLE <strong>Lead Industrial Designer</strong></div>
-      <div>TOOLS <strong>KeyShot, Rhino, Photoshop, Illustrator, Bambu Studio</strong></div>
-      <div>SCOPE <strong>3D Modeling, Prototyping, User Research, DFM, CMF</strong></div>
-      <div class="cs-meta-subtle">LAST REVISED <strong>2026</strong></div>
+      <div>Year <strong>2024 - 2026</strong></div>
+      <div>Role <strong>Lead Industrial Designer</strong></div>
+      <div>Tools <strong>KeyShot, Rhino, Photoshop, Illustrator, Bambu Studio</strong></div>
+      <div>Scope <strong>3D Modeling, Prototyping, User Research, DFM, CMF</strong></div>
+      <div class="cs-meta-subtle">Last revised <strong>2026</strong></div>
     </div>
-  </section>
+  </div>
+</header>
 
-  <div class="nda-notice">
-    <div class="icon mono">⚠</div>
+<div class="wrap">
+  <div class="nda-notice reveal">
+    <div class="icon">&#9888;</div>
     <div>
-      <div class="label mono">Confidential, please read</div>
+      <div class="label">Confidential, please read</div>
       <p>The works shown here are protected by non-disclosure agreements (NDAs) and are shared
         exclusively for portfolio review by the hiring team. Please do not reproduce, distribute,
         or disclose any part of these materials.</p>
     </div>
   </div>
+</div>
 
-  <!-- WHAT I DID HERE -->
-  <section class="cs-section">
-    <h2>What I did here</h2>
-    <p class="lede">Design work spans computer chassis, AIO liquid cooling systems, CPU air
-      coolers, and computer fans, taking products from concept to production while collaborating
-      directly with engineers and manufacturers around five core principles:</p>
-    <ul class="key-decisions">
-      <li>Compatibility</li>
-      <li>Cost efficiency</li>
-      <li>Aesthetics</li>
-      <li>Performance</li>
-      <li>User experience</li>
-    </ul>
-    <p class="lede" style="margin-top:24px; margin-bottom:0;">This included multiple visits to
-      the company headquarters in Beijing, working directly alongside engineers, designers, and
-      stakeholders throughout development.</p>
+<main id="overview-part">
+  <section class="cs-section" id="overview">
+    <div class="prose-wide">
+      <div class="kicker-row reveal"><span class="eyebrow accent">Overview</span></div>
+      <h2 class="reveal">What I did here</h2>
+      <p class="lede reveal">Design work spans computer chassis, AIO liquid cooling systems, CPU air
+        coolers, and computer fans, taking products from concept to production while collaborating
+        directly with engineers and manufacturers around five core principles:</p>
+      <ul class="key-decisions reveal">
+        <li>Compatibility</li>
+        <li>Cost efficiency</li>
+        <li>Aesthetics</li>
+        <li>Performance</li>
+        <li>User experience</li>
+      </ul>
+      <p class="lede reveal" style="margin-top: var(--sp-xl); margin-bottom: 0;">This included multiple visits to
+        the company headquarters in Beijing, working directly alongside engineers, designers, and
+        stakeholders throughout development.</p>
+    </div>
   </section>
+</main>
 
-  <!-- PROJECTS -->
-  <section class="cs-section">
-    <div class="cs-num mono">PROJECTS</div>
+<main id="projects-part">
+  <section class="cs-section" data-band="soft" id="projects">
+    <div class="prose-wide">
+      <div class="cs-num reveal">Projects</div>
+    </div>
 
     <div class="proj-stack-bleed">
     <div class="proj-stack">
 
       <!-- SK SERIES - FAN COOLER -->
-      <div class="proj-card">
+      <div class="proj-card reveal">
         <button class="proj-card-summary" type="button" aria-expanded="false">
           <div class="proj-card-thumb"><img src="sudokooportfolio/image10.png" alt="Sudokoo SK620 dual tower CPU air cooler in white, with a digital screen showing live CPU frequency, load, temperature, and power draw"></div>
           <div class="proj-card-head">
-            <div class="proj-card-eyebrow mono">SK SERIES — FAN COOLER <span class="status-tag shipped mono">Shipped</span></div>
+            <div class="proj-card-eyebrow">SK SERIES — FAN COOLER <span class="status-tag shipped">Shipped</span></div>
             <h3>SK620 &amp; SK700 Series</h3>
           </div>
-          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+          <div class="proj-card-toggle"><span class="toggle-label"></span><span class="chevron">▾</span></div>
         </button>
         <div class="proj-card-scroll">
           <div class="proj-card-body">
-            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="proj-designer">Designer: David Ng</div>
             <div class="sk620-repro">
 
               <div class="finding-block">
@@ -357,7 +457,7 @@
                   that has since been released to market.</p>
               </div>
               <a class="callout callout-green" href="https://sudokoo.com/products/Cooling/cpuaircoolers/SK620V-AM5-Designated-Dual-Tower-Air-Cooler-with-Digital-Screen/2025/21248.shtml?type=Overview_Products" target="_blank" rel="noopener">
-                <div class="label mono">See it live</div>
+                <div class="label">See it live</div>
                 <p>The SK620 and SK700 are available on the Sudokoo company website: view the product page →</p>
               </a>
               <div class="figure-img figure-img-2xl" style="margin-top:36px;">
@@ -507,18 +607,18 @@
       </div>
 
       <!-- LM360 - AIO LIQUID COOLER -->
-      <div class="proj-card">
+      <div class="proj-card reveal">
         <button class="proj-card-summary" type="button" aria-expanded="false">
           <div class="proj-card-thumb"><img src="sudokooportfolio/image64.png" alt="LM360 liquid cooler pump installed in a PC build, its illuminated display and RGB lighting shown alongside RAM modules and a graphics card"></div>
           <div class="proj-card-head">
-            <div class="proj-card-eyebrow mono">LM360 — AIO LIQUID COOLER <span class="status-tag shipped mono">Shipped</span></div>
+            <div class="proj-card-eyebrow">LM360 — AIO LIQUID COOLER <span class="status-tag shipped">Shipped</span></div>
             <h3>LM360 AIO Liquid Cooler</h3>
           </div>
-          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+          <div class="proj-card-toggle"><span class="toggle-label"></span><span class="chevron">▾</span></div>
         </button>
         <div class="proj-card-scroll">
           <div class="proj-card-body">
-            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="proj-designer">Designer: David Ng</div>
             <div class="lm360-repro">
 
               <div class="finding-block">
@@ -529,7 +629,7 @@
                   to design for manufacturing.</p>
               </div>
               <a class="callout callout-green" href="https://www.deepcool.com/products/Cooling/cpuliquidcoolers/LM360-6th-Gen-ARGB-Liquid-Cooler-with-mini-LCD-Screen/2025/21346.shtml" target="_blank" rel="noopener">
-                <div class="label mono">See it live</div>
+                <div class="label">See it live</div>
                 <p>LM360 is available on the DeepCool company website: view the product page →</p>
               </a>
               <div class="figure-img figure-img-2xl" style="margin-top:36px;">
@@ -584,18 +684,18 @@
       </div>
 
       <!-- OEM PROJECT - SPARKLE USB HUB ADAPTER -->
-      <div class="proj-card">
+      <div class="proj-card reveal">
         <button class="proj-card-summary" type="button" aria-expanded="false">
           <div class="proj-card-thumb"><img src="sudokooportfolio/image51.png" alt="Sparkle HDMI docking variant, angled view showing a USB-C port, three HDMI ports, and the ribbed grip channel"></div>
           <div class="proj-card-head">
-            <div class="proj-card-eyebrow mono">OEM PROJECT — SPARKLE USB HUB ADAPTER <span class="status-tag shipped mono">Shipped</span></div>
+            <div class="proj-card-eyebrow">OEM PROJECT — SPARKLE USB HUB ADAPTER <span class="status-tag shipped">Shipped</span></div>
             <h3>Sparkle USB Hub Adapter</h3>
           </div>
-          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+          <div class="proj-card-toggle"><span class="toggle-label"></span><span class="chevron">▾</span></div>
         </button>
         <div class="proj-card-scroll">
           <div class="proj-card-body">
-            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="proj-designer">Designer: David Ng</div>
             <div class="finding-block">
               <h3>Overview: designing a brand's language into someone else's product</h3>
               <p>This project was developed for Sparkle as an OEM design assignment. The
@@ -635,18 +735,18 @@
       </div>
 
       <!-- ARCHIVE - MATERIAL & BRAND LANGUAGE EXPLORATION (merged translucent materials + brand language) -->
-      <div class="proj-card">
+      <div class="proj-card reveal">
         <button class="proj-card-summary" type="button" aria-expanded="false">
           <div class="proj-card-thumb"><img src="sudokooportfolio/image72.png" alt="Translucent AIO pump concept with a frosted glass-like chamfered top, glowing blue and purple edge lighting, and a display reading 206 degrees Fahrenheit"></div>
           <div class="proj-card-head">
-            <div class="proj-card-eyebrow mono">ARCHIVE — MATERIAL &amp; BRAND LANGUAGE EXPLORATION <span class="status-tag archive mono">Concept, Unreleased</span></div>
+            <div class="proj-card-eyebrow">ARCHIVE — MATERIAL &amp; BRAND LANGUAGE EXPLORATION <span class="status-tag archive">Concept, Unreleased</span></div>
             <h3>Exploration of Sudokoo's future AIO identity</h3>
           </div>
-          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+          <div class="proj-card-toggle"><span class="toggle-label"></span><span class="chevron">▾</span></div>
         </button>
         <div class="proj-card-scroll">
           <div class="proj-card-body">
-            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="proj-designer">Designer: David Ng</div>
             <div class="finding-block">
               <h3>Overview: exploration of Sudokoo's future AIO identity</h3>
               <p>This is an exploration of concepts designed for the possible directions Sudokoo's
@@ -695,18 +795,18 @@
       </div>
 
       <!-- ARCHIVE - ADAPTIVE DISPLAY MECHANISM -->
-      <div class="proj-card">
+      <div class="proj-card reveal">
         <button class="proj-card-summary" type="button" aria-expanded="false">
           <div class="proj-card-thumb"><img src="sudokooportfolio/image79.png" alt="Adaptive AIO pump display concept mounted on a bracket, showing GPU load, CPU frequency, a circular percentage readout, time, and CPU temperature"></div>
           <div class="proj-card-head">
-            <div class="proj-card-eyebrow mono">ARCHIVE — ADAPTIVE DISPLAY MECHANISM <span class="status-tag archive mono">Concept, Unreleased</span></div>
+            <div class="proj-card-eyebrow">ARCHIVE — ADAPTIVE DISPLAY MECHANISM <span class="status-tag archive">Concept, Unreleased</span></div>
             <h3>360 Flip Screen AIO Liquid Cooler</h3>
           </div>
-          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+          <div class="proj-card-toggle"><span class="toggle-label"></span><span class="chevron">▾</span></div>
         </button>
         <div class="proj-card-scroll">
           <div class="proj-card-body">
-            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="proj-designer">Designer: David Ng</div>
             <div class="finding-block">
               <h3>Overview: a pump display that adapts to the build around it</h3>
               <p>This concept explored a more adaptable AIO pump display, addressing one of
@@ -738,18 +838,18 @@
       </div>
 
       <!-- ARCHIVE - RADIATOR FAN COVER -->
-      <div class="proj-card">
+      <div class="proj-card reveal">
         <button class="proj-card-summary" type="button" aria-expanded="false">
           <div class="proj-card-thumb"><img src="sudokooportfolio/image86.png" alt="Radiator fan cover concept installed inside a full PC build, shown above an MSI motherboard and GeForce RTX graphics card with blue RGB lighting"></div>
           <div class="proj-card-head">
-            <div class="proj-card-eyebrow mono">ARCHIVE — RADIATOR FAN COVER <span class="status-tag archive mono">Concept, Unreleased</span></div>
+            <div class="proj-card-eyebrow">ARCHIVE — RADIATOR FAN COVER <span class="status-tag archive">Concept, Unreleased</span></div>
             <h3>AIO Fan Cooler Case</h3>
           </div>
-          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+          <div class="proj-card-toggle"><span class="toggle-label"></span><span class="chevron">▾</span></div>
         </button>
         <div class="proj-card-scroll">
           <div class="proj-card-body">
-            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="proj-designer">Designer: David Ng</div>
             <div class="finding-block">
               <h3>Overview: designing the part of an AIO everyone ignores</h3>
               <p>Conventional AIO designs focus almost entirely on the pump, treating the
@@ -816,18 +916,18 @@
       </div>
 
       <!-- ARCHIVE - MINI CHASSIS CONCEPT -->
-      <div class="proj-card">
+      <div class="proj-card reveal">
         <button class="proj-card-summary" type="button" aria-expanded="false">
           <div class="proj-card-thumb"><img src="sudokooportfolio/image97.png" alt="Ultra thin mini PC chassis concept with a perforated grille top panel and a tempered glass side window"></div>
           <div class="proj-card-head">
-            <div class="proj-card-eyebrow mono">ARCHIVE — MINI CHASSIS CONCEPT <span class="status-tag archive mono">Concept, Unreleased</span></div>
+            <div class="proj-card-eyebrow">ARCHIVE — MINI CHASSIS CONCEPT <span class="status-tag archive">Concept, Unreleased</span></div>
             <h3>Ultra Thin Chassis</h3>
           </div>
-          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+          <div class="proj-card-toggle"><span class="toggle-label"></span><span class="chevron">▾</span></div>
         </button>
         <div class="proj-card-scroll">
           <div class="proj-card-body">
-            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="proj-designer">Designer: David Ng</div>
             <div class="finding-block">
               <h3>Overview: how compact can a chassis get without feeling cheap</h3>
               <p>This concept explores the design of an ultra thin mini PC chassis, pushing
@@ -863,18 +963,18 @@
       </div>
 
       <!-- ARCHIVE - MOD CHASSIS CONCEPT -->
-      <div class="proj-card">
+      <div class="proj-card reveal">
         <button class="proj-card-summary" type="button" aria-expanded="false">
           <div class="proj-card-thumb"><img src="sudokooportfolio/image101.png" alt="Sudokoo MOD chassis concept with a pink and yellow geometric skin panel and tempered glass side"></div>
           <div class="proj-card-head">
-            <div class="proj-card-eyebrow mono">ARCHIVE — MOD CHASSIS CONCEPT <span class="status-tag archive mono">Concept, Unreleased</span></div>
+            <div class="proj-card-eyebrow">ARCHIVE — MOD CHASSIS CONCEPT <span class="status-tag archive">Concept, Unreleased</span></div>
             <h3>MOD Chassis</h3>
           </div>
-          <div class="proj-card-toggle mono"><span class="toggle-label"></span><span class="chevron">▾</span></div>
+          <div class="proj-card-toggle"><span class="toggle-label"></span><span class="chevron">▾</span></div>
         </button>
         <div class="proj-card-scroll">
           <div class="proj-card-body">
-            <div class="proj-designer mono">Designer: David Ng</div>
+            <div class="proj-designer">Designer: David Ng</div>
             <div class="finding-block">
               <h3>Overview: a platform built for future brand showcases</h3>
               <p>This project was envisioned as a platform for future brand showcases, where
@@ -894,108 +994,86 @@
     </div>
     </div>
   </section>
+</main>
 
-  <!-- OUTCOME & REFLECTION -->
-  <section class="cs-section">
-    <h2>What this body of work represents</h2>
-    <div class="outcome-box">
-      <p>Taken together, this portfolio represents two flagship products carried from concept to
-        mass production, a client brand translated faithfully into an OEM product, and a
-        continuous line of internal exploration that never stopped once a product shipped. The
-        archive concepts, an adaptive display mechanism, a translucent material direction, a
-        radiator treated as seriously as the pump, and a chassis platform built for future
-        showcases, represent the design thinking that shapes what Sudokoo and DeepCool release
-        next, even when a given concept never reaches market itself.</p>
+<main id="outcome-part">
+  <section class="cs-section" id="outcome">
+    <div class="prose-wide">
+      <div class="kicker-row reveal"><span class="eyebrow accent">Outcome</span></div>
+      <h2 class="reveal">What this body of work represents</h2>
+      <div class="outcome-box">
+        <p class="reveal">Taken together, this portfolio represents two flagship products carried from concept to
+          mass production, a client brand translated faithfully into an OEM product, and a
+          continuous line of internal exploration that never stopped once a product shipped. The
+          archive concepts, an adaptive display mechanism, a translucent material direction, a
+          radiator treated as seriously as the pump, and a chassis platform built for future
+          showcases, represent the design thinking that shapes what Sudokoo and DeepCool release
+          next, even when a given concept never reaches market itself.</p>
+      </div>
+      <div class="cs-footer">
+        <a href="index.html#confidential" class="back-btn" style="position:static;">← Back to all work</a>
+      </div>
     </div>
   </section>
-
-  <div class="cs-footer">
-    <a href="index.html" class="back-link mono">← Back to all work</a>
-  </div>
-
 </main>
 
 <footer class="site-footer">
-  <span class="mono">© 2026 DAVID NG</span>
-  <span class="mono">CASE STUDY · WORK PORTFOLIO</span>
+  <div class="prose">
+    <span class="eyebrow reveal">Confidential</span>
+    <h2 class="reveal">You've reached the end of this confidential portfolio</h2>
+    <p class="reveal">The works shown on this page are protected by NDAs and shared exclusively for
+      portfolio review by the hiring team. Please do not reproduce, distribute, or disclose any part
+      of these materials.</p>
+    <div class="footer-links">
+      <a href="index.html">← Back to index.html</a>
+    </div>
+  </div>
 </footer>
 
 <script>
-  // reveal helpers — purely inline-style driven so there is never a CSS
-  // state where content is hidden without JS having actually run.
-  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+(function () {
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  function revealNow(el, { y = 22, duration = 700, delay = 0 } = {}){
-    if(!el || reduceMotion) return;
-    el.style.opacity = '0';
-    el.style.transform = `translateY(${y}px)`;
-    requestAnimationFrame(() => {
-      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
-      requestAnimationFrame(() => {
-        el.style.opacity = '1';
-        el.style.transform = 'translateY(0)';
+  // ---- scroll reveal ----
+  var revealEls = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !reduceMotion) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
       });
+    }, { threshold: 0.12, rootMargin: '0px 0px -8% 0px' });
+    revealEls.forEach(function (el) { io.observe(el); });
+  } else {
+    revealEls.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  // ---- nav-pill-group scrollspy ----
+  var pillnav = document.getElementById('pillnav');
+  var pillButtons = pillnav.querySelectorAll('button');
+  var sections = ['overview-part', 'projects-part', 'outcome-part'].map(function (id) { return document.getElementById(id); });
+
+  pillButtons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var target = document.getElementById(btn.getAttribute('data-goto'));
+      if (target) target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
     });
+  });
+
+  if ('IntersectionObserver' in window) {
+    var spyIo = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          var id = e.target.id;
+          pillButtons.forEach(function (btn) {
+            btn.setAttribute('aria-current', btn.getAttribute('data-goto') === id ? 'true' : 'false');
+          });
+        }
+      });
+    }, { threshold: 0, rootMargin: '-45% 0px -45% 0px' });
+    sections.forEach(function (s) { if (s) spyIo.observe(s); });
   }
 
-  function makeScrollReveal(el, opts = {}){
-    if(!el || reduceMotion || !('IntersectionObserver' in window)) return null;
-    const y = opts.y ?? 26;
-    const duration = opts.duration ?? 700;
-    const delay = opts.delay ?? 0;
-
-    function hide(){
-      el.style.transition = 'none';
-      el.style.opacity = '0';
-      el.style.transform = `translateY(${y}px)`;
-    }
-    function show(){
-      // force a synchronous style flush so the browser commits the current
-      // (transition:none, opacity:0) state before the transition is
-      // re-enabled and the value changes — relying on requestAnimationFrame
-      // timing alone for this is fragile and can silently skip the fade
-      void el.offsetHeight;
-      el.style.transition = `opacity ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms, transform ${duration}ms cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
-      void el.offsetHeight;
-      el.style.opacity = '1';
-      el.style.transform = 'translateY(0)';
-    }
-
-    hide();
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if(entry.isIntersecting) show();
-        else hide();
-      });
-    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
-    io.observe(el);
-
-    return { replay(){ hide(); show(); } };
-  }
-
-  // hero entrance: eyebrow, heading, intro copy, meta row cascade in
-  revealNow(document.querySelector('.cs-eyebrow'), { y: 16, duration: 700, delay: 0 });
-  revealNow(document.querySelector('.cs-hero h1'), { y: 28, duration: 800, delay: 100 });
-  revealNow(document.querySelector('.cs-hero p'), { delay: 250 });
-  revealNow(document.querySelector('.cs-meta'), { delay: 380 });
-  // NDA notice banner sits directly below the hero, above the project cards
-  revealNow(document.querySelector('.nda-notice'), { y: 20, duration: 700, delay: 500 });
-
-  // project card stack: each collapsible card fades/slides in as it's
-  // scrolled into view; this never touches the open/close (.is-expanded)
-  // mechanism below, which is driven entirely by class toggles.
-  const PROJ_CARD_SELECTOR = '.proj-card';
-  document.querySelectorAll(PROJ_CARD_SELECTOR).forEach((el, i) => makeScrollReveal(el, { delay: (i % 2) * 60 }));
-
-  setTimeout(() => {
-    document.querySelectorAll('.cs-eyebrow, .cs-hero h1, .cs-hero p, .cs-meta, .nda-notice')
-      .forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-      });
-  }, 4000);
-
-(function(){
+  // ---- project card accordion / modal expand ----
   var backdrop = document.createElement('div');
   backdrop.className = 'proj-backdrop';
   document.body.appendChild(backdrop);
@@ -1003,32 +1081,32 @@
   var cards = Array.prototype.slice.call(document.querySelectorAll('.proj-card'));
   var current = null;
 
-  function closeCard(card){
-    if(!card) return;
+  function closeCard(card) {
+    if (!card) return;
     card.classList.remove('is-expanded');
     backdrop.classList.remove('is-visible');
     document.body.classList.remove('no-scroll');
     var btn = card.querySelector('.proj-card-summary');
-    if(btn) btn.setAttribute('aria-expanded','false');
-    if(current === card) current = null;
+    if (btn) btn.setAttribute('aria-expanded', 'false');
+    if (current === card) current = null;
   }
 
-  function openCard(card){
-    if(current && current !== card) closeCard(current);
+  function openCard(card) {
+    if (current && current !== card) closeCard(current);
     card.classList.add('is-expanded');
     backdrop.classList.add('is-visible');
     document.body.classList.add('no-scroll');
     var btn = card.querySelector('.proj-card-summary');
-    if(btn) btn.setAttribute('aria-expanded','true');
+    if (btn) btn.setAttribute('aria-expanded', 'true');
     var scroll = card.querySelector('.proj-card-scroll');
-    if(scroll) scroll.scrollTop = 0;
+    if (scroll) scroll.scrollTop = 0;
     current = card;
   }
 
-  cards.forEach(function(card){
+  cards.forEach(function (card) {
     var btn = card.querySelector('.proj-card-summary');
-    btn.addEventListener('click', function(){
-      if(card.classList.contains('is-expanded')){
+    btn.addEventListener('click', function () {
+      if (card.classList.contains('is-expanded')) {
         closeCard(card);
       } else {
         openCard(card);
@@ -1036,12 +1114,12 @@
     });
   });
 
-  backdrop.addEventListener('click', function(){
+  backdrop.addEventListener('click', function () {
     closeCard(current);
   });
 
-  document.addEventListener('keydown', function(e){
-    if(e.key === 'Escape' && current) closeCard(current);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && current) closeCard(current);
   });
 })();
 </script>
