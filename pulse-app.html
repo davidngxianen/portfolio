@@ -1230,7 +1230,12 @@
     function fit() {
       canvas.style.transform = 'none';
       var naturalH = canvas.scrollHeight;
-      var avail = wrap.clientWidth;
+      // wrap.clientWidth includes the wrap's own left/right padding, but the
+      // canvas sits inside that padding — using clientWidth directly scales
+      // the canvas to a size that's too wide by the padding amount, clipping
+      // the edge of the diagram once overflow:hidden kicks in
+      var wrapStyle = getComputedStyle(wrap);
+      var avail = wrap.clientWidth - parseFloat(wrapStyle.paddingLeft) - parseFloat(wrapStyle.paddingRight);
       var scale = Math.min(1, avail / canvas.scrollWidth);
       canvas.style.transform = 'scale(' + scale + ')';
       wrap.style.height = Math.round(naturalH * scale) + 'px';
